@@ -1,9 +1,7 @@
 import React from 'react';
 import { StyleSheet, ScrollView } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 import CustomHeader from '../Components/CustomHeader';
 import CustomCards from '../Components/CustomCard';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import ProfilePage from './ProfilePage';
 
 function UserHome(props){

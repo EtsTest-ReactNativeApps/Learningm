@@ -4,14 +4,19 @@ import { Input } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {connect} from 'react-redux'
+import {signUpRequest} from '../actions/index'
+
+
 function RegisterPage(props) {
-    const {navigation} = props
+    const {navigation} =props
     const [data,setData] = React.useState({
-        username:'',
+        firstName:'',
+        lastName:'',
         email:'',
-        password:'',
-        confirmpassword:''
+        userPassword:'',
     })
+    const [isDissable,setDissable] = React.useState(true)
 
     const setUserName = (val) =>{
         if(val.length!== 0){
@@ -40,18 +45,21 @@ function RegisterPage(props) {
     }
 
     const setConfirmPassword = (val) =>{
-        if(val.length!== 0){
-            setData({
-                ...data,
-                confirmpassword:val
-            })
+        if(val.lenght !== 0 && val === data.password){
+            setDissable(!isDissable);   
+        }
+        else{
+            setPassword('');
         }
     }
 
     const onSubmit = () =>{
-        alert("Register sucessfull")
-        console.log(data)
-        navigation.navigate("Language")
+            console.log(props)
+            props.signup({
+                ...data
+            })
+        // console.log(data)
+        // navigation.navigate("Language")
     }
   return (
         <View style={styles.container}>
@@ -75,7 +83,19 @@ function RegisterPage(props) {
                 {/* input fields start */}
                 <ScrollView>
                             <Input
-                                placeholder='Your Name'
+                                placeholder='First Name'
+                                inputContainerStyle={styles.action}
+                                inputStyle={styles.textInput}
+                                onChangeText={(val) => setUserName(val)}
+                                leftIcon={
+                                    <FontAwesome
+                                    name='user'
+                                    size={24}
+                                    />
+                                }
+                            />
+                            <Input
+                                placeholder='Last Name'
                                 inputContainerStyle={styles.action}
                                 inputStyle={styles.textInput}
                                 onChangeText={(val) => setUserName(val)}
@@ -138,6 +158,7 @@ function RegisterPage(props) {
                             <TouchableOpacity
                                 style={styles.signIn}
                                 onPress={onSubmit}
+                                disabled={isDissable}
                             >
                             <LinearGradient
                                 colors={['#33898f', '#01ab9d']}
@@ -166,7 +187,22 @@ function RegisterPage(props) {
         </View>
   );
 }
-export default RegisterPage;
+
+const mapStateToProps = (state) =>{
+    console.log("state ==>>",state)
+    return {
+        auth :state.auth
+    }
+}
+
+const mapDispatchToProps = (dispatch) =>({
+    signup: (data) => dispatch(signUpRequest(data))
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(RegisterPage);
+
+
+
 
 const styles = StyleSheet.create({
     container: {
