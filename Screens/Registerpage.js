@@ -55,7 +55,6 @@ function RegisterPage(props) {
             setDissable(!isDissable);   
         }
         else{
-            alert("password does'nt match..!!")
             setPassword('');
         }
     }
