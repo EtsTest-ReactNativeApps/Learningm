@@ -4,19 +4,21 @@ import { Input } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {connect} from 'react-redux';
+import {logInRequest} from '../actions/index'
 function LoginPage(props) {
   const {navigation} =props
 
   const [data,setData] =React.useState({
-    email:'',
-    password:''
+    userEmailId:'',
+    userPassword:''
   })
 
   const setEmail = (val)=>{
     if(val.length!==0){
       setData({
         ...data,
-        email:val
+        userEmailId:val
       })
     }
   }
@@ -24,14 +26,19 @@ function LoginPage(props) {
     if(val.length!==0){
       setData({
         ...data,
-        password:val
+        userPassword:val
       })
     }
   }
 
   const onSubmit = () =>{
-    console.log(data)
-    navigation.navigate("UserHome")
+    let auth  = props.login({
+      ...data
+    })
+    if(auth.payload.isLogedin){
+      navigation.navigate("UserHome")
+    }
+   
   }
   return (
     <View style={styles.container}>
@@ -113,8 +120,15 @@ function LoginPage(props) {
     </View>
   );
 }
-
-export default LoginPage;
+const mapDispatchToProps =(dispatch) =>({
+  login :(data) => dispatch(logInRequest(data))
+})
+const mapStateToProps =(state) =>{
+  return {
+    auth :state.user
+  }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(LoginPage);
 
 const styles = StyleSheet.create({
     container: {

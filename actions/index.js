@@ -10,10 +10,10 @@ const signUpRequest = (auth) =>({
     payload:auth
 });
 
-// const logInRequest = (auth) =>({
-//     type:LOGIN_REQUEST,
-//     payload:auth
-// });
+const logInRequest = (auth) =>({
+    type:LOGIN_REQUEST,
+    payload:auth
+});
 
 // const updateRequest = (data) =>({
 //     type:UPDATE_REQUEST,
@@ -28,7 +28,7 @@ const signUpRequest = (auth) =>({
 
 export {
     signUpRequest,
-    // logInRequest,
+    logInRequest,
     // updateRequest,
     // deleteRequest
 }

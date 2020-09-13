@@ -5,12 +5,22 @@ export const userReducer = (state=initialState,action)=>{
         case 'SIGNUP_SUCCESS':
             return {
                 ...action.payload,
-                isLogedIn:true
             }
             break;
         case 'SIGNUP_FAILURE':
             return {
                 ...action.payload,
+            }
+            break;
+        case 'LOGIN_SUCCESS':
+            return {
+                ...action.payload,
+                isLogedIn:true
+            }
+            break;
+        case 'LOGIN_FAILURE':
+            return{
+                ...action.payload
             }
             break;
     }

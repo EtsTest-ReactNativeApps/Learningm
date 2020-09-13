@@ -4,18 +4,19 @@ const ROOT_URL ='http://maulihelp-env.eba-jkv3rqr6.ap-south-1.elasticbeanstalk.c
 
 
 export default class ApiUser {
-    static signUp(action){
+    static async signUp(action){
         const url = `${ROOT_URL}addNewUser`;
-        console.log(action.payload.data)
-        const request = axios.post(url,action.payload.data)
-
-        return request;
+        console.log(action.payload)
+        const request =  await axios.post(url,action.payload)
+        console.log("request is api call", request)
+        return request
     }
 
-    static fetchUser(action){
+    static async fetchUser(action){
+        // console.log("action in api call",action.payload)
         const url = `${ROOT_URL}validateUser`;
-        const request = axios.get(url);
-
+        const request = await axios.post(url,action.payload)
+        // console.log("request is api call", request)
         return request;
     }
 

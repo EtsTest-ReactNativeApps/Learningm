@@ -17,12 +17,18 @@ function RegisterPage(props) {
         userPassword:'',
     })
     const [isDissable,setDissable] = React.useState(true)
-
-    const setUserName = (val) =>{
+    const setFirstName =(val) =>{
+        if(val.length!==0){
+            setData({
+                firstName:val
+            })
+        }
+    } 
+    const setLastName = (val) =>{
         if(val.length!== 0){
             setData({
                 ...data,
-                username:val
+                lastName:val
             })
         }
     }
@@ -39,27 +45,32 @@ function RegisterPage(props) {
         if(val.length!== 0){
             setData({
                 ...data,
-                password:val
+                userPassword:val
             })
         }
     }
 
     const setConfirmPassword = (val) =>{
-        if(val.lenght !== 0 && val === data.password){
+        if(val.lenght !== 0 && val === data.userPassword){
             setDissable(!isDissable);   
         }
         else{
+            alert("password does'nt match..!!")
             setPassword('');
         }
     }
 
     const onSubmit = () =>{
-            console.log(props)
-            props.signup({
+          let auth = props.signup({
                 ...data
             })
-        // console.log(data)
-        // navigation.navigate("Language")
+            console.log("auth in register page",auth)
+            // if(auth.data){
+            //     if (auth.data.MSG === 'success'){
+            //         navigation.navigate("Language")
+            //     }
+            // }
+       
     }
   return (
         <View style={styles.container}>
@@ -86,7 +97,7 @@ function RegisterPage(props) {
                                 placeholder='First Name'
                                 inputContainerStyle={styles.action}
                                 inputStyle={styles.textInput}
-                                onChangeText={(val) => setUserName(val)}
+                                onChangeText={(val) => setFirstName(val)}
                                 leftIcon={
                                     <FontAwesome
                                     name='user'
@@ -98,7 +109,7 @@ function RegisterPage(props) {
                                 placeholder='Last Name'
                                 inputContainerStyle={styles.action}
                                 inputStyle={styles.textInput}
-                                onChangeText={(val) => setUserName(val)}
+                                onChangeText={(val) => setLastName(val)}
                                 leftIcon={
                                     <FontAwesome
                                     name='user'
@@ -189,9 +200,9 @@ function RegisterPage(props) {
 }
 
 const mapStateToProps = (state) =>{
-    console.log("state ==>>",state)
+    // console.log(state)
     return {
-        auth :state.auth
+        auth :state.user
     }
 }
 
