@@ -8,12 +8,15 @@ import {connect} from 'react-redux';
 import {logInRequest} from '../actions/index'
 function LoginPage(props) {
   const {navigation} =props
-
+  // let {userState} = props
   const [data,setData] =React.useState({
     userEmailId:'',
     userPassword:''
   })
-
+  const [error,setError] =React.useState({
+    emailErr:'',
+    passErr:'',
+  })
   const setEmail = (val)=>{
     if(val.length!==0){
       setData({
@@ -30,16 +33,36 @@ function LoginPage(props) {
       })
     }
   }
-
-  const onSubmit = () =>{
-    let auth  = props.login({
-      ...data
-    })
-    if(auth.payload.isLogedin){
-      navigation.navigate("UserHome")
+  const validateEmail =() =>{
+    let regex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+    if(regex.test(data.userState)==false){
+        setError({
+            ...error,
+            emailErr:"enter a valid email "
+        })
     }
-   
+}
+const validatePass =() =>{
+    let regex = /^[A-Za-z]\w{7,14}$/;
+    if(regex.test(data.userPassword)==false){
+        setError({
+            ...error,
+            passErr:"password should contain minimum 6 charecters"
+        })
+    }
+}
+  const onSubmit = () =>{
+        props.login({
+          ...data
+        })
+
   }
+  React.useEffect(() =>{
+    // console.log(userState)
+    if(props.userState.isLogedIN){
+      navigation.navigate("Language")
+    }
+ },[props.userState])
   return (
     <View style={styles.container}>
           <View style={styles.header}>
@@ -64,6 +87,7 @@ function LoginPage(props) {
                   placeholder='Email'
                   inputContainerStyle={styles.action}
                   inputStyle={styles.textInput}
+                  keyboardType="email-address"
                   onChangeText={(val) => setEmail(val)}
                   leftIcon={
                       <FontAwesome
@@ -125,7 +149,7 @@ const mapDispatchToProps =(dispatch) =>({
 })
 const mapStateToProps =(state) =>{
   return {
-    auth :state.user
+    userState :state.user
   }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(LoginPage);

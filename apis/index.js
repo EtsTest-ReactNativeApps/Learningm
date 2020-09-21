@@ -6,7 +6,7 @@ const ROOT_URL ='http://maulihelp-env.eba-jkv3rqr6.ap-south-1.elasticbeanstalk.c
 export default class ApiUser {
     static async signUp(action){
         const url = `${ROOT_URL}addNewUser`;
-        console.log(action.payload)
+        // console.log(action.payload)
         const request =  await axios.post(url,action.payload)
         console.log("request is api call", request)
         return request
