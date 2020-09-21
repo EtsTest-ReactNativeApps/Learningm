@@ -26,7 +26,7 @@ function RegisterPage(props) {
     })
 
     const validateFname =() =>{
-        let regex = /^[a-zA-Z ]{2,30}$/;
+        let regex = /^[a-zA-Z ]{2,20}$/;
         if(regex.test(data.firstName)==false){
             setError({
                 ...error,
@@ -41,7 +41,7 @@ function RegisterPage(props) {
         }
     }
     const validateLname =() =>{
-        let regex = /^[a-zA-Z ]{0,30}$/;
+        let regex = /^[a-zA-Z ]{0,20}$/;
         if(regex.test(data.lastName)==false){
             setError({
                 ...error,
@@ -105,10 +105,6 @@ function RegisterPage(props) {
                     ...data,
                     lastName:val
                 })
-                
-            
-            
-            
         }
     }
     const setEmail =(val) =>{

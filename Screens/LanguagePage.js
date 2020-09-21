@@ -11,7 +11,7 @@ function LanguagePage(props){
     // React.useEffect(() =>{
     //     const languageList = props.CONTENT.languageList;
     // },[])
-   
+// isLanguageChosen
     const [langChoosed,setLangChoosed] =React.useState(null);
     const LangData =[
         "Kannada",

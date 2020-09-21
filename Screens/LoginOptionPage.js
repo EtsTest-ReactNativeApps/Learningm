@@ -1,9 +1,44 @@
 import React from 'react';
 import { StyleSheet, Text, View ,TouchableOpacity,Image} from 'react-native';
 import { Button } from 'react-native-elements';
+import {connect} from 'react-redux'
+import * as Google from 'expo-google-app-auth';
 
 function LoginOptionPage(props) {
   const {navigation} = props
+  const [data,setData] =React.useState({
+    userEmailId:'',
+    userPassword:''
+  });
+
+  const signIn = async() =>{
+    try{
+        const result = await Google.logInAsync({
+            androidClientId:"371785710764-omslvo1td435sns5lj99mhge53jai4dg.apps.googleusercontent.com",
+            scopes:["profile", "email"]
+        })
+        if(result.type === "success"){
+            setData({
+              userEmailId:result.user.email,
+              userPassword:result.user.id
+            })
+
+            props.login({
+              ...data
+            })
+        }else{
+            console.log("caceled")
+        }
+    }catch(err){
+        console.log(err)
+    }
+}
+React.useEffect(() =>{
+  if(props.userState.isLogedIN){
+    setLoaded(true)
+    navigation.navigate('Language')
+  }
+},[props.userState])
   return (
  
     <View style={styles.LndingPageView}>
@@ -15,7 +50,7 @@ function LoginOptionPage(props) {
         </View>
         <View style={styles.buttonView}>
                 <TouchableOpacity
-                        onPress={() => console.log("hii")}
+                        onPress={signIn}
                         style={[styles.signIn, {
                             borderColor: '#009387',
                             borderWidth: 1,
@@ -50,7 +85,16 @@ function LoginOptionPage(props) {
     </View>
   );
 }
-export default LoginOptionPage;
+
+const mapDispatchToProps =(dispatch) =>({
+  login :(data) => dispatch(logInRequest(data))
+})
+const mapStateToProps =(state) =>{
+  return {
+    userState :state.user
+  }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(LoginOptionPage);
 
 const styles = StyleSheet.create({
     LndingPageView: {
