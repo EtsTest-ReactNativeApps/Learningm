@@ -21,13 +21,14 @@ function RegisterOptionPage(props) {
             scopes:["profile", "email"]
         })
         if(result.type=== "success"){
+          console.log(result.user)
             setData({
                 firstName:result.user.givenName,
                 lastName:result.user.familyName,
                 email:result.user.email,
                 userPassword:result.user.id
             })
-
+            console.log(data)
             props.signup({
               ...data
             })
@@ -41,7 +42,6 @@ function RegisterOptionPage(props) {
 // after signup checking the user?
 React.useEffect(() =>{
   if(props.userState.isLogedIN){
-    setLoaded(true)
     navigation.navigate('Language')
   }
 },[props.userState])
