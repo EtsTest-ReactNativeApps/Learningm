@@ -47,7 +47,7 @@ React.useEffect(() =>{
 },[props.userState])
 
   return (
- 
+    
     <View style={styles.LndingPageView}>
         <View style={styles.logo}>
           <Image
