@@ -50,10 +50,10 @@ const StackNavigation =() =>{
                       name="RegisterPage"
                       component={RegisterPage}  
                     />
-                    <Stack.Screen
+                    {/* <Stack.Screen
                       name="Profile"
                       component={ProfilePage}
-                    />
+                    /> */}
       </Stack.Navigator>
   )
 }
