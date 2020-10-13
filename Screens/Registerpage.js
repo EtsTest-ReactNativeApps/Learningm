@@ -1,58 +1,163 @@
 import React from 'react';
-import { StyleSheet, Text, View ,TouchableOpacity,ScrollView} from 'react-native';
+import { StyleSheet, Text, View ,TouchableOpacity,ScrollView,ActivityIndicator} from 'react-native';
 import { Input } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {connect} from 'react-redux'
+import {signUpRequest} from '../actions/index'
+
+
 function RegisterPage(props) {
-    const {navigation} = props
+    const {navigation} =props;
     const [data,setData] = React.useState({
-        username:'',
+        firstName:'',
+        lastName:'',
         email:'',
-        password:'',
-        confirmpassword:''
+        userPassword:'',
+    })
+    const [isLoading,setLoading] =React.useState(true);
+    const [error,setError] =React.useState({
+        fNameErr:'',
+        lNameErr:'',
+        emailErr:'',
+        passErr:'',
+        confirmPassErr:''
     })
 
-    const setUserName = (val) =>{
-        if(val.length!== 0){
-            setData({
-                ...data,
-                username:val
+    const validateFname =() =>{
+        let regex = /^[a-zA-Z ]{2,20}$/;
+        if(regex.test(data.firstName)==false){
+            setError({
+                ...error,
+                fNameErr:"Enter valid First Name"
             })
+        }
+        else{
+            setError({
+                ...error,
+                fNameErr:''
+            }) 
+        }
+    }
+    const validateLname =() =>{
+        let regex = /^[a-zA-Z ]{0,20}$/;
+        if(regex.test(data.lastName)==false){
+            setError({
+                ...error,
+                lNameErr:"Enter valid Last Name"
+            })
+        }
+        else{
+            setError({
+                ...error,
+                lNameErr:''
+            })
+        }
+    }
+    const validateEmail =() =>{
+        let regex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+        if(regex.test(data.email)==false){
+            setError({
+                ...error,
+                emailErr:"enter a valid email "
+            })
+        }
+        else{
+            setError({
+                ...error,
+                emailErr:''
+            })
+        }
+    }
+    const validatePass =() =>{
+        let regex = /^[A-Za-z]\w{7,14}$/;
+        if(regex.test(data.userPassword)==false){
+            setError({
+                ...error,
+                passErr:"password should contain minimum 6 charecters"
+            })
+        }
+        else{
+            setError({
+                ...error,
+                passErr:''
+            })
+        }
+    }
+    
+    const [isDissable,setDissable] = React.useState(true)
+    const setFirstName =(val) =>{
+        if(val.length!==0){
+           
+                setData({
+                    ...data,
+                    firstName:val
+                })
+            
+            
+        }
+    } 
+    const setLastName = (val) =>{
+        if(val.length!== 0){
+            
+                setData({
+                    ...data,
+                    lastName:val
+                })
         }
     }
     const setEmail =(val) =>{
         if(val.length!== 0){
-            setData({
-                ...data,
-                email:val
-            })
+           
+                setData({
+                    ...data,
+                    email:val
+                })
+                 
         }
     }
 
     const setPassword = (val) =>{
         if(val.length!== 0){
-            setData({
-                ...data,
-                password:val
-            })
+            
+                setData({
+                    ...data,
+                    userPassword:val
+                })
+            
         }
     }
 
     const setConfirmPassword = (val) =>{
-        if(val.length!== 0){
-            setData({
-                ...data,
-                confirmpassword:val
+        if(val.lenght !== 0 && val === data.userPassword){
+            setError({
+                ...error,
+                confirmPassErr:''
+            })
+            setDissable(false);   
+        }
+        else{
+            setError({
+                ...error,
+                confirmPassErr:"password did not match"
             })
         }
     }
-
+ 
     const onSubmit = () =>{
-        alert("Register sucessfull")
-        console.log(data)
-        navigation.navigate("Language")
+            props.signup({
+                ...data
+            }) 
     }
+    React.useEffect(()=>{
+        if(props.userState.isLogedIN){
+            setLoading(true)
+            console.log(props.userState)
+            navigation.navigate("Language")
+        }
+    },[props.userState])
+
   return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -75,10 +180,12 @@ function RegisterPage(props) {
                 {/* input fields start */}
                 <ScrollView>
                             <Input
-                                placeholder='Your Name'
+                                placeholder='First Name'
                                 inputContainerStyle={styles.action}
                                 inputStyle={styles.textInput}
-                                onChangeText={(val) => setUserName(val)}
+                                onChangeText={(val) => setFirstName(val)}
+                                keyboardType="default"
+                                onBlur ={validateFname}
                                 leftIcon={
                                     <FontAwesome
                                     name='user'
@@ -86,10 +193,28 @@ function RegisterPage(props) {
                                     />
                                 }
                             />
+                            <Text style={{color:"red",marginLeft:30}}>{error.fNameErr}</Text>
+                            <Input
+                                placeholder='Last Name'
+                                inputContainerStyle={styles.action}
+                                inputStyle={styles.textInput}
+                                keyboardType="default"
+                                onBlur={validateLname}
+                                onChangeText={(val) => setLastName(val)}
+                                leftIcon={
+                                    <FontAwesome
+                                    name='user'
+                                    size={24}
+                                    />
+                                }
+                            />
+                            <Text style={{color:"red",marginLeft:30}}>{error.lNameErr}</Text>
                             <Input
                                 placeholder=' Your Email'
                                 inputContainerStyle={styles.action}
                                 inputStyle={styles.textInput}
+                                onBlur={validateEmail}
+                                keyboardType="email-address"
                                 onChangeText={(val) =>setEmail(val)}
                         
                                 leftIcon={
@@ -98,12 +223,14 @@ function RegisterPage(props) {
                                     size={24}
                                     />
                                 }
-                            />             
+                            />  
+                            <Text style={{color:"red",marginLeft:30}}>{error.emailErr}</Text>
                             <Input
                                 placeholder='Password'
                                 inputContainerStyle={styles.action}
                                 inputStyle={styles.textInput}
                                 secureTextEntry={true}
+                                onBlur={validatePass}
                                 onChangeText={(val) =>setPassword(val)}
                                 leftIcon={
                                     <FontAwesome
@@ -112,6 +239,7 @@ function RegisterPage(props) {
                                     />
                                 }
                             />
+                            <Text style={{color:"red",marginLeft:30}}>{error.passErr}</Text>
                             <Input
                                 placeholder='Confirm Password'
                                 inputContainerStyle={styles.action}
@@ -125,6 +253,7 @@ function RegisterPage(props) {
                                     />
                                 }
                             />
+                            <Text style={{color:"red",marginLeft:30}}>{error.confirmPassErr}</Text>
                         <View style={styles.textPrivate}>
                             <Text style={styles.color_textPrivate}>
                                 By signing up you agree to our
@@ -138,6 +267,7 @@ function RegisterPage(props) {
                             <TouchableOpacity
                                 style={styles.signIn}
                                 onPress={onSubmit}
+                                disabled={isDissable}
                             >
                             <LinearGradient
                                 colors={['#33898f', '#01ab9d']}
@@ -163,10 +293,29 @@ function RegisterPage(props) {
                     </View>
                 </ScrollView>
             </Animatable.View>
+            {
+                isLoading?<ActivityIndicator/>:
+                null
+            }
         </View>
   );
 }
-export default RegisterPage;
+
+const mapStateToProps = (state) =>{
+    // console.log(state)
+    return {
+        userState :state.user
+    }
+}
+
+const mapDispatchToProps = (dispatch) =>({
+    signup: (data) => dispatch(signUpRequest(data))
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(RegisterPage);
+
+
+
 
 const styles = StyleSheet.create({
     container: {

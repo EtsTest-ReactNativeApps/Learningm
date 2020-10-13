@@ -1,11 +1,53 @@
 import React from 'react';
 import { StyleSheet, Text, View ,TouchableOpacity,Image} from 'react-native';
-import { Button } from 'react-native-elements';
-
+import {connect} from 'react-redux'
+import * as Google from 'expo-google-app-auth';
+import {signUpRequest} from '../actions/index'
 function RegisterOptionPage(props) {
   const {navigation} = props
+  const [data,setData] =React.useState({
+    firstName:'',
+    lastName:'',
+    email:'',
+    userPassword:'',
+  });
+  
+  
+  //google sign up function
+  const signIn = async() =>{
+    try{
+        const result = await Google.logInAsync({
+            androidClientId:"371785710764-omslvo1td435sns5lj99mhge53jai4dg.apps.googleusercontent.com",
+            scopes:["profile", "email"]
+        })
+        if(result.type=== "success"){
+          console.log(result.user)
+            setData({
+                firstName:result.user.givenName,
+                lastName:result.user.familyName,
+                email:result.user.email,
+                userPassword:result.user.id
+            })
+            console.log(data)
+            props.signup({
+              ...data
+            })
+        }else{
+            console.log("caceled")
+        }
+    }catch(err){
+        console.log(err)
+    }
+}
+// after signup checking the user?
+React.useEffect(() =>{
+  if(props.userState.isLogedIN){
+    navigation.navigate('Language')
+  }
+},[props.userState])
+
   return (
- 
+    
     <View style={styles.LndingPageView}>
         <View style={styles.logo}>
           <Image
@@ -15,7 +57,7 @@ function RegisterOptionPage(props) {
         </View>
         <View style={styles.buttonView}>
                 <TouchableOpacity
-                        onPress={() => console.log("hii")}
+                        onPress={signIn}
                         style={[styles.signIn, {
                             borderColor: '#009387',
                             borderWidth: 1,
@@ -50,7 +92,18 @@ function RegisterOptionPage(props) {
     </View>
   );
 }
-export default RegisterOptionPage;
+// user state from redux store
+const mapStateToProps =(state) =>{
+  return {
+    userState:state.user
+  }
+}
+// signup function in dispatch
+const mapDispatchToProps = (dispatch) =>({
+  signup:(data) =>dispatch(signUpRequest(data))
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(RegisterOptionPage);
 
 const styles = StyleSheet.create({
     LndingPageView: {

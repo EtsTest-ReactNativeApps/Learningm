@@ -4,19 +4,24 @@ import { Input } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {connect} from 'react-redux';
+import {logInRequest} from '../actions/index'
 function LoginPage(props) {
   const {navigation} =props
-
+  // let {userState} = props
   const [data,setData] =React.useState({
-    email:'',
-    password:''
+    userEmailId:'',
+    userPassword:''
   })
-
+  const [error,setError] =React.useState({
+    emailErr:'',
+    passErr:'',
+  })
   const setEmail = (val)=>{
     if(val.length!==0){
       setData({
         ...data,
-        email:val
+        userEmailId:val
       })
     }
   }
@@ -24,15 +29,40 @@ function LoginPage(props) {
     if(val.length!==0){
       setData({
         ...data,
-        password:val
+        userPassword:val
       })
     }
   }
-
+  const validateEmail =() =>{
+    let regex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+    if(regex.test(data.userState)==false){
+        setError({
+            ...error,
+            emailErr:"enter a valid email "
+        })
+    }
+}
+const validatePass =() =>{
+    let regex = /^[A-Za-z]\w{7,14}$/;
+    if(regex.test(data.userPassword)==false){
+        setError({
+            ...error,
+            passErr:"password should contain minimum 6 charecters"
+        })
+    }
+}
   const onSubmit = () =>{
-    console.log(data)
-    navigation.navigate("UserHome")
+        props.login({
+          ...data
+        })
+
   }
+  React.useEffect(() =>{
+    // console.log(userState)
+    if(props.userState.isLogedIN){
+      navigation.navigate("Language")
+    }
+ },[props.userState])
   return (
     <View style={styles.container}>
           <View style={styles.header}>
@@ -57,6 +87,7 @@ function LoginPage(props) {
                   placeholder='Email'
                   inputContainerStyle={styles.action}
                   inputStyle={styles.textInput}
+                  keyboardType="email-address"
                   onChangeText={(val) => setEmail(val)}
                   leftIcon={
                       <FontAwesome
@@ -113,8 +144,15 @@ function LoginPage(props) {
     </View>
   );
 }
-
-export default LoginPage;
+const mapDispatchToProps =(dispatch) =>({
+  login :(data) => dispatch(logInRequest(data))
+})
+const mapStateToProps =(state) =>{
+  return {
+    userState :state.user
+  }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(LoginPage);
 
 const styles = StyleSheet.create({
     container: {
