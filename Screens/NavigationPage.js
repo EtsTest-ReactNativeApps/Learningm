@@ -10,15 +10,21 @@ import RegisterOptionPage from './RegisterOptionPage';
 import LanguagePage from './LanguagePage';
 import { NavigationContainer } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import { createDrawerNavigator, DrawerItem } from '@react-navigation/drawer';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import {connect} from 'react-redux';
 import ProfilePage from './ProfilePage';
+import DrawerContent from './DrawerContent';
+import OnBoardScreen from './OnBoardScreen';
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
 const StackNavigation =() =>{
   return (
-<Stack.Navigator headerMode="none" mode="card" screenOptions="" >
+      <Stack.Navigator headerMode="none" mode="card" screenOptions="" >
+                    <Stack.Screen
+                      name="Onboardscreen"
+                      component={OnBoardScreen}
+                    />
                     <Stack.Screen
                       name="LandingPage"
                       component={LandingPage}
@@ -27,7 +33,6 @@ const StackNavigation =() =>{
                       name="RegisterOption"
                       component={RegisterOptionPage}
                     />
-
                     <Stack.Screen
                       name="LoginOptionPage"
                       component={LoginOptionPage}
@@ -43,19 +48,19 @@ const StackNavigation =() =>{
                     />
                     <Stack.Screen
                       name="RegisterPage"
-                      component={RegisterPage}
-                      
+                      component={RegisterPage}  
                     />
-                    <Stack.Screen
+                    {/* <Stack.Screen
                       name="Profile"
                       component={ProfilePage}
-                    />
-                  </Stack.Navigator>
+                    /> */}
+      </Stack.Navigator>
   )
 }
+
 const DrawerNavigation =() =>{
   return (
-          <Drawer.Navigator>
+          <Drawer.Navigator drawerContent={props => <DrawerContent  {...props}/>}>
               <Drawer.Screen 
                 name="UserHome"
                 component={UserHome}
@@ -73,6 +78,7 @@ function NavigationPage(props){
         <NavigationContainer>
             <View style={styles.container}>
                 <StatusBar/>
+                {/* <DrawerNavigation/> */}
                   {userState.isLanguageChosen ?(
                     <DrawerNavigation/>
                   ):

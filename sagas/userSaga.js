@@ -3,6 +3,7 @@ import ApiUser from '../apis/index';
 
 
 export function* signUpHandler(action){
+    console.log("in saga signup handler")
     try{
         const user = yield call(ApiUser.signUp,action)
         if(user.data.STS =="200"){
