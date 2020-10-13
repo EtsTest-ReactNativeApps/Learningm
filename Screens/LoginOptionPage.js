@@ -1,9 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View ,TouchableOpacity,Image} from 'react-native';
-import { Button } from 'react-native-elements';
 import {connect} from 'react-redux'
 import * as Google from 'expo-google-app-auth';
-
+import {logInRequest} from '../actions/index'
 function LoginOptionPage(props) {
   const {navigation} = props
   const [data,setData] =React.useState({
@@ -35,7 +34,6 @@ function LoginOptionPage(props) {
 }
 React.useEffect(() =>{
   if(props.userState.isLogedIN){
-    setLoaded(true)
     navigation.navigate('Language')
   }
 },[props.userState])
