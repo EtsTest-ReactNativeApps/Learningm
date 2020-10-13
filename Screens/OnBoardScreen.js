@@ -1,4 +1,4 @@
-eimport React  from 'react';
+import React  from 'react';
 import {View,Image,Text,TouchableOpacity,Button,StyleSheet} from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';
 
@@ -14,7 +14,7 @@ const pages = [
           // borderWidth: 1,
           // borderColor: 'red', 
         }} />,
-      // title: '',
+      title: '',
       subtitle: 'Select any local language\n you want to learn',
     },
     {
@@ -25,6 +25,7 @@ const pages = [
       height: 250, 
       borderRadius:20, 
     }} />,
+    title: '',
     subtitle: 'Complete all the levels by playing\n all the audio and video clips',
     },
     {
@@ -35,12 +36,15 @@ const pages = [
         height: 250, 
         borderRadius:20, 
       }} />,
+      title: '',
       subtitle: 'Start to speak with anyone\n anywhere anytime',
     }
 ]
-const DoneButton =() =>{
+const DoneButton =({...props}) =>{
   return(
-<TouchableOpacity>
+<TouchableOpacity
+{...props}
+>
   <Text style={{ left:-20, fontSize:15 }}>Start</Text>
 </TouchableOpacity>
   )
