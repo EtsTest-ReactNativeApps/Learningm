@@ -1,19 +1,61 @@
 import React from 'react';
-import {View,Text,StyleSheet,Image} from "react-native";
-import {Card} from 'react-native-elements';
+import {View,Text,StyleSheet,ProgressBarAndroid} from "react-native";
+import {Card,ListItem,Avatar} from 'react-native-elements';
+import TouchableScale from 'react-native-touchable-scale'; 
 
-function CustomCards(){
+function CustomCards(props){
+    const {title,maxScore,locked} =props
     return (
-        <Card
-          containerStyle={{borderRadius:15}}
-        >
-            <View style={styles.cardContainer}>
-                <View style={styles.levelImg}/>
-                <View style={styles.levelInfoView}>
-                    <Text style={{fontSize:23,color:"#399668",fontWeight:"600"}}>Level 1</Text>
-                </View>
-            </View>
-        </Card>
+
+            <ListItem
+            // Component={TouchableScale}
+            disabled={locked}
+            friction={90} 
+            tension={100} 
+            activeScale={0.95} 
+            linearGradientProps={{
+                colors: ['#bfbd8c','#8c99bf'],
+                start: { x: 1, y: 0 },
+                end: { x: 0.2, y: 0 },
+            }}
+            containerStyle={styles.containerStyle}
+            >
+                <ListItem.Content>
+                    <View style={{flexDirection:"row",justifyContent:"space-around"}}>
+                    {/* <View style={styles.levelImg}/> */}
+                        <View style={styles.levelInfoView}>
+                            <ListItem.Title style={{ color: 'white', fontWeight: 'bold',fontSize:25 }}>
+                            {title}
+                            </ListItem.Title>
+                            
+                            <View>
+                                
+                         <Text>10/{maxScore}</Text>
+                                {/* <Text>100 Points</Text> */}
+                                <ProgressBarAndroid 
+                                styleAttr="Horizontal" 
+                                indeterminate={false} 
+                                progress={0.1} 
+                                color="yellow" 
+                                style={styles.progressBar}
+                                />
+                                
+                            </View>
+                        </View>
+                        {locked?
+                            <Avatar
+                            size={100}
+                            icon={{name: 'lock', type: 'font-awesome'}}
+                        /> :
+                        <Avatar
+                            size={100}
+                            icon={{name: 'unlock', type: 'font-awesome'}}
+                        />
+                    }
+                    </View>
+                </ListItem.Content>
+                <ListItem.Chevron color="white" size={30} />
+            </ListItem>      
     )
 }
 
@@ -22,6 +64,11 @@ export default CustomCards;
 const styles = StyleSheet.create({
     cardContainer:{
         flexDirection:"row"
+    },
+    containerStyle:{
+        margin:10,
+        flexDirection:"row",
+        borderRadius:20
     },
     levelImg:{
         width:150,
@@ -33,8 +80,12 @@ const styles = StyleSheet.create({
         borderColor:"#7cdea0"
     },
     levelInfoView:{
+        flex:1,
+        justifyContent:"space-evenly",
         marginLeft:30,
         width:"70%",
-        alignItems:"flex-start"
-    }
+    },
+    progressBar:{
+        width:"100%",
+    },
 })

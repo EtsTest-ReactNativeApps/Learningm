@@ -2,7 +2,14 @@ import React from 'react';
 import {View,Text,StyleSheet,Image} from 'react-native';
 import {DrawerContentScrollView,DrawerItem} from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {connect} from 'react-redux';
+import {logOutRequest} from '../actions/index'
 function DrawerContent(props){
+    const {user} = props
+    const handleLogOut =() =>{
+        props.logout(user)
+        // props.navigation.navigate('LandingPage')
+    }
     return(
         <View style={{flex:1}}>
             <View style={styles.drawerHeader}>
@@ -20,6 +27,7 @@ function DrawerContent(props){
                                 size={size}
                             />
                             )}
+                            activeTintColor="blue"
                             labelStyle={styles.labelStyle}
                             label="Home"
                         />
@@ -37,13 +45,13 @@ function DrawerContent(props){
                         <DrawerItem
                             icon={({color,size}) =>(
                                 <Icon
-                                name="settings"
+                                name="translate"
                                 color={color}
                                 size={size}
                             />
                             )}
                             labelStyle={styles.labelStyle}
-                            label="Settings"
+                            label="Choose Languages"
                         />
                         <DrawerItem
                             icon={({color,size}) =>(
@@ -67,6 +75,7 @@ function DrawerContent(props){
                         size={size}
                     />
                     )}
+                    onPress={handleLogOut}
                     labelStyle={styles.labelStyle}
                     label="Logout"
                 />
@@ -75,7 +84,15 @@ function DrawerContent(props){
     )
 }
 
-export default DrawerContent;
+const mapStateToProps =(state) =>{
+    return {
+        user:state.user
+    }
+}
+const mapDispatchToProps =(dispatch) =>({
+    logout:(data) =>dispatch(logOutRequest(data))
+})
+export default connect(mapStateToProps,mapDispatchToProps)(DrawerContent);
 
 const styles = StyleSheet.create({
     drawerHeader:{

@@ -16,7 +16,6 @@ export const userReducer = (state=initialState,action)=>{
             }
             break;
         case 'LOGIN_SUCCESS':
-            console.log(action.payload)
             return {
                 ...action.payload,
                 isLogedIN:true
@@ -28,6 +27,15 @@ export const userReducer = (state=initialState,action)=>{
                 isLogedIN:false
             }
             break;
+        case 'LOGOUT_SUCCESS':
+            return {
+                ...action.payload
+            }
+            break;
+        case 'LOGOUT_FAILURE':
+            return{
+                ...action.payload
+            }
 
         case 'CHOOSE_LANG_SUCCESS':
             return{

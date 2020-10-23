@@ -28,7 +28,7 @@ function RegisterOptionPage(props) {
                 email:result.user.email,
                 userPassword:result.user.id
             })
-            console.log(data)
+            // console.log(data)
             props.signup({
               ...data
             })

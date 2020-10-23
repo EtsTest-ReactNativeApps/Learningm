@@ -9,6 +9,7 @@ function CustomHeader(props){
         <React.Fragment>
             <Header
                 leftComponent={<LeftComponent {...props}/>}
+                centerComponent={{text:`${props.language}`,style:{color: '#fff',fontSize:30}}}
                 rightComponent={{icon:"user-circle-o",color:"#ffff",type:"font-awesome",size:30}}
                 linearGradientProps={{
                     colors: ['#399668','#33898f'],
@@ -36,8 +37,8 @@ const styles = StyleSheet.create({
         borderBottomColor:"#6b6464",
     },
     menuStyle:{
-        width:35,
-        height:35,
+        width:40,
+        height:40,
         marginLeft:10
     }
 })

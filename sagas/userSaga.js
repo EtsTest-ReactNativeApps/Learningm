@@ -3,7 +3,7 @@ import ApiUser from '../apis/index';
 
 
 export function* signUpHandler(action){
-    console.log("in saga signup handler")
+    
     try{
         const user = yield call(ApiUser.signUp,action)
         if(user.data.STS =="200"){
@@ -29,8 +29,8 @@ export function* signUpHandler(action){
 
 export function* logInHandler(action){
     try{
-        console.log("action in sagaa",action)
-        const user = yield call(ApiUser.fetchUser,action)
+      
+        const user = yield call(ApiUser.fetchUser, action)
         if(user.data.STS == "200"){
             yield put({
                 type:'LOGIN_SUCCESS',
@@ -47,6 +47,20 @@ export function* logInHandler(action){
         yield put({
             type:'LOGIN_FAILURE',
             payload:err
+        })
+    }
+}
+
+export function* logOutHandler(action){
+    try{
+        yield put({
+            type:'LOGOUT_SUCCESS',
+            payload:{}
+        })
+    }catch(err){
+        yield put({
+            type:'LOGOUT_FAILURE',
+            payload:action.payload
         })
     }
 }

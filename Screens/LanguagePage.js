@@ -1,17 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View ,TouchableOpacity} from 'react-native';
 import { Button,ListItem} from 'react-native-elements';
-import { List } from 'react-native-paper';
+// import { List } from 'react-native-paper';
 import {connect} from 'react-redux';
-import {languageRequest} from '../actions/index'
+import {languageRequest,levelRequest} from '../actions/index'
 
 function LanguagePage(props){
     const { navigation,userState} =props
     const languageList= userState.CONTENT.languageList
-    // React.useEffect(() =>{
-    //     const languageList = props.CONTENT.languageList;
-    // },[])
-// isLanguageChosen
     const [langChoosed,setLangChoosed] =React.useState(null);
     const LangData =[
         "Kannada",
@@ -24,6 +20,9 @@ function LanguagePage(props){
     const handleChose = (l) =>{
         props.choose({
             ...props.userState
+        })
+        props.getLevel({
+            "fk_languageId":1  
         })
     }
  
@@ -63,7 +62,8 @@ const mapStateToProps =(state) =>{
     }
 }
 const mapDispatchToProps =(dispatch) =>({
-    choose:(data) =>dispatch(languageRequest(data))
+    choose:(data) =>dispatch(languageRequest(data)),
+    getLevel:(data) => dispatch(levelRequest(data))
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(LanguagePage);

@@ -15,6 +15,9 @@ import {connect} from 'react-redux';
 import ProfilePage from './ProfilePage';
 import DrawerContent from './DrawerContent';
 import OnBoardScreen from './OnBoardScreen';
+import LevelDetailsPage from './LevelDetailsPage';
+import CustomHeader from '../Components/CustomHeader';
+import DisplayContents from './DisplayContent';
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
@@ -59,11 +62,20 @@ const StackNavigation =() =>{
 }
 
 const DrawerNavigation =() =>{
+  // console.log(props)
   return (
-          <Drawer.Navigator drawerContent={props => <DrawerContent  {...props}/>}>
+          <Drawer.Navigator drawerContent={props => <DrawerContent  {...props}/>}   >
               <Drawer.Screen 
                 name="UserHome"
                 component={UserHome}
+              />
+              <Drawer.Screen
+                name="levelDetail"
+                component={LevelDetailsPage}
+              />
+              <Drawer.Screen
+                name="contentsPage"
+                component={DisplayContents}
               />
           </Drawer.Navigator>
   )
