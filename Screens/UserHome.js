@@ -5,38 +5,51 @@ import CustomCards from '../Components/CustomCard';
 import {connect} from 'react-redux';
 import {levelContentRequest} from '../actions/index'
 function UserHome(props){
-  const {levels} = props
+  const { levels } = props
+  const [loading,setLoading] = React.useState(false)
   const handleClick = (l) =>{
-  
+  setLoading(true)
     props.getLevelContents({
       "fk_languageId":1,
       "fk_levelId":l 
     })
   }
   React.useEffect(() =>{
-    if(props.levelContent.STS==="200"){
+    if (props.levelContent.STS === "200") {
+      setLoading(false)
       props.navigation.navigate("levelDetail")
     }
   },[props.levelContent])
   
     return (   
         <>
-                <CustomHeader openDrawer={props.navigation.openDrawer} language="Kannada"/>
-                <ScrollView style={styles.containerView}>
-                  {
-                    levels.CONTENT.map(level =>(
-                      <TouchableOpacity 
-                        key={level.levelId}
-                        onPress={() => handleClick(level.levelId)}
-                      >
-                        <CustomCards 
-                          title={level.categoryName}
-                          maxScore={level.levelMaxScore}
-                        />
-                      </TouchableOpacity>
-                    ))
-                  }
-                </ScrollView>
+                <CustomHeader {...props} title="Kannada"/>
+              <ScrollView style={styles.containerView}>
+                      {
+                        levels.CONTENT.map(level =>(
+                          <TouchableOpacity 
+                            key={level.levelId}
+                            onPress={() => handleClick(level.levelId)}
+                            disabled={loading?true:false}
+                          >
+                            <CustomCards 
+                              title={level.categoryName}
+                              maxScore={level.levelMaxScore}
+                            />
+                          </TouchableOpacity>
+                        ))
+                      }
+                  {loading ? 
+                      (
+                        
+                            <ActivityIndicator
+                              size="large"
+                              color="#c2be46"
+                              style={styles.activityStyle}
+                            />
+                          )
+                        : null}
+                    </ScrollView>
         </>
       
     )
@@ -57,6 +70,13 @@ export default connect(mapStateToProps,mapDispatchToProps)(UserHome);
 
 const styles  = StyleSheet.create({
   containerView:{
-    backgroundColor:"#d7d8db"
+    backgroundColor: "#d7d8db",
+    height:"100%"
+  },
+  activityStyle: {
+    position: "absolute",
+    top: "50%",
+    left: "45%",
+    zIndex:1
   }
 })

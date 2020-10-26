@@ -8,7 +8,8 @@ import {languageRequest,levelRequest} from '../actions/index'
 function LanguagePage(props){
     const { navigation,userState} =props
     const languageList= userState.CONTENT.languageList
-    const [langChoosed,setLangChoosed] =React.useState(null);
+    const [langChoosed, setLangChoosed] = React.useState(null);
+    console.log(userState)
     const LangData =[
         "Kannada",
         "Telgu",

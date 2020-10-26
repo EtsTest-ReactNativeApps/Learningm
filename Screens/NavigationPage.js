@@ -16,8 +16,9 @@ import ProfilePage from './ProfilePage';
 import DrawerContent from './DrawerContent';
 import OnBoardScreen from './OnBoardScreen';
 import LevelDetailsPage from './LevelDetailsPage';
-import CustomHeader from '../Components/CustomHeader';
 import DisplayContents from './DisplayContent';
+import FeedBack from './Feedback';
+import Quizz from './Quizz';
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
@@ -53,10 +54,7 @@ const StackNavigation =() =>{
                       name="RegisterPage"
                       component={RegisterPage}  
                     />
-                    {/* <Stack.Screen
-                      name="Profile"
-                      component={ProfilePage}
-                    /> */}
+                    
       </Stack.Navigator>
   )
 }
@@ -77,6 +75,19 @@ const DrawerNavigation =() =>{
                 name="contentsPage"
                 component={DisplayContents}
               />
+              <Drawer.Screen
+                name="profilePage"
+                component={ProfilePage}
+              />
+              <Drawer.Screen
+                name='feedback'
+                component={FeedBack}
+              />
+              <Drawer.Screen
+                name="quizzPage"
+                component={Quizz}
+              />
+              
           </Drawer.Navigator>
   )
 }

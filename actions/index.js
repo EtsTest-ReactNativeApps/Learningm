@@ -4,7 +4,9 @@ import {
     LOGOUT_REQUEST,
     LANGUAGE_REQUEST,
     LEVEL_REQUEST,
-    LEVELCONTENT_REQUEST
+    LEVELCONTENT_REQUEST,
+    USERPROGRESS_REQUEST,
+    UPDATEUSERPROGESS_REQST
 } from '../constants/constants';
 
 const signUpRequest = (auth) =>({
@@ -35,13 +37,21 @@ const levelContentRequest =(data) =>({
     type:LEVELCONTENT_REQUEST,
     payload:data
 })
-
-
+const getUserProgressRequest = (data) => ({
+    type: USERPROGRESS_REQUEST,
+    payload:data
+})
+const updateUserProgess = (data) => ({
+    type: UPDATEUSERPROGESS_REQST,
+    payload:data
+})
 export {
     signUpRequest,
     logInRequest,
     logOutRequest,
     languageRequest,
     levelRequest,
-    levelContentRequest
+    levelContentRequest,
+    getUserProgressRequest,
+    updateUserProgess
 }

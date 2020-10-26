@@ -27,6 +27,7 @@ function DrawerContent(props){
                                 size={size}
                             />
                             )}
+                            onPress={() => props.navigation.navigate('UserHome')}
                             activeTintColor="blue"
                             labelStyle={styles.labelStyle}
                             label="Home"
@@ -39,6 +40,7 @@ function DrawerContent(props){
                                 size={size}
                             />
                             )}
+                            onPress={() => props.navigation.navigate('profilePage')}
                             labelStyle={styles.labelStyle}
                             label="Profile"
                         />
@@ -61,6 +63,7 @@ function DrawerContent(props){
                                 size={size}
                             />
                             )}
+                            onPress={() => props.navigation.navigate('feedback')}
                             labelStyle={styles.labelStyle}
                             label="Feedback"
                         />

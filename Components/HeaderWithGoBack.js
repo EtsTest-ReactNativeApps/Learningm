@@ -1,47 +1,37 @@
 import React from 'react';
-import { StyleSheet, Image,TouchableOpacity } from 'react-native';
-import {Header,Icon} from "react-native-elements";
-// import { Icon } from 'react-native-vector-icons/Icon';
+import { StyleSheet, Image, TouchableOpacity } from 'react-native';
+import {Icon} from 'react-native-elements'
+import {Header} from "react-native-elements";
 
 
-function CustomHeader(props){
-    // console.log(props)
+function HeaderWithGoBack(props){
     return (
         <React.Fragment>
             <Header
                 leftComponent={<LeftComponent {...props}/>}
                 centerComponent={{text:`${props.title}`,style:{color: '#fff',fontSize:30}}}
-                rightComponent={<RightComponent  {...props}/>}
+                // rightComponent={{icon:"user-circle-o",color:"#ffff",type:"font-awesome",size:30}}
                 linearGradientProps={{
                     colors: ['#399668','#33898f'],
                 }}
-                
                 containerStyle={styles.containerStyle}
             />
         </React.Fragment>
     )
 }
 
-export default CustomHeader;
+export default HeaderWithGoBack;
 const LeftComponent = (props) => {
     return(
         <TouchableOpacity 
-            onPress={props.navigation.openDrawer}
+            onPress={() =>props.navigation.goBack()}
         >
-            <Image source={require("../assets/Menu.png")} style={styles.menuStyle}/>
+            <Icon
+                name='keyboard-backspace'
+                type='material'
+                size={40}
+            />
         </TouchableOpacity>
-    )
-}
-
-const RightComponent = (props) => {
-    return (
-        <Icon
-            name="user-circle-o"
-            type='font-awesome'
-            size={40}
-            color='white'
-            onPress={() => props.navigation.navigate('profilePage')}
-    />
     )
 }
 const styles = StyleSheet.create({

@@ -5,9 +5,9 @@ import TouchableScale from 'react-native-touchable-scale';
 function CustomWordCard(props){
     const {isCompleted,word} = props
     return (
-
-            
-            <Card>
+            <Card
+            containerStyle={styles.containerStyle}
+            >
                 <View style={styles.wordStyle}>
                     <View style={styles.iconCellStyle}>
                             <Avatar
@@ -28,7 +28,6 @@ function CustomWordCard(props){
                         }
                         </View>       
                     </View>
-                
             </Card>
                 
     )
@@ -38,17 +37,17 @@ export default CustomWordCard;
 
 const styles = StyleSheet.create({
     containerStyle:{
-        margin:10,
-        borderRadius:10,
+        margin: 5,
+        marginBottom:5,
+        borderRadius: 10,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
-            height: 2,
+            height: 6,
         },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-
-        elevation: 5,
+        shadowOpacity: 0.39,
+        shadowRadius: 8.30,
+        elevation: 13,
     },
     wordStyle:{
         width:"100%",

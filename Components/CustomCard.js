@@ -1,20 +1,19 @@
 import React from 'react';
 import {View,Text,StyleSheet,ProgressBarAndroid} from "react-native";
 import {Card,ListItem,Avatar} from 'react-native-elements';
-import TouchableScale from 'react-native-touchable-scale'; 
+
 
 function CustomCards(props){
     const {title,maxScore,locked} =props
     return (
 
             <ListItem
-            // Component={TouchableScale}
             disabled={locked}
             friction={90} 
             tension={100} 
             activeScale={0.95} 
             linearGradientProps={{
-                colors: ['#bfbd8c','#8c99bf'],
+                colors: ['#49a37f','#6aaade'],
                 start: { x: 1, y: 0 },
                 end: { x: 0.2, y: 0 },
             }}
@@ -68,7 +67,16 @@ const styles = StyleSheet.create({
     containerStyle:{
         margin:10,
         flexDirection:"row",
-        borderRadius:20
+        borderRadius: 20,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        
+        elevation: 7,
     },
     levelImg:{
         width:150,
