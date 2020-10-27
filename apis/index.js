@@ -1,8 +1,8 @@
 import axios from 'axios';
 import  {HOST} from '../environment'
+import {updateUserProgess} from '../actions/index'
 
-
-const ROOT_URL = "http://8abcb71a6a4e.ngrok.io";
+const ROOT_URL = "http://de649be426e9.ngrok.io";
 
 
 export default class ApiUser {
@@ -11,7 +11,8 @@ export default class ApiUser {
         const request =  await axios.post(url,action.payload);
         return request;
     }
-    static async fetchUser(action){
+    static async fetchUser(action) {
+        console.log("action in api call",action.payload)
         const url = `${ROOT_URL}/generic/validateUser`;
         const request = await axios.post(url,action.payload);
         
@@ -28,6 +29,14 @@ export default class ApiUser {
         const request = await axios.post(url,action.payload);
         return request;
     }
+    static async updateUserProgress(action) {
+        console.log("in user progress request")
+        const url = `${ROOT_URL}/userProgress/updateLearnProg`;
+        const request = await axios.post(url, action.payload)
+            
+        return request;
+    }
+    
 
     
 }

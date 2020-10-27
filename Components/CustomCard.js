@@ -4,9 +4,8 @@ import {Card,ListItem,Avatar} from 'react-native-elements';
 
 
 function CustomCards(props){
-    const {title,maxScore,locked} =props
+    const {title,maxScore,locked,score} =props
     return (
-
             <ListItem
             disabled={locked}
             friction={90} 
@@ -29,12 +28,12 @@ function CustomCards(props){
                             
                             <View>
                                 
-                         <Text>10/{maxScore}</Text>
+                            <Text>{score}/{maxScore}</Text>
                                 {/* <Text>100 Points</Text> */}
                                 <ProgressBarAndroid 
                                 styleAttr="Horizontal" 
                                 indeterminate={false} 
-                                progress={0.1} 
+                                progress={score/maxScore} 
                                 color="yellow" 
                                 style={styles.progressBar}
                                 />
@@ -54,7 +53,7 @@ function CustomCards(props){
                     </View>
                 </ListItem.Content>
                 <ListItem.Chevron color="white" size={30} />
-            </ListItem>      
+        </ListItem>      
     )
 }
 

@@ -6,18 +6,16 @@ import CustomWordCard from '../Components/CustomWordCard';
 import {connect} from 'react-redux';
 
 function LevelDetailsPage(props){
-    const { levelContent, navigation } = props
-    const [loading, setLoading] = React.useState(false);
+    const { levelContent, navigation,userProgData } = props
     // console.log("level content in leveldetail page",levelContent.CONTENT)
     const handleClick = (index) => {
-        setLoading(true);
         navigation.navigate("contentsPage",{
             index:index
         })
     }
     return(
         <React.Fragment>
-            <CustomHeader {...props} title="Introduction"/>    
+            <CustomHeader {...props} title="Introduction"/>
             <ScrollView
             contentContainerStyle={styles.detailView}
             >
@@ -29,7 +27,7 @@ function LevelDetailsPage(props){
                                 >
                                     <CustomWordCard
                                         word={content.word}
-                                        isCompleted={true}
+                                        isCompleted={index+1 <= userProgData.CONTENT.completedWords}
                                     />
                                 </TouchableOpacity>
                             )) 
@@ -42,7 +40,8 @@ function LevelDetailsPage(props){
 
 const mapStateToProps =(state) =>{
     return{
-        levelContent:state.levelContent
+        levelContent: state.levelContent,
+        userProgData:state.userProgress
     }
 }
 

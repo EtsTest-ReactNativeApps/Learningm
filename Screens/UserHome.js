@@ -5,7 +5,7 @@ import CustomCards from '../Components/CustomCard';
 import {connect} from 'react-redux';
 import {levelContentRequest} from '../actions/index'
 function UserHome(props){
-  const { levels } = props
+  const { levels,userProgData } = props
   const [loading,setLoading] = React.useState(false)
   const handleClick = (l) =>{
   setLoading(true)
@@ -30,11 +30,13 @@ function UserHome(props){
                           <TouchableOpacity 
                             key={level.levelId}
                             onPress={() => handleClick(level.levelId)}
-                            disabled={loading?true:false}
+                            disabled={loading?true:false || !(level.levelId <= userProgData.CONTENT.currLevelId)}
                           >
                             <CustomCards 
                               title={level.categoryName}
                               maxScore={level.levelMaxScore}
+                              locked={!(level.levelId <= userProgData.CONTENT.currLevelId)}
+                              score={level.levelId == userProgData.CONTENT.currLevelId ? userProgData.CONTENT.userScore:0}
                             />
                           </TouchableOpacity>
                         ))
@@ -58,7 +60,8 @@ function UserHome(props){
 const mapStateToProps =(state) =>{
   return {
     levels:state.levelsData,
-    levelContent:state.levelContent
+    levelContent: state.levelContent,
+    userProgData:state.userProgress
   }
 }
 

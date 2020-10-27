@@ -5,36 +5,24 @@ import * as Google from 'expo-google-app-auth';
 import {signUpRequest} from '../actions/index'
 function RegisterOptionPage(props) {
   const {navigation} = props
-  const [data,setData] =React.useState({
-    firstName:'',
-    lastName:'',
-    email:'',
-    userPassword:'',
-  });
-  
-  
   //google sign up function
   const signIn = async() =>{
     try{
-        const result = await Google.logInAsync({
+        await Google.logInAsync({
             androidClientId:"371785710764-omslvo1td435sns5lj99mhge53jai4dg.apps.googleusercontent.com",
             scopes:["profile", "email"]
-        })
-        if(result.type=== "success"){
-          console.log(result.user)
-            setData({
+        }).then(result => {
+          if (result.type === 'success') {
+            props.signup({
                 firstName:result.user.givenName,
                 lastName:result.user.familyName,
                 email:result.user.email,
                 userPassword:result.user.id
             })
-            // console.log(data)
-            props.signup({
-              ...data
-            })
-        }else{
-            console.log("caceled")
-        }
+          } else {
+            console.log("canceled")
+          }
+        })
     }catch(err){
         console.log(err)
     }

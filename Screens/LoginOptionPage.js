@@ -2,38 +2,31 @@ import React from 'react';
 import { StyleSheet, Text, View ,TouchableOpacity,Image} from 'react-native';
 import {connect} from 'react-redux'
 import * as Google from 'expo-google-app-auth';
-import {logInRequest} from '../actions/index'
+import {logInRequest,setUserProgressRequest,languageRequest,levelRequest} from '../actions/index'
 function LoginOptionPage(props) {
   const {navigation} = props
-  const [data,setData] =React.useState({
-    userEmailId:'',
-    userPassword:''
-  });
 
   const signIn = async() =>{
     try{
-        const result = await Google.logInAsync({
+        await Google.logInAsync({
             androidClientId:"371785710764-omslvo1td435sns5lj99mhge53jai4dg.apps.googleusercontent.com",
             scopes:["profile", "email"]
+        }).then(result => {
+          if(result.type === "success"){
+                props.login({
+                  userEmailId: result.user.email,
+                  userPassword:result.user.id
+                })
+            }else{
+              console.log("caceled")
+          }
         })
-        if(result.type === "success"){
-            setData({
-              userEmailId:result.user.email,
-              userPassword:result.user.id
-            })
-
-            props.login({
-              ...data
-            })
-        }else{
-            console.log("caceled")
-        }
     }catch(err){
         console.log(err)
     }
 }
 React.useEffect(() =>{
-  if(props.userState.isLogedIN){
+  if (props.userState.isLogedIN) {
     navigation.navigate('Language')
   }
 },[props.userState])
@@ -85,7 +78,10 @@ React.useEffect(() =>{
 }
 
 const mapDispatchToProps =(dispatch) =>({
-  login :(data) => dispatch(logInRequest(data))
+  login: (data) => dispatch(logInRequest(data)),
+  choose:(data) => dispatch(languageRequest(data)),
+  setUserProgress: (data) => dispatch(setUserProgressRequest(data)),
+  getLevel:(data) => dispatch(levelRequest(data))
 })
 const mapStateToProps =(state) =>{
   return {

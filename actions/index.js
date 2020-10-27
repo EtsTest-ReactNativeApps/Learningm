@@ -5,8 +5,8 @@ import {
     LANGUAGE_REQUEST,
     LEVEL_REQUEST,
     LEVELCONTENT_REQUEST,
-    USERPROGRESS_REQUEST,
-    UPDATEUSERPROGESS_REQST
+    SETUSERPROGRESS,
+    UPDATEUSERPROG_REQUEST
 } from '../constants/constants';
 
 const signUpRequest = (auth) =>({
@@ -37,12 +37,12 @@ const levelContentRequest =(data) =>({
     type:LEVELCONTENT_REQUEST,
     payload:data
 })
-const getUserProgressRequest = (data) => ({
-    type: USERPROGRESS_REQUEST,
+const setUserProgressRequest = (data) => ({
+    type: SETUSERPROGRESS,
     payload:data
 })
 const updateUserProgess = (data) => ({
-    type: UPDATEUSERPROGESS_REQST,
+    type: UPDATEUSERPROG_REQUEST,
     payload:data
 })
 export {
@@ -52,6 +52,6 @@ export {
     languageRequest,
     levelRequest,
     levelContentRequest,
-    getUserProgressRequest,
+    setUserProgressRequest,
     updateUserProgess
 }

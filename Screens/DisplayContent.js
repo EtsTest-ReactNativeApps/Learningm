@@ -4,11 +4,13 @@ import { Video,Audio } from 'expo-av';
 import {Icon} from 'react-native-elements';
 import CustomHeader from '../Components/CustomHeader';
 import {connect} from 'react-redux';
-import { LinearGradient } from 'expo-linear-gradient'
+import { LinearGradient } from 'expo-linear-gradient';
+import {updateUserProgess} from '../actions/index'
+
 function DisplayContents(props) {
     const [shouldPlay,setShouldPlay] = React.useState(true);
     const [playing,setPlaying] = React.useState(true)
-    const { navigation } = props
+    const { userProgData } = props
     const levelContent = props.levelContent.CONTENT;
     const [index,setIndex] = React.useState(props.route.params.index);
     const [content, setContent] = React.useState(levelContent[index]);
@@ -17,7 +19,7 @@ function DisplayContents(props) {
     setTimeout(() => {
         setLoading(false);
     }, 5000);
-    // console.log(props.route.params.index,props.levelContent)
+
 
     Audio.setAudioModeAsync({
         allowsRecordingIOS: false,
@@ -36,7 +38,7 @@ function DisplayContents(props) {
     sound.loadAsync({ uri: content.audioPath },status,false)
     
     const handlePlayAndResume = () => {
-        // console.log("handle play")
+
         setShouldPlay(!shouldPlay);
     }
     const playBackStatus = (playback) =>{
@@ -47,9 +49,21 @@ function DisplayContents(props) {
         }
     }
     
-    const handleNext = (index) => {
+    const handleNext = (i) => {
         setLoading(true);
-        setIndex(index);
+        setIndex(i);
+        if (index + 1 === userProgData.CONTENT.completedWords) {
+            props.updateProgress({
+                ...userProgData
+            })
+        } else {
+            props.updateProgress({
+                ...userProgData.CONTENT,
+                completedWords: userProgData.CONTENT.completedWords + 1,
+                totalCompletedWords: userProgData.CONTENT.totalCompletedWords + 1,
+                userScore:userProgData.CONTENT.userScore + 20
+            })
+        }
         setTimeout(() => {
             setLoading(false);
         }, 5000);
@@ -143,12 +157,13 @@ function DisplayContents(props) {
 
 const mapStateToProps = (state) =>{
     return{
-        levelContent:state.levelContent
+        levelContent: state.levelContent,
+        userProgData:state.userProgress
     }
 }
 
 const mapDispatchToProps =(dispatch) =>({
-    
+    updateProgress:(data) =>dispatch(updateUserProgess(data)),
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(DisplayContents);
