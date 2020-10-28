@@ -1,7 +1,9 @@
 import {
     SIGNUP_REQUEST,
     LOGIN_REQUEST,
-    LOGOUT_REQUEST,
+    RESETUSER_REQ,
+    RESETLEVEL_REQ,
+    RESETLEVELCONTENT,
     LANGUAGE_REQUEST,
     LEVEL_REQUEST,
     LEVELCONTENT_REQUEST,
@@ -24,7 +26,15 @@ const logInRequest = (auth) =>({
 });
 
 const logOutRequest =(data) =>({
-    type:LOGOUT_REQUEST,
+    type:RESETUSER_REQ,
+    payload:data
+})
+const resetLevelReq =(data) =>({
+    type:RESETLEVEL_REQ,
+    payload:data
+})
+const resetLevelContent =(data) =>({
+    type:RESETLEVELCONTENT,
     payload:data
 })
 
@@ -49,6 +59,8 @@ export {
     signUpRequest,
     logInRequest,
     logOutRequest,
+    resetLevelReq,
+    resetLevelContent,
     languageRequest,
     levelRequest,
     levelContentRequest,

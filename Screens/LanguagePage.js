@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View ,TouchableOpacity,ActivityIndicator} from 'react-native';
+import { StyleSheet, Text, View ,} from 'react-native';
 import { Button,ListItem,Card,Icon} from 'react-native-elements';
 // import { List } from 'react-native-paper';
 import {connect} from 'react-redux';
@@ -7,9 +7,6 @@ import {languageRequest,levelRequest,updateUserProgess,setUserProgressRequest} f
 
 function LanguagePage(props){
     const { navigation,userState} =props
-    // const languageList= userState.CONTENT.languageList
-    // const [langChoosed, setLangChoosed] = React.useState(null);
-    // console.log(userState)
     const LangData =[
         "Kannada",
         "Telgu",
@@ -18,8 +15,8 @@ function LanguagePage(props){
         "Marati",
         "Hindi"
     ]
-    // const [loading, setLoading] = React.useState(false);
-    const handleChose = (l) =>{
+    const handleChose = (l) => {
+        console.log("handlechoose")
         props.getLevel({
             "fk_languageId":1  
         })
@@ -34,11 +31,9 @@ function LanguagePage(props){
             "fk_languageId":1  
         })
     }
- 
     React.useEffect(() => {
-        if (!userState.CONTENT.isLanguageChoosen) {
-            if (props.levels.STS == '200') {
-                // setLoading(true);
+        if (props.levels.STS === "200") {
+            if (userState.isRegistered) {
                 const leveldata = props.levels.CONTENT[0]
                 props.updateProgress({
                     userId: userState.CONTENT.userId,
@@ -52,32 +47,43 @@ function LanguagePage(props){
                     totalCompletedWords:0,
                 })
             }
-        }
-    }, [props.levels])
-    React.useEffect(() => {
-        // console.log(props.userProgData)
-        if (!userState.CONTENT.isLanguageChoosen) {
+            if (userState.CONTENT.isLanguageChoosen === "N") {
+                const leveldata = props.levels.CONTENT[0]
+                props.updateProgress({
+                    userId: userState.CONTENT.userId,
+                    languageId: leveldata.fk_languageId,
+                    currLevelId: leveldata.levelId,
+                    completedWords: 0,
+                    userScore: 0,
+                    isLvlAsntComplt: 'N',
+                    isCurLvlAsgnTkn: 'N',
+                    levelSerialNo: leveldata.levelSerialNo,
+                    totalCompletedWords:0,
+                })
+            }
+            if (userState.CONTENT.isLanguageChoosen === 'Y') {
+                if (props.levels.STS == '200') {
+                    props.choose({
+                        ...userState
+                    })
+                }
+            }
             if (props.userProgData.STS == "200") {
                 props.choose({
                     ...userState
                 })
             }
-        } else {
-            // console.log("here")
-            if (props.levels.STS == '200') {
-                props.choose({
-                    ...userState
-                })
-            }
         }
-        
-    },[props.userProgress])
+
+    }, [props.levels, props.userProgData])
+    
     return(
         <React.Fragment>
             {
-                userState.CONTENT.isLanguageChoosen && userState.CONTENT.isLanguageChoosen == 'Y'
+                userState.CONTENT.isLanguageChoosen === 'Y'
                 ? renderSelectedLanguage(userState.CONTENT.languageList,handleClick):
                 renderLanguageList(LangData, handleChose)}
+            {/* {renderLanguageList(LangData,handleChose)} */}
        </React.Fragment>
     )
 }
@@ -105,7 +111,6 @@ const renderSelectedLanguage = (langList,handleClick) => {
                         </Card>
                             ))
                         }
-                    
         </View>
     </View>
     )

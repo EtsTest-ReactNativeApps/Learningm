@@ -1,18 +1,18 @@
 const initialState = {}
 
 export const userReducer = (state=initialState,action)=>{
-     console.log("reducer",action.type)
+    //  console.log("reducer",action.type)
     switch(action.type){
         case 'SIGNUP_SUCCESS':
             return {
                 ...action.payload,
-                isLogedIN:true
+                isRegistered:true
             }
             break;
         case 'SIGNUP_FAILURE':
             return {
                 ...action.payload,
-                isLogedIN:false
+                isRegistered:false
             }
             break;
         case 'LOGIN_SUCCESS':
@@ -27,12 +27,13 @@ export const userReducer = (state=initialState,action)=>{
                 isLogedIN:false
             }
             break;
-        case 'LOGOUT_SUCCESS':
+        case 'RESETUSER_SUCCESS':
+            // console.log("action in user reducer")
             return {
                 ...action.payload
             }
             break;
-        case 'LOGOUT_FAILURE':
+        case 'RESETUSER_FAILURE':
             return{
                 ...action.payload
             }

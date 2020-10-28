@@ -153,7 +153,7 @@ function RegisterPage(props) {
     React.useEffect(()=>{
         if(props.userState.isLogedIN){
             setLoading(true)
-            console.log(props.userState)
+            // console.log(props.userState)
             navigation.navigate("Language")
         }
     },[props.userState])

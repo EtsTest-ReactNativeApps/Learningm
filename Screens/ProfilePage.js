@@ -3,8 +3,16 @@ import {View,StyleSheet,Text,ProgressBarAndroid,TouchableOpacity} from 'react-na
 import {Avatar} from 'react-native-elements';
 import HeaderWithGoBack from '../Components/HeaderWithGoBack';
 import { Card, Icon } from 'react-native-elements';
+import { connect } from 'react-redux';
+import {logOutRequest,resetLevelReq,resetLevelContent} from '../actions/index'
 
-function ProfilePage(props){
+function ProfilePage(props) {
+    const {user,level,levelContent} = props
+    const handleLogout = () => {
+        props.resetUser(user)
+        props.resetLevel(level)
+        props.resetLevelContent(levelContent)
+    }
     return(
         <React.Fragment>
             <HeaderWithGoBack
@@ -70,7 +78,7 @@ function ProfilePage(props){
                     
                     <TouchableOpacity
                         style={styles.buttonStyle}
-                        onPress={()=> console.log("logout")}
+                        onPress={handleLogout}
                     >
                             <Icon
                             name='exit-to-app'
@@ -87,7 +95,19 @@ function ProfilePage(props){
     )
 }
 
-export default ProfilePage;
+const mapStateToProps =(state) =>{
+    return {
+        user: state.user,
+        level: state.levelsData,
+        levelContent:state.levelContent
+    }
+}
+const mapDispatchToProps =(dispatch) =>({
+    resetUser: (data) => dispatch(logOutRequest(data)),
+    resetLevel: (data) => dispatch(resetLevelReq(data)),
+    resetLevelContent:(data) => dispatch(resetLevelContent(data))
+})
+export default connect(mapStateToProps,mapDispatchToProps)(ProfilePage);
 
 const styles = StyleSheet.create({
     profileView:{

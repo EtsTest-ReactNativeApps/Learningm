@@ -2,7 +2,7 @@ import axios from 'axios';
 import  {HOST} from '../environment'
 import {updateUserProgess} from '../actions/index'
 
-const ROOT_URL = "http://de649be426e9.ngrok.io";
+const ROOT_URL = "http://285f395abd39.ngrok.io";
 
 
 export default class ApiUser {
@@ -12,13 +12,14 @@ export default class ApiUser {
         return request;
     }
     static async fetchUser(action) {
-        console.log("action in api call",action.payload)
+        // console.log("action in api call",action.payload)
         const url = `${ROOT_URL}/generic/validateUser`;
         const request = await axios.post(url,action.payload);
         
         return request;
     }
-    static async fetchLevels(action){
+    static async fetchLevels(action) {
+        // console.log("level action call")
         const url = `${ROOT_URL}/adminSecure/getAllLevels`;
         const request = await axios.post(url, action.payload);
         console.log("level data",request)
@@ -30,7 +31,7 @@ export default class ApiUser {
         return request;
     }
     static async updateUserProgress(action) {
-        console.log("in user progress request")
+        // console.log("in user progress request")
         const url = `${ROOT_URL}/userProgress/updateLearnProg`;
         const request = await axios.post(url, action.payload)
             
