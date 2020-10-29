@@ -1,6 +1,7 @@
 import React from 'react';
-import {StyleSheet,View,Text,TouchableOpacity,ActivityIndicator} from 'react-native';
-import { Video,Audio } from 'expo-av';
+import {StyleSheet,View,Text,TouchableOpacity,ActivityIndicator,Dimensions} from 'react-native';
+import { Video, Audio } from 'expo-av';
+import VideoPlayer from 'expo-video-player'
 import {Icon} from 'react-native-elements';
 import CustomHeader from '../Components/CustomHeader';
 import {connect} from 'react-redux';
@@ -8,8 +9,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import {updateUserProgess} from '../actions/index'
 
 function DisplayContents(props) {
-    const [shouldPlay,setShouldPlay] = React.useState(true);
-    const [playing,setPlaying] = React.useState(true)
+
     const { userProgData } = props
     const levelContent = props.levelContent.CONTENT;
     const [index,setIndex] = React.useState(props.route.params.index);
@@ -30,24 +30,11 @@ function DisplayContents(props) {
         staysActiveInBackground: false,
         playThroughEarpieceAndroid: true
     });
-
     const sound = new Audio.Sound();
     const status = {
         shouldPlay:false
     }
     sound.loadAsync({ uri: content.audioPath },status,false)
-    
-    const handlePlayAndResume = () => {
-
-        setShouldPlay(!shouldPlay);
-    }
-    const playBackStatus = (playback) =>{
-        if(playback.isPlaying){
-            setPlaying(true);
-        }else{
-            setPlaying(false)
-        }
-    }
     
     const handleNext = (i) => {
         setLoading(true);
@@ -102,25 +89,19 @@ function DisplayContents(props) {
                         style={styles.activityStyle}
                     />
                     :(<View style={styles.mainView}>
-                        <View style={styles.videoView}>
-                            <Video
-                                source={{ uri: content.videoPath}}
-                                rate={1.0}
-                                volume={1.0}
-                                resizeMode="cover"
-                                shouldPlay={shouldPlay}
-                                style={{ width:"100%", height:"90%" }}
-                                onPlaybackStatusUpdate={playBackStatus}
-                                />
-                                <View style={styles.controlBar}>
-                                    <Icon
-                                        name={playing?null:"repeat"}
-                                        type="font-awesome"
-                                        size={45}
-                                        color="#a5ada7"
-                                        onPress={handlePlayAndResume}
-                                    />
-                                </View>
+                        <View style={styles.videoView}>    
+                            <VideoPlayer
+                                videoProps={{
+                                    shouldPlay: true,
+                                    resizeMode: "cover",
+                                    source: {
+                                        uri: content.videoPath,
+                                    },
+                                    
+                                }}
+                                width={Dimensions.get('window').width}
+                                height={Dimensions.get('window').height*0.4}
+                            />
                                 <View style={{backgroundColor:"#c5e5e8"}}>
                                     <Text
                                         style={{ textAlign: "center", margin: 10, fontSize: 20, fontWeight: "bold",color:"#6f6285" }}
@@ -174,9 +155,9 @@ const styles = StyleSheet.create({
         width:"100%",
         alignItems:"center",
     },
-    videoView:{
+    videoView: {
         width:"100%",
-        height:400,
+        height:'40%',
         borderRadius:20
     },
     audioView:{
