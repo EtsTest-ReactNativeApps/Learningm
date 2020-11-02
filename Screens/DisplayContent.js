@@ -9,17 +9,14 @@ import { LinearGradient } from 'expo-linear-gradient';
 import {updateUserProgess} from '../actions/index'
 
 function DisplayContents(props) {
-
     const { userProgData } = props
     const levelContent = props.levelContent.CONTENT;
     const [index,setIndex] = React.useState(props.route.params.index);
     const [content, setContent] = React.useState(levelContent[index]);
     const [loading, setLoading] = React.useState(true);
-
     setTimeout(() => {
         setLoading(false);
     }, 5000);
-
 
     Audio.setAudioModeAsync({
         allowsRecordingIOS: false,

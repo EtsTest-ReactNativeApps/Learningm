@@ -7,7 +7,9 @@ import { connect } from 'react-redux';
 import {logOutRequest,resetLevelReq,resetLevelContent} from '../actions/index'
 
 function ProfilePage(props) {
-    const {user,level,levelContent} = props
+    
+    const { user, level, levelContent } = props
+    console.log(user)
     const handleLogout = () => {
         props.resetUser(user)
         props.resetLevel(level)
@@ -27,7 +29,7 @@ function ProfilePage(props) {
                             avatarStyle={styles.avatarStyle}
                         />
                     <View>
-                        <Text style={styles.textStyles}>Bharadwaj K R</Text>
+                        <Text style={styles.textStyles}>{user.payload.CONTENT.firstName}</Text>
                         <Text style={styles.textStyles}>yajamankr@gmail.com</Text>
                     </View> 
                 </View>
@@ -38,11 +40,11 @@ function ProfilePage(props) {
                         color="orange"
                     />
                     <View style={{ width: "70%", justifyContent: "flex-end" }}>
-                        <Text style={{fontSize:15,fontWeight:"bold",marginLeft:10}}>+600 points to next level </Text>
+                        <Text style={{ fontSize: 15, fontWeight: "bold", marginLeft: 10 }}>+{200} points to next level </Text>
                         <ProgressBarAndroid
                                 styleAttr="Horizontal" 
                                 indeterminate={false} 
-                                progress={0.7} 
+                                progress={0} 
                                 color="yellow" 
                                 style={{width:"100%"}}
                             />
@@ -54,7 +56,7 @@ function ProfilePage(props) {
                     >
                         <View style={{flexDirection:"row",justifyContent:"flex-start"}}>
                             <Text style={{ fontSize: 20, fontWeight:"bold",color:"#6f548f"}}>Languages:</Text>
-                            <Text style={{ fontSize: 20, fontWeight:"bold",color:"#54718f",marginLeft:20}}>Kannada</Text>
+                            <Text style={{ fontSize: 20, fontWeight: "bold", color: "#54718f", marginLeft: 20 }}>{user.payload.CONTENT.languageList[0].language}</Text>
                         </View>   
                     </Card>
                     <Card
@@ -62,7 +64,7 @@ function ProfilePage(props) {
                     >
                         <View style={{flexDirection:"row",justifyContent:"flex-start"}}>
                             <Text style={{ fontSize: 20, fontWeight:"bold",color:"#6f548f"}}>Words Completed:</Text>
-                            <Text style={{ fontSize: 20, fontWeight:"bold",color:"#54718f",marginLeft:20}}>10</Text>
+                            <Text style={{ fontSize: 20, fontWeight: "bold", color: "#54718f", marginLeft: 20 }}>{}</Text>
                         </View> 
                         
                     </Card>

@@ -1,7 +1,7 @@
 const initialState = {}
 
 export const userReducer = (state=initialState,action)=>{
-    //  console.log("reducer",action.type)
+     console.log("reducer",action.type)
     switch(action.type){
         case 'SIGNUP_SUCCESS':
             return {

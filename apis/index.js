@@ -1,8 +1,7 @@
 import axios from 'axios';
 import  {HOST} from '../environment'
-import {updateUserProgess} from '../actions/index'
 
-const ROOT_URL = "http://285f395abd39.ngrok.io";
+const ROOT_URL = "http://51ba890b17e1.ngrok.io";
 
 
 export default class ApiUser {
@@ -36,8 +35,12 @@ export default class ApiUser {
         const request = await axios.post(url, action.payload)
             
         return request;
+    }  
+    static async postFeedBack(action) {
+        // console.log("feedback")
+        const url = `${ROOT_URL}/userProgress/provideFeedBack`;
+        const request = await axios.post(url, action.payload)
+        
+        return request;
     }
-    
-
-    
 }

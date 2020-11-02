@@ -29,7 +29,7 @@ function RegisterOptionPage(props) {
 }
 // after signup checking the user?
 React.useEffect(() =>{
-  if(props.userState.isLogedIN){
+  if(props.userState.isRegistered){
     navigation.navigate('Language')
   }
 },[props.userState])

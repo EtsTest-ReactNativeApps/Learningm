@@ -8,7 +8,8 @@ import {
     LEVEL_REQUEST,
     LEVELCONTENT_REQUEST,
     SETUSERPROGRESS,
-    UPDATEUSERPROG_REQUEST
+    UPDATEUSERPROG_REQUEST,
+    FEEDBACK_SUBMIT
 } from '../constants/constants';
 
 const signUpRequest = (auth) =>({
@@ -55,6 +56,11 @@ const updateUserProgess = (data) => ({
     type: UPDATEUSERPROG_REQUEST,
     payload:data
 })
+
+const feedbackSubmit = (data) => ({
+    type: FEEDBACK_SUBMIT,
+    payload:data
+})
 export {
     signUpRequest,
     logInRequest,
@@ -65,5 +71,6 @@ export {
     levelRequest,
     levelContentRequest,
     setUserProgressRequest,
-    updateUserProgess
+    updateUserProgess,
+    feedbackSubmit
 }
