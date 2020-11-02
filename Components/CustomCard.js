@@ -4,7 +4,7 @@ import {Card,ListItem,Avatar} from 'react-native-elements';
 
 
 function CustomCards(props){
-    const {title,maxScore,locked,score} =props
+    const {title,maxScore,locked,score,completedWords} =props
     return (
             <ListItem
             disabled={locked}
@@ -28,8 +28,15 @@ function CustomCards(props){
                             
                             <View>
                                 
-                            <Text>{score}/{maxScore}</Text>
-                                {/* <Text>100 Points</Text> */}
+                            
+                                {
+                                locked ? <Text style={{color:"yellow",fontSize:18}}>Level is Locked</Text> :
+                                    <>
+                                        <Text style={{ marginTop:10,fontSize:17,color:"#383f6b"}}>{completedWords} words completed</Text>
+                                        <Text style={{fontSize:17,color:"#383f6b"}}>{score} Points out of {maxScore}</Text>
+                                    </>
+                                    
+                                }
                                 <ProgressBarAndroid 
                                 styleAttr="Horizontal" 
                                 indeterminate={false} 

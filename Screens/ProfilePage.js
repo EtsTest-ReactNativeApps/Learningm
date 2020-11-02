@@ -8,8 +8,9 @@ import {logOutRequest,resetLevelReq,resetLevelContent} from '../actions/index'
 
 function ProfilePage(props) {
     
-    const { user, level, levelContent } = props
-    console.log(user)
+    const { user, level, levelContent,userProg } = props
+    console.log(levelContent)
+
     const handleLogout = () => {
         props.resetUser(user)
         props.resetLevel(level)
@@ -55,16 +56,16 @@ function ProfilePage(props) {
                         containerStyle={styles.cardContainer}
                     >
                         <View style={{flexDirection:"row",justifyContent:"flex-start"}}>
-                            <Text style={{ fontSize: 20, fontWeight:"bold",color:"#6f548f"}}>Languages:</Text>
-                            <Text style={{ fontSize: 20, fontWeight: "bold", color: "#54718f", marginLeft: 20 }}>{user.payload.CONTENT.languageList[0].language}</Text>
+                            <Text style={styles.cardText}>Languages:</Text>
+                            <Text style={{ ...styles.cardText, color: "#54718f", marginLeft: 20 }}>{user.payload.CONTENT.languageList[0].language}</Text>
                         </View>   
                     </Card>
                     <Card
                         containerStyle={styles.cardContainer}
                     >
                         <View style={{flexDirection:"row",justifyContent:"flex-start"}}>
-                            <Text style={{ fontSize: 20, fontWeight:"bold",color:"#6f548f"}}>Words Completed:</Text>
-                            <Text style={{ fontSize: 20, fontWeight: "bold", color: "#54718f", marginLeft: 20 }}>{}</Text>
+                            <Text style={styles.cardText}>Words Completed:</Text>
+                            <Text style={{ ...styles.cardText, color: "#54718f", marginLeft: 20 }}>{userProg.CONTENT.completedWords}</Text>
                         </View> 
                         
                     </Card>
@@ -72,8 +73,17 @@ function ProfilePage(props) {
                         containerStyle={styles.cardContainer}
                     >
                         <View style={{flexDirection:"row",justifyContent:"flex-start"}}>
-                            <Text style={{ fontSize: 20, fontWeight:"bold",color:"#6f548f"}}>Words Completed:</Text>
-                            <Text style={{ fontSize: 20, fontWeight:"bold",color:"#54718f",marginLeft:20}}>10</Text>
+                            <Text style={styles.cardText}>Status:</Text>
+                            <Text style={{ ...styles.cardText, color: "#54718f", marginLeft: 20 }}>{userProg.CONTENT.langStatus}</Text>
+                        </View> 
+                        
+                    </Card>
+                    <Card
+                        containerStyle={styles.cardContainer}
+                    >
+                        <View style={{flexDirection:"row",justifyContent:"flex-start"}}>
+                            <Text style={styles.cardText}>Score:</Text>
+                            <Text style={{ ...styles.cardText, color: "#54718f", marginLeft: 20 }}>{userProg.CONTENT.userScore}</Text>
                         </View> 
                         
                     </Card>
@@ -101,7 +111,8 @@ const mapStateToProps =(state) =>{
     return {
         user: state.user,
         level: state.levelsData,
-        levelContent:state.levelContent
+        levelContent: state.levelContent,
+        userProg:state.userProgress
     }
 }
 const mapDispatchToProps =(dispatch) =>({
@@ -160,6 +171,12 @@ const styles = StyleSheet.create({
         shadowRadius: 5,
         elevation: 8
         
+    },
+    cardText: {
+        fontSize: 20,
+        fontWeight: "bold",
+        color: "#6f548f",
+        textTransform:"capitalize"
     },
     buttonStyle: {
         marginTop:40,

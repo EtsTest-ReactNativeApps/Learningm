@@ -1,7 +1,7 @@
 import axios from 'axios';
 import  {HOST} from '../environment'
 
-const ROOT_URL = "http://51ba890b17e1.ngrok.io";
+const ROOT_URL = "http://afe18594b346.ngrok.io";
 
 
 export default class ApiUser {
@@ -24,7 +24,8 @@ export default class ApiUser {
         console.log("level data",request)
         return request;
     }
-    static async fetchLevelContents(action){
+    static async fetchLevelContents(action) {
+        console.log(action.payload)
         const url = `${ROOT_URL}/adminSecure/getAllContent`;
         const request = await axios.post(url,action.payload);
         return request;

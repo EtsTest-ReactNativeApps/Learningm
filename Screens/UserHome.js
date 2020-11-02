@@ -5,7 +5,8 @@ import CustomCards from '../Components/CustomCard';
 import {connect} from 'react-redux';
 import {levelContentRequest} from '../actions/index'
 function UserHome(props){
-  const { levels,userProgData } = props
+  const { levels, userProgData } = props
+  // console.log(userProgData)
   const [loading,setLoading] = React.useState(false)
   const handleClick = (l) =>{
   setLoading(true)
@@ -34,6 +35,7 @@ function UserHome(props){
                           >
                             <CustomCards 
                               title={level.categoryName}
+                              completedWords={level.levelId == userProgData.CONTENT.currLevelId ? userProgData.CONTENT.completedWords:0}
                               maxScore={level.levelMaxScore}
                               locked={!(level.levelId <= userProgData.CONTENT.currLevelId)}
                               score={level.levelId == userProgData.CONTENT.currLevelId ? userProgData.CONTENT.userScore:0}

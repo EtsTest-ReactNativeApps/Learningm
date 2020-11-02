@@ -14,6 +14,8 @@ function DisplayContents(props) {
     const [index,setIndex] = React.useState(props.route.params.index);
     const [content, setContent] = React.useState(levelContent[index]);
     const [loading, setLoading] = React.useState(true);
+    const baseScore = 20;
+    const incrementWord = 1;
     setTimeout(() => {
         setLoading(false);
     }, 5000);
@@ -43,9 +45,9 @@ function DisplayContents(props) {
         } else {
             props.updateProgress({
                 ...userProgData.CONTENT,
-                completedWords: userProgData.CONTENT.completedWords + 1,
-                totalCompletedWords: userProgData.CONTENT.totalCompletedWords + 1,
-                userScore:userProgData.CONTENT.userScore + 20
+                completedWords: userProgData.CONTENT.completedWords + incrementWord,
+                totalCompletedWords: userProgData.CONTENT.totalCompletedWords + incrementWord,
+                userScore:userProgData.CONTENT.userScore + baseScore
             })
         }
         setTimeout(() => {
