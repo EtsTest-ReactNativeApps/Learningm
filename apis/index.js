@@ -33,8 +33,9 @@ export default class ApiUser {
     static async updateUserProgress(action) {
         // console.log("in user progress request")
         const url = `${ROOT_URL}/userProgress/updateLearnProg`;
+
         const request = await axios.post(url, action.payload)
-            
+        // console.log("progress",request)    
         return request;
     }  
 }

@@ -3,13 +3,14 @@ import {View,Text,StyleSheet,Image} from 'react-native';
 import {DrawerContentScrollView,DrawerItem} from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {connect} from 'react-redux';
-import {logOutRequest,resetLevelReq,resetLevelContent} from '../actions/index'
+import {logOutRequest,resetLevelReq,resetLevelContent,resetUserProgress} from '../actions/index'
 function DrawerContent(props){
-    const {user,level,levelContent} = props
+    const {user,level,levelContent,userProg} = props
     const handleLogOut =() =>{
         props.resetUser(user)
         props.resetLevel(level)
         props.resetLevelContent(levelContent)
+        props.resetUserProg(userProg)
         // props.navigation.navigate('LandingPage')
     }
     return(
@@ -93,13 +94,15 @@ const mapStateToProps =(state) =>{
     return {
         user: state.user,
         level: state.levelsData,
-        levelContent:state.levelContent
+        levelContent: state.levelContent,
+        userProg:state.userProgress
     }
 }
 const mapDispatchToProps =(dispatch) =>({
     resetUser: (data) => dispatch(logOutRequest(data)),
     resetLevel: (data) => dispatch(resetLevelReq(data)),
-    resetLevelContent:(data) => dispatch(resetLevelContent(data))
+    resetLevelContent: (data) => dispatch(resetLevelContent(data)),
+    resetUserProg: (data) => dispatch(resetUserProgress(data)),
 })
 export default connect(mapStateToProps,mapDispatchToProps)(DrawerContent);
 

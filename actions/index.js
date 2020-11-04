@@ -9,7 +9,7 @@ import {
     LEVELCONTENT_REQUEST,
     SETUSERPROGRESS,
     UPDATEUSERPROG_REQUEST,
-    FEEDBACK_SUBMIT
+    RESETUSER_PROG,
 } from '../constants/constants';
 
 const signUpRequest = (auth) =>({
@@ -38,7 +38,10 @@ const resetLevelContent =(data) =>({
     type:RESETLEVELCONTENT,
     payload:data
 })
-
+const resetUserProgress = (data) => ({
+    type: RESETUSER_PROG,
+    payload :data
+})
 const levelRequest =(data) =>({
     type:LEVEL_REQUEST,
     payload:data
@@ -69,5 +72,6 @@ export {
     levelContentRequest,
     setUserProgressRequest,
     updateUserProgess,
+    resetUserProgress
 
 }

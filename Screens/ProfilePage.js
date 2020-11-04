@@ -4,7 +4,7 @@ import {Avatar} from 'react-native-elements';
 import HeaderWithGoBack from '../Components/HeaderWithGoBack';
 import { Card, Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
-import {logOutRequest,resetLevelReq,resetLevelContent} from '../actions/index'
+import {logOutRequest,resetLevelReq,resetLevelContent,resetUserProgress} from '../actions/index'
 
 function ProfilePage(props) {
     
@@ -15,6 +15,7 @@ function ProfilePage(props) {
         props.resetUser(user)
         props.resetLevel(level)
         props.resetLevelContent(levelContent)
+        props.resetUserProg(userProg)
     }
     return(
         <React.Fragment>
@@ -118,7 +119,8 @@ const mapStateToProps =(state) =>{
 const mapDispatchToProps =(dispatch) =>({
     resetUser: (data) => dispatch(logOutRequest(data)),
     resetLevel: (data) => dispatch(resetLevelReq(data)),
-    resetLevelContent:(data) => dispatch(resetLevelContent(data))
+    resetLevelContent: (data) => dispatch(resetLevelContent(data)),
+    resetUserProg: (data) => dispatch(resetUserProgress(data)),
 })
 export default connect(mapStateToProps,mapDispatchToProps)(ProfilePage);
 

@@ -27,6 +27,7 @@ function LoginOptionPage(props) {
 }
 React.useEffect(() =>{
   if (props.userState.isLogedIN) {
+    // console.log("userstate",props.userState)
     navigation.navigate('Language')
   }
 },[props.userState])

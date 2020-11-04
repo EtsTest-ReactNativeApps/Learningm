@@ -22,16 +22,16 @@ export const userProgressReducer = (state = initialState, action) =>{
                 ...action.payload
             }
             break;
-        case 'LOGOUT_SUCCESS':
-            console.log("action in user progress reducer")
+        case 'RESETUSER_PROG_SUCCESS':
             return {
                 ...action.payload
             }
             break;
-        case 'LOGOUT_FAILURE':
-            return{
+        case 'RESETUSER_PROG_FAILURE':
+            return {
                 ...action.payload
             }
+            break;
     }
     
     return state

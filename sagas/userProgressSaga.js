@@ -17,7 +17,7 @@ export function* setUserProgressHandler(action) {
 
 export function* updateProgressHandler(action) {
     try {
-        const userProgress = yield call(ApiUser.updateUserProgress,action)
+        const userProgress = yield call(ApiUser.updateUserProgress, action)
         if (userProgress.data.STS == '200') {
             yield put({
                 type: 'UPDATEUSERPROG_SUCCESS',
@@ -38,3 +38,16 @@ export function* updateProgressHandler(action) {
     }
 }
 
+export function* resetUserProgressHandler(action){
+    try{
+        yield put({
+            type:'RESETUSER_PROG_SUCCESS',
+            payload:{}
+        })
+    }catch(err){
+        yield put({
+            type:'RESETUSER_PROG_FAILURE',
+            payload:action.payload
+        })
+    }
+}
