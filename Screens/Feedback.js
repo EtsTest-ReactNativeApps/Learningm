@@ -5,7 +5,20 @@ import { Rating, } from 'react-native-elements';
 import HeaderWithGoBack from '../Components/HeaderWithGoBack';
 import {LinearGradient} from 'expo-linear-gradient'
 import { connect } from 'react-redux';
-import {feedbackSubmit} from '../actions/index'
+import axios from 'axios';
+import { ROOT_URL } from '../environment';
+
+
+const postFeedBack = (data) => {
+    const url = `${ROOT_URL}/userProgress/provideFeedBack`;
+    axios.post(url, data).then(res => {
+        if (res.data.STS == '200') {
+            return true
+        }
+    })
+
+    return false;
+}
 
 function FeedBack(props) {
     const {userProg} = props
@@ -19,18 +32,14 @@ function FeedBack(props) {
         setFeedBack(value.nativeEvent.text)
     } 
     const handleSubmit = () => {
-        props.feedback({
-                userId:userProg.CONTENT.userId,
-                languageId:userProg.CONTENT.languageId,
-                ratings:rating,
-                feedBack:feedBack
+        let status  = postFeedBack({
+            userId:userProg.CONTENT.userId,
+            languageId:userProg.CONTENT.languageId,
+            ratings:rating,
+            feedBack:feedBack
         })
         
-        // setLoading(true);
-    }
-
-    React.useEffect(() => {
-        if (props.feedbackData.STS ==='200') {
+        if (status) {
             setFeedBack('');
             setRating(0);
             setLoading(false);
@@ -39,7 +48,7 @@ function FeedBack(props) {
                 "Thank you for provoding feedback"
             )
         }
-        if (props.feedbackData.STS === '500') {
+        else {
             setFeedBack('');
             setRating(0);
             setLoading(false);
@@ -48,7 +57,8 @@ function FeedBack(props) {
                 "failed to submit feedback try again"
             )
         }
-    },[props.feedbackData])
+        // setLoading(true);
+    }
 
     return (
         <React.Fragment>
@@ -120,15 +130,12 @@ function FeedBack(props) {
 const mapStateToProps = (state) => {
     return {
         userProg: state.userProgress,
-        feedbackData: state.feedback,
         // user:state.user
     }
 }
-const mapDispatchToProps = (dispatch) => ({
-    feedback:(data) => dispatch(feedbackSubmit(data))
-})
 
-export default connect(mapStateToProps,mapDispatchToProps)(FeedBack);
+
+export default connect(mapStateToProps,null)(FeedBack);
 
 const styles = StyleSheet.create({
     mainView: {

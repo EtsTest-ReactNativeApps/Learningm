@@ -57,10 +57,7 @@ const updateUserProgess = (data) => ({
     payload:data
 })
 
-const feedbackSubmit = (data) => ({
-    type: FEEDBACK_SUBMIT,
-    payload:data
-})
+
 export {
     signUpRequest,
     logInRequest,
@@ -72,5 +69,5 @@ export {
     levelContentRequest,
     setUserProgressRequest,
     updateUserProgess,
-    feedbackSubmit
+
 }

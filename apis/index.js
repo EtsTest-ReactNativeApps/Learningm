@@ -1,7 +1,7 @@
 import axios from 'axios';
-import  {HOST} from '../environment'
+import  {ROOT_URL} from '../environment'
 
-const ROOT_URL = "http://afe18594b346.ngrok.io";
+
 
 
 export default class ApiUser {
@@ -37,11 +37,4 @@ export default class ApiUser {
             
         return request;
     }  
-    static async postFeedBack(action) {
-        // console.log("feedback")
-        const url = `${ROOT_URL}/userProgress/provideFeedBack`;
-        const request = await axios.post(url, action.payload)
-        
-        return request;
-    }
 }

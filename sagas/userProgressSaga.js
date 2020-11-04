@@ -38,26 +38,3 @@ export function* updateProgressHandler(action) {
     }
 }
 
-export function* feedBackHandler(action) {
-    try {
-        
-        const feedBack = yield call(ApiUser.postFeedBack, action);
-        if (feedBack.data.STS == '200') {
-            yield put({
-                type: 'FEEDBACK_SUCCESS',
-                payload: feedBack.data
-            });
-        }
-        else {
-            yield put({
-                type: 'FEEDBACK_FAILURE',
-                payload: feedBack.data
-            });
-        }
-    } catch (err) {
-        yield put({
-            type: 'FEEDBACK_FAILURE',
-            payload: err
-        });
-    }
-}

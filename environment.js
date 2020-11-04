@@ -1,7 +1,7 @@
 // environment.js
 
 
-const HOST = "http://d2dcb2d53577.ngrok.io"
+const ROOT_URL = "http://d482177b6409.ngrok.io"
 
 // make sure to export the variable so you can import it in other files
-export {HOST};
+export {ROOT_URL};
