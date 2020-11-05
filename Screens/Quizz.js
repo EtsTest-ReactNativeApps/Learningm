@@ -1,48 +1,73 @@
-import React from 'react';
-import {View,Text,StyleSheet} from 'react-native';
+import React, { useState } from 'react';
+import {View,Text,StyleSheet,TouchableOpacity,Alert} from 'react-native';
 import { Icon} from 'react-native-elements';
-import HeaderWithGoBack from '../Components/HeaderWithGoBack';
+import QuizzHeader from '../Components/QuizzHeader';
+import { quizzData } from '../QuizzData';
 
 function Quizz(props) {
+    const [index, setIndex] = React.useState(0);
+    const [qsn, setQsn] = React.useState(quizzData[index])
+    const [answered, setAnswered] = React.useState(false);
+    
+    const checkCorrect = () => {
+        // console.log(optnContentId)
+        setAnswered(true);
+        handleNext()
+    }
+
+    const handleNext = () => {
+        setIndex(index+1)
+    }
+
+    React.useEffect(() => {
+        setQsn(index)
+    },[index])
+    const handleClose = () => {
+        Alert.alert(
+            "Alert",
+            "Do you wish to exit the quizz ?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log('canceled'),
+                    style:"cancel"
+                },
+                {
+                    text: "Yes",
+                    onPress: () => props.navigation.navigate('UserHome'),
+                    style:"default"
+                },
+                
+            ],
+            {cancelable:true}
+        )
+    }
     return (
         <React.Fragment>
-            <HeaderWithGoBack {...props} title="Quizz" />
+            <QuizzHeader   {...props} title="Assesment" handleClose={handleClose}/>
             <View style={styles.mainView}>
-                <View style={styles.scoreView}>
-                    <View>
-                        <Text style={{fontSize:20,fontWeight:"bold", color:"white"}}>Name :Bharadwaj</Text>
-                    </View>
-                    <View>
-                        <Text style={{fontSize:20,fontWeight:"bold", color:"white"}}>Score : +100 Points</Text>
-                    </View>
-                </View>
                 <View style={styles.qsnView}>
+                    <Text style={styles.qsnText}>{qsn.qsn.word}</Text>
                     <Icon
                         name="volume-up"
                         type="font-awesome"
                         size={50}
                     />
-                    <Text>English Transscipt</Text>
                 </View>
                 <View style={styles.optionView}>
-                    <View style={styles.option}>
-                        <Text style={styles.optionText}>Option 1</Text>
-                    </View>
-                    <View style={styles.option}>
-                        <Text style={styles.optionText}>
-                            Option 2
-                        </Text>
-                    </View>
-                    <View style={styles.option}>
-                        <Text style={styles.optionText}>
-                            Option 3
-                        </Text>
-                    </View>
-                    <View style={styles.option}>
-                        <Text style={styles.optionText}>
-                            Option 4
-                        </Text>
-                    </View>
+                    {qsn.options.map((option,i) => (
+                        <React.Fragment
+                            key={i}
+                        >
+                            <OptionButton
+                                {...option}
+                                checkCorrect={checkCorrect}
+                                answered={answered}
+                                qsnId={qsn.qsn.contentId}
+                            />
+                        </React.Fragment>
+                    ))}
+                    
                 </View>
             </View>
         </React.Fragment>
@@ -51,13 +76,30 @@ function Quizz(props) {
 
 export default Quizz;
 
+
+const OptionButton = (option) => {
+    const {answered,qsnId} =option
+    return (
+        <TouchableOpacity style={option.contentId === qsnId && answered ?
+            styles.Correctoption : option.contentId !== qsnId && answered ?
+                styles.WrongOption :styles.option
+        }
+             onPress={() =>option.checkCorrect()}
+        >
+                <Text style={styles.optionText}>
+                    {option.transcript}
+                </Text>
+        </TouchableOpacity>
+    )
+}
+
 const styles = StyleSheet.create({
     mainView: {
-        padding: 20,
+        // padding: 20,
         flex: 1,
         width: "100%",
         alignItems:'center',
-        backgroundColor:"#33898f"
+        backgroundColor:"#ebebeb"
     },
     scoreView: {
         flexDirection: "row",
@@ -65,32 +107,72 @@ const styles = StyleSheet.create({
         justifyContent:"space-between"
     },
     qsnView: {
-        marginTop:40,
+        // margin: 20,
+        padding:20,
+        flexDirection: "row",
+        justifyContent:"space-between",
         alignItems: "center",
-        justifyContent:"center",
-        width: "85%",
-        height: "20%",
-        borderRadius:20,
-        backgroundColor:"white"
+        width: "100%",
+    },
+    qsnText: {
+        fontSize: 22,
+        fontWeight: "bold",
+        color: "#47705e",
     },
     optionView: {
         marginTop: "25%",
         flexDirection: "row",
-        // justifyContent: "space-around",
+        justifyContent: "space-around",
         flexWrap:"wrap",
-        width: "85%",
-        height: "50%",
+        width: "90%",
+        height: "70%",
         borderRadius:20,
-        backgroundColor:"white"
     },
-    option: {
-        width: "45%",
-        height: "45%",
-        borderRadius: 10,
+    Correctoption: {
+        width: "48%",
+        height: "40%",
         justifyContent: "center",
         alignItems:"center",
-        // marginTop: 10,
-        margin:7,
+        marginTop: "2%",
+        borderWidth: 2,
+        borderColor:"green",
+        backgroundColor: "white",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowOpacity: 0.36,
+        shadowRadius: 6.68,
+        elevation: 25,
+    },
+    WrongOption: {
+        width: "48%",
+        height: "40%",
+        justifyContent: "center",
+        alignItems:"center",
+        marginTop: "2%",
+        borderWidth: 2,
+        borderColor:"red",
+        // borderColor:"green",
+        backgroundColor: "white",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowOpacity: 0.36,
+        shadowRadius: 6.68,
+        elevation: 25,
+    },
+    option: {
+        width: "48%",
+        height: "40%",
+        justifyContent: "center",
+        alignItems:"center",
+        marginTop: "2%",
+        borderWidth: 2,
+        borderColor:"white",
         backgroundColor: "white",
         shadowColor: "#000",
         shadowOffset: {

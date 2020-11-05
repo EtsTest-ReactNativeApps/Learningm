@@ -7,18 +7,20 @@ import CustomHeader from '../Components/CustomHeader';
 import {connect} from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
 import {updateUserProgess} from '../actions/index'
+import OverLayModal from '../Components/OverLayModal';
 
 function DisplayContents(props) {
-    const { userProgData } = props
+    const { userProgData ,navigation} = props
     const levelContent = props.levelContent.CONTENT;
     const [index,setIndex] = React.useState(props.route.params.index);
     const [content, setContent] = React.useState(levelContent[index]);
     const [loading, setLoading] = React.useState(true);
+    const [isVisible, setVisible] = React.useState(false);
     // const baseScore = 20;
     // const incrementWord = 1;
     setTimeout(() => {
         setLoading(false);
-    }, 5000);
+    }, 1000);
 
     Audio.setAudioModeAsync({
         allowsRecordingIOS: false,
@@ -35,16 +37,21 @@ function DisplayContents(props) {
     }
     sound.loadAsync({ uri: content.audioPath },status,false)
     
+    const handleVisible = () => {
+        setVisible(!isVisible)
+    }
+
     const handleNext = (i) => {
         setLoading(true);
         setIndex(i);
         if (index + 1 <= userProgData.CONTENT.completedWords) {
-           
+        //    console.log("1st",index,userProgData.CONTENT.completedWords)
             props.updateProgress({
                 ...userProgData
             })
         } 
         if (index + 1 > userProgData.CONTENT.completedWords) {
+            // console.log("2nd ",index,userProgData.CONTENT.completedWords)
             props.updateProgress({
                 ...userProgData.CONTENT,
                 completedWords: userProgData.CONTENT.completedWords + 1,
@@ -55,7 +62,7 @@ function DisplayContents(props) {
         
         setTimeout(() => {
             setLoading(false);
-        }, 5000);
+        }, 1000);
     }
     
     const playSound = () => {
@@ -68,10 +75,9 @@ function DisplayContents(props) {
     },[props.route.params.index])
     
     React.useEffect(()=>{
-        if(levelContent[index]){
+        if (index <levelContent.length-1) {
             setContent(levelContent[index])
-        }
-        
+        } 
     },[index])
     
     return(
@@ -104,34 +110,62 @@ function DisplayContents(props) {
                                 width={Dimensions.get('window').width}
                                 height={Dimensions.get('window').height*0.4}
                             />
-                                <View style={{backgroundColor:"#c5e5e8"}}>
+                                <View style={{backgroundColor:"#c5e5e8",padding:10}}>
                                     <Text
-                                        style={{ textAlign: "center", margin: 10, fontSize: 20, fontWeight: "bold",color:"#6f6285" }}
+                                    style={styles.textStyle}
                                     >{content.word}</Text>
                                 </View>
                         </View>
-                        <View style={styles.audioView}>
-                                <TouchableOpacity onPress={playSound}>
-                                    <Icon  
-                                        name="volume-up"
-                                        type="font-awesome"
-                                        size={45}
-                                        color="orange"
-                                    />
-                                </TouchableOpacity>
+                        <View style={styles.contentView}>
+                            <View>
+                                    <TouchableOpacity onPress={playSound}>
+                                        <Icon  
+                                            name="volume-up"
+                                            type="font-awesome"
+                                            size={45}
+                                            color="orange"
+                                        />
+                                    </TouchableOpacity>
+                            </View>
+                            <View style={styles.transcriptView}>
+                                <View>
+                                    <Text style={{...styles.textStyle,fontSize:22}}>English</Text>
+                                    <Text style={{ ...styles.textStyle, fontWeight: "normal", }}>{content.transcript}</Text>
+                                </View>
+                                <View>
+                                    <Text style={{...styles.textStyle,fontSize:20,}}>Literal Translation</Text>
+                                    <Text style={{ ...styles.textStyle, fontWeight: "normal" }}>{content.word}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.buttonView}>
+                            {index < levelContent.length-1 ?
+                                (
+                                    <TouchableOpacity style={styles.button}
+                                    onPress={() => handleNext(index+1)}
+                                    >
+                                        <Text style={{fontSize:20,fontWeight:"bold",color:"white"}}>Ok Got it !</Text>
+                                    </TouchableOpacity>
+                                ) :
+                                (
+                                    <TouchableOpacity style={styles.button}
+                                    onPress={handleVisible}
+                                    >
+                                        <Text style={{fontSize:20,fontWeight:"bold",color:"white"}}>Ok Got it !</Text>
+                                    </TouchableOpacity>
+                                )
+                        }
                         </View>
-                        <View style={styles.transcriptView}>
-                            <Text style={{fontSize:20,fontWeight:"bold",margin:10,color:"#6f6285"}}>English</Text>
-                                <Text style={{fontSize:18,fontWeight:"600",color:"#6f6285"}}>{content.transcript}</Text>
-                        </View>
-                        <View style={styles.buttonView}>
-                            <TouchableOpacity style={styles.button}
-                            onPress={() => handleNext(index+1)}
-                            >
-                                <Text style={{fontSize:20,fontWeight:"bold",color:"white"}}>Ok Got it !</Text>
-                            </TouchableOpacity>
                         </View>
                     </View>)
+                }
+                {
+                    isVisible ?
+                        <OverLayModal
+                            isVisible={isVisible}
+                            setVisible={handleVisible}
+                            navigation={navigation}
+                        /> :
+                        null
                 }
             </LinearGradient>
         </React.Fragment>
@@ -156,24 +190,32 @@ const styles = StyleSheet.create({
     mainView:{
         flex:1,
         width:"100%",
-        alignItems:"center",
+        alignItems: "center",
+        backgroundColor:"white"
     },
     videoView: {
         width:"100%",
         height:'40%',
         borderRadius:20
     },
-    audioView:{
-        margin:50
+    textStyle: {
+        textAlign: "center",
+        fontSize: 20,
+        fontWeight: "bold",
+        color: "#6f6285"   
     },
-    transcriptView:{
-        margin:20,
-        width:"70%",
-        alignItems:"center"
+    contentView: {
+        height: "50%",
+        width: "100%",
+        alignItems:"center",
+        justifyContent:'space-evenly'
+    },
+    transcriptView: {
+        justifyContent: "space-between",
+        height:"30%"
     },
     buttonView: {
-        top:30,
-        width:"70%",
+        width:"90%",
     },
     button:{
         backgroundColor:"orange",
