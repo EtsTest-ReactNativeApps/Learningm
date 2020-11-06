@@ -36,11 +36,11 @@ const LeftComponent = (props) => {
 const RightComponent = (props) => {
     return (
         <Icon
-            name="user-circle-o"
-            type='font-awesome'
+            name="school"
+            type='material'
             size={40}
             color='white'
-            onPress={() => props.navigation.navigate('profilePage')}
+            onPress={() => props.navigation.navigate('quizzPage')}
     />
     )
 }

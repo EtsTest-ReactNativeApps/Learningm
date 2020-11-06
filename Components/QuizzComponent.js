@@ -1,47 +1,13 @@
-import React, { useState } from 'react';
-import {View,Text,StyleSheet,TouchableOpacity,Alert} from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { Icon} from 'react-native-elements';
-import QuizzHeader from '../Components/QuizzHeader';
-import { quizzData } from '../QuizzData';
+import QuizzHeader from './QuizzHeader';
 
-function Quizz(props) {
-    const [index, setIndex] = React.useState(0);
-    const [qsn, setQsn] = React.useState(quizzData[index])
-    const [answered, setAnswered] = React.useState(false);
+
+function QuizzComponent(props) {
+    const { qsn, checkCorrect, answered, handleClose } = props
+    // console.log(props)
     
-    const checkCorrect = () => {
-        // console.log(optnContentId)
-        setAnswered(true);
-        handleNext()
-    }
-
-    const handleNext = () => {
-        setIndex(index+1)
-    }
-
-    React.useEffect(() => {
-        setQsn(index)
-    },[index])
-    const handleClose = () => {
-        Alert.alert(
-            "Alert",
-            "Do you wish to exit the quizz ?",
-            [
-                {
-                    text: "Cancel",
-                    onPress: () => console.log('canceled'),
-                    style:"cancel"
-                },
-                {
-                    text: "Yes",
-                    onPress: () => props.navigation.navigate('UserHome'),
-                    style:"default"
-                },
-                
-            ],
-            {cancelable:true}
-        )
-    }
     return (
         <React.Fragment>
             <QuizzHeader   {...props} title="Assesment" handleClose={handleClose}/>
@@ -74,8 +40,8 @@ function Quizz(props) {
     )
 }
 
-export default Quizz;
 
+export default QuizzComponent;
 
 const OptionButton = (option) => {
     const {answered,qsnId} =option

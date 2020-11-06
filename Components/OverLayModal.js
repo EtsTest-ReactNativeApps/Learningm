@@ -8,7 +8,7 @@ function OverLayModal(props) {
     const handleYes = () => {
         // console.log(props)
         setVisible()
-        props.navigation.navigate('quizzPage')
+        props.navigation.navigate('assesmentPage')
     }
     const handleNo = () => {
         props.navigation.navigate("levelDetail")

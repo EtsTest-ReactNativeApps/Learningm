@@ -76,9 +76,9 @@ function FeedBack(props) {
                 <View style={styles.mainView}>
                    
                     <View style={styles.feedBackView}>
-                    <ScrollView contentContainerStyle={{flexGrow:1,justifyContent:"space-around",alignItems:"center"}}>
+                    <ScrollView contentContainerStyle={styles.contentContainerStyle}>
                         <View style={{padding:15}}>
-                            <Text style={{ fontSize: 21, fontWeight: "bold", color:"#5c8d9e",textAlign:"center"}}>
+                            <Text style={styles.textStyle}>
                                     Give your feedback on learning Kannada language ,Your every feedback matters,
                                     and rate your experience.
                                 </Text>
@@ -160,6 +160,17 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.36,
         shadowRadius: 6.68,
         elevation: 20,
+    },
+    contentContainerStyle: {
+        flexGrow: 1,
+        justifyContent: "space-around",
+        alignItems: "center"  
+    },
+    textStyle: {
+        fontSize: 21,
+        fontWeight: "bold",
+        color: "#5c8d9e",
+        textAlign: "center"  
     },
     ratingView: {
         

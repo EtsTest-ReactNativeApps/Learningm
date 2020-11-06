@@ -143,14 +143,14 @@ function DisplayContents(props) {
                                     <TouchableOpacity style={styles.button}
                                     onPress={() => handleNext(index+1)}
                                     >
-                                        <Text style={{fontSize:20,fontWeight:"bold",color:"white"}}>Ok Got it !</Text>
+                                        <Text style={{...styles.textStyle,color:"white"}}>Ok Got it !</Text>
                                     </TouchableOpacity>
                                 ) :
                                 (
                                     <TouchableOpacity style={styles.button}
                                     onPress={handleVisible}
                                     >
-                                        <Text style={{fontSize:20,fontWeight:"bold",color:"white"}}>Ok Got it !</Text>
+                                        <Text style={{...styles.textStyle,color:"white"}}>Ok Got it !</Text>
                                     </TouchableOpacity>
                                 )
                         }

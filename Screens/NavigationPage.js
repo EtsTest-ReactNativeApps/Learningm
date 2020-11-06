@@ -18,7 +18,8 @@ import OnBoardScreen from './OnBoardScreen';
 import LevelDetailsPage from './LevelDetailsPage';
 import DisplayContents from './DisplayContent';
 import FeedBack from './Feedback';
-import Quizz from './Quizz';
+import LevelAssesment from './LevelAssesment';
+import RandomQuizz from './RandomQuizz';
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
@@ -84,8 +85,12 @@ const DrawerNavigation =() =>{
                 component={FeedBack}
               />
               <Drawer.Screen
+                name="assesmentPage"
+                component={LevelAssesment}
+              />
+              <Drawer.Screen
                 name="quizzPage"
-                component={Quizz}
+                component={RandomQuizz}
               />
               
           </Drawer.Navigator>
