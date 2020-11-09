@@ -7,7 +7,6 @@ import {connect} from 'react-redux';
 
 function LevelDetailsPage(props){
     const { levelContent, navigation,userProgData } = props
-    // console.log("level content in leveldetail page",levelContent.CONTENT)
     const handleClick = (index) => {
         navigation.navigate("contentsPage",{
             index:index

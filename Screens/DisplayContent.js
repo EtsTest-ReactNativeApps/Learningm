@@ -8,7 +8,7 @@ import {connect} from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
 import {updateUserProgess} from '../actions/index'
 import OverLayModal from '../Components/OverLayModal';
-
+import {wordIncrement,wordProgressScore} from '../environment'
 function DisplayContents(props) {
     const { userProgData ,navigation} = props
     const levelContent = props.levelContent.CONTENT;
@@ -16,8 +16,6 @@ function DisplayContents(props) {
     const [content, setContent] = React.useState(levelContent[index]);
     const [loading, setLoading] = React.useState(true);
     const [isVisible, setVisible] = React.useState(false);
-    // const baseScore = 20;
-    // const incrementWord = 1;
     setTimeout(() => {
         setLoading(false);
     }, 1000);
@@ -54,9 +52,9 @@ function DisplayContents(props) {
             // console.log("2nd ",index,userProgData.CONTENT.completedWords)
             props.updateProgress({
                 ...userProgData.CONTENT,
-                completedWords: userProgData.CONTENT.completedWords + 1,
-                totalCompletedWords: userProgData.CONTENT.totalCompletedWords + 1,
-                userScore:userProgData.CONTENT.userScore + 20
+                completedWords: userProgData.CONTENT.completedWords + wordIncrement,
+                totalCompletedWords: userProgData.CONTENT.totalCompletedWords + wordIncrement,
+                userScore:userProgData.CONTENT.userScore + wordProgressScore
             })
         }
         

@@ -51,3 +51,25 @@ export function* resetUserProgressHandler(action){
         })
     }
 }
+
+export function* getQuizzz(action) {
+    try {
+        const quizzData = yield call(ApiUser.getQizz, action);
+        if (quizzData.data.STS === '200') {
+            yield put({
+                type: 'QUIZZ_DATA_SUCCESS',
+                payload:action.payload
+            })
+        } else {
+            yield put({
+                type: 'QUIZZ_DATA_FAILURE',
+                payload:action.payload
+            })
+        }
+    } catch (err) {
+        yield put({
+            type: 'QUIZZ_DATA_FAILURE',
+            payload:err
+        })
+    }
+}

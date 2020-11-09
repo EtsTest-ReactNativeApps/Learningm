@@ -38,4 +38,12 @@ export default class ApiUser {
         // console.log("progress",request)    
         return request;
     }  
+
+    static async getQizz(action) {
+        const url = `${ROOT_URL}/lgmQuiz/getLevelAssesment`;
+
+        const request = await axios.post(url, action.payload);
+
+        return request;
+    }
 }

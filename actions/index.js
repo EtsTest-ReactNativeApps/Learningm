@@ -10,6 +10,7 @@ import {
     SETUSERPROGRESS,
     UPDATEUSERPROG_REQUEST,
     RESETUSER_PROG,
+    GET_QUIZZ_DATA
 } from '../constants/constants';
 
 const signUpRequest = (auth) =>({
@@ -60,6 +61,10 @@ const updateUserProgess = (data) => ({
     payload:data
 })
 
+const getQuizzData = (data) => ({
+    type: GET_QUIZZ_DATA,
+    payload :data
+})
 
 export {
     signUpRequest,
@@ -72,6 +77,7 @@ export {
     levelContentRequest,
     setUserProgressRequest,
     updateUserProgess,
-    resetUserProgress
+    resetUserProgress,
+    getQuizzData
 
 }
