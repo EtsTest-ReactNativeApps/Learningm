@@ -6,33 +6,180 @@ import QuizzHeader from './QuizzHeader';
 
 function QuizzComponent(props) {
     const { qsn, checkCorrect, answered, handleClose } = props
-    // console.log(props)
     
     return (
         <React.Fragment>
             <QuizzHeader   {...props} title="Assesment" handleClose={handleClose}/>
             <View style={styles.mainView}>
                 <View style={styles.qsnView}>
-                    <Text style={styles.qsnText}>{qsn.qsn.word}</Text>
-                    <Icon
-                        name="volume-up"
-                        type="font-awesome"
-                        size={50}
-                    />
+                    <Text style={styles.qsnText}>{qsn.question}</Text>
+                    {
+                        qsn.questionType === 'WORD_TO_TRANS' ?
+                            (<Text style={styles.qsnText}>{qsn.quesContent.word}</Text>)
+                            : qsn.questionType === 'AUD_TO_TRANS' ?
+                                (
+                                    <Icon
+                                        name="volume-up"
+                                        type="font-awesome"
+                                        size={50}
+                                        />
+                                ) :
+                                qsn.questionType === 'AUD_TO_WORD' ?
+                                (
+                                    <Icon
+                                        name="volume-up"
+                                        type="font-awesome"
+                                        size={50}
+                                        />
+                                ) :
+                                    qsn.questionType === 'TRANS_TO_WORD' ?
+                                        (<Text style={styles.qsnText}>{qsn.quesContent.transcript}</Text>)
+                                : null    
+                    }
+                    
+                    
                 </View>
                 <View style={styles.optionView}>
-                    {qsn.options.map((option,i) => (
-                        <React.Fragment
-                            key={i}
-                        >
-                            <OptionButton
-                                {...option}
-                                checkCorrect={checkCorrect}
-                                answered={answered}
-                                qsnId={qsn.qsn.contentId}
-                            />
-                        </React.Fragment>
-                    ))}
+                    
+                    {
+                        qsn.questionType === 'WORD_TO_TRANS' ?
+                            (
+                                <>
+                                    <OptionButton
+                                        option={qsn.option1.transcript}
+                                        checkCorrect={checkCorrect}
+                                        answered={answered}
+                                        qsnId={qsn.quesContent.contentId}
+                                        contentId={qsn.option1.contentId}
+                                    />
+                                    <OptionButton
+                                        option={qsn.option2.transcript}
+                                        checkCorrect={checkCorrect}
+                                        answered={answered}
+                                        qsnId={qsn.quesContent.contentId}
+                                        contentId={qsn.option2.contentId}
+                                    />
+                                    <OptionButton
+                                        option={qsn.option3.transcript}
+                                        checkCorrect={checkCorrect}
+                                        answered={answered}
+                                        qsnId={qsn.quesContent.contentId}
+                                        contentId={qsn.option3.contentId}
+                                    />
+                                    <OptionButton
+                                        option={qsn.option4.transcript}
+                                        checkCorrect={checkCorrect}
+                                        answered={answered}
+                                        qsnId={qsn.quesContent.contentId}
+                                        contentId={qsn.option4.contentId}
+                                    />
+                                </>    
+                            ) : qsn.questionType === 'AUD_TO_TRANS' ?
+                            (
+                                <>
+                                    <OptionButton
+                                        option={qsn.option1.transcript}
+                                        checkCorrect={checkCorrect}
+                                        answered={answered}
+                                        qsnId={qsn.quesContent.contentId}
+                                        contentId={qsn.option1.contentId}
+                                    />
+                                    <OptionButton
+                                        option={qsn.option2.transcript}
+                                        checkCorrect={checkCorrect}
+                                        answered={answered}
+                                        qsnId={qsn.quesContent.contentId}
+                                        contentId={qsn.option2.contentId}
+                                    />
+                                    <OptionButton
+                                        option={qsn.option3.transcript}
+                                        checkCorrect={checkCorrect}
+                                        answered={answered}
+                                        qsnId={qsn.quesContent.contentId}
+                                        contentId={qsn.option3.contentId}
+                                    />
+                                    <OptionButton
+                                        option={qsn.option4.transcript}
+                                        checkCorrect={checkCorrect}
+                                        answered={answered}
+                                        qsnId={qsn.quesContent.contentId}
+                                        contentId={qsn.option4.contentId}
+                                    />
+                                    
+                                </>    
+                                ) : qsn.questionType === 'AUD_TO_WORD' ?
+                                    
+                                (
+                                    <>
+                                        <OptionButton
+                                            option={qsn.option1.word}
+                                            checkCorrect={checkCorrect}
+                                            answered={answered}
+                                            qsnId={qsn.quesContent.contentId}
+                                            contentId={qsn.option1.contentId}
+                                        />
+                                        <OptionButton
+                                            option={qsn.option2.word}
+                                            checkCorrect={checkCorrect}
+                                            answered={answered}
+                                            qsnId={qsn.quesContent.contentId}
+                                            contentId={qsn.option2.contentId}
+                                        />
+                                        <OptionButton
+                                            option={qsn.option3.word}
+                                            checkCorrect={checkCorrect}
+                                            answered={answered}
+                                            qsnId={qsn.quesContent.contentId}
+                                            contentId={qsn.option3.contentId}
+                                        />
+                                        <OptionButton
+                                            option={qsn.option4.word}
+                                            checkCorrect={checkCorrect}
+                                            answered={answered}
+                                            qsnId={qsn.quesContent.contentId}
+                                            contentId={qsn.option4.contentId}
+                                        />
+                                        
+                                    </>    
+                                    ) :
+                                    qsn.questionType === 'TRANS_TO_WORD' ?
+                                    (
+                                        <>
+                                            <OptionButton
+                                                option={qsn.option1.word}
+                                                checkCorrect={checkCorrect}
+                                                answered={answered}
+                                                qsnId={qsn.quesContent.contentId}
+                                                contentId={qsn.option1.contentId}
+                                            />
+                                            <OptionButton
+                                                option={qsn.option2.word}
+                                                checkCorrect={checkCorrect}
+                                                answered={answered}
+                                                qsnId={qsn.quesContent.contentId}
+                                                contentId={qsn.option2.contentId}
+                                            />
+                                            <OptionButton
+                                                option={qsn.option3.word}
+                                                checkCorrect={checkCorrect}
+                                                answered={answered}
+                                                qsnId={qsn.quesContent.contentId}
+                                                contentId={qsn.option3.contentId}
+                                            />
+                                            <OptionButton
+                                                option={qsn.option4.word}
+                                                checkCorrect={checkCorrect}
+                                                answered={answered}
+                                                qsnId={qsn.quesContent.contentId}
+                                                contentId={qsn.option4.contentId}
+                                            />
+                                        </>    
+                                        ):null
+                                
+                    }
+
+                            
+                        
                     
                 </View>
             </View>
@@ -43,17 +190,17 @@ function QuizzComponent(props) {
 
 export default QuizzComponent;
 
-const OptionButton = (option) => {
-    const {answered,qsnId} =option
+const OptionButton = (props) => {
+    const {answered,qsnId,contentId,option} =props
     return (
-        <TouchableOpacity style={option.contentId === qsnId && answered ?
-            styles.Correctoption : option.contentId !== qsnId && answered ?
+        <TouchableOpacity style={contentId === qsnId && answered ===qsnId ?
+            styles.Correctoption : contentId === answered ?
                 styles.WrongOption :styles.option
         }
-             onPress={() =>option.checkCorrect()}
+             onPress={() =>option.checkCorrect(contentId)}
         >
                 <Text style={styles.optionText}>
-                    {option.transcript}
+                    {option}
                 </Text>
         </TouchableOpacity>
     )
@@ -100,9 +247,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems:"center",
         marginTop: "2%",
-        borderWidth: 2,
-        borderColor:"green",
-        backgroundColor: "white",
+        backgroundColor: "#77a87f",
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -118,10 +263,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems:"center",
         marginTop: "2%",
-        borderWidth: 2,
-        borderColor:"red",
-        // borderColor:"green",
-        backgroundColor: "white",
+        backgroundColor: "#db7769",
         shadowColor: "#000",
         shadowOffset: {
             width: 0,

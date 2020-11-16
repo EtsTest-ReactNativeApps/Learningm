@@ -2,14 +2,18 @@ import React from 'react';
 import {Alert} from 'react-native';
 import QuizzComponent from '../Components/QuizzComponent';
 import { quizzData } from '../QuizzData';
-
+import { connect } from 'react-redux';
+import {getQuizzData} from '../actions/index'
 function LevelAssesment(props) {
     const [index, setIndex] = React.useState(0);
-    const [questionData,setQuestionData] = React.useState({...quizzData[index]})
-    const [answered, setAnswered] = React.useState(false);
-    console.log("qsndata",questionData)
-    const checkCorrect = () => {
-        setAnswered(true);
+    const [questionData,setQuestionData] = React.useState({...quizzState.CONTENT[index]})
+    const [answered, setAnswered] = React.useState(null);
+    const [points, setPoints] = React.useState(0);
+    const [isGameOver, setGameOver] = React.useState(false);
+    // console.log("qsndata",questionData)
+    const {quizzState} =props
+    const checkCorrect = (answer) => {
+        setAnswered(answer);
         setTimeout(() => {
             handleNext()
         },800)
@@ -22,10 +26,11 @@ function LevelAssesment(props) {
 
     React.useEffect(() => {
         if (quizzData[index]) {
-            setQuestionData({...quizzData[index]})
+            setQuestionData({...quizzState.CONTENT[index]})
         }
     },[index])
     const handleClose = () => {
+        
         Alert.alert(
             "Alert",
             "Do you wish to exit the quizz ?",
@@ -37,13 +42,18 @@ function LevelAssesment(props) {
                 },
                 {
                     text: "Yes",
-                    onPress: () => props.navigation.navigate('UserHome'),
+                    onPress: handleExit,
                     style:"default"
                 },
                 
             ],
             {cancelable:true}
         )
+        
+    }
+    const handleExit = () => {
+        setIndex(0);
+        props.navigation.navigate('UserHome');
     }
     return (
         <React.Fragment> 
@@ -58,5 +68,11 @@ function LevelAssesment(props) {
     )
 }
 
-export default LevelAssesment;
+const mapStateToProps = (state) => {
+    return {
+        quizzState:state.assesmentData
+    }
+}
+
+export default connect(mapStateToProps,null)(LevelAssesment);
 

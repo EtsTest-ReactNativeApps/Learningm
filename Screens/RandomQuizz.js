@@ -6,10 +6,12 @@ import { quizzData } from '../QuizzData';
 function RandomQuizz(props) {
     const [index, setIndex] = React.useState(0);
     const [questionData,setQuestionData] = React.useState({...quizzData[index]})
-    const [answered, setAnswered] = React.useState(false);
-    console.log("qsndata",questionData)
-    const checkCorrect = () => {
-        setAnswered(true);
+    const [answered, setAnswered] = React.useState(null);
+    const [points, setPoints] = React.useState(0);
+    const [isGameOver, setGameOver] = React.useState(false);
+    // console.log("qsndata",questionData)
+    const checkCorrect = (answer) => {
+        setAnswered(answer);
         setTimeout(() => {
             handleNext()
         },800)
@@ -37,13 +39,18 @@ function RandomQuizz(props) {
                 },
                 {
                     text: "Yes",
-                    onPress: () => props.navigation.navigate('UserHome'),
+                    onPress: handleExit,
                     style:"default"
                 },
                 
             ],
-            {cancelable:true}
+            { cancelable: true },
         )
+    }
+
+    const handleExit = () => {
+        setIndex(0);
+        props.navigation.navigate('UserHome');
     }
     return (
         <React.Fragment> 

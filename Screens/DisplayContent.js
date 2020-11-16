@@ -36,6 +36,15 @@ function DisplayContents(props) {
     sound.loadAsync({ uri: content.audioPath },status,false)
     
     const handleVisible = () => {
+        if (index + 1 > userProgData.CONTENT.completedWords) {
+            // console.log("2nd ",index,userProgData.CONTENT.completedWords)
+            props.updateProgress({
+                ...userProgData.CONTENT,
+                completedWords: userProgData.CONTENT.completedWords + wordIncrement,
+                totalCompletedWords: userProgData.CONTENT.totalCompletedWords + wordIncrement,
+                userScore:userProgData.CONTENT.userScore + wordProgressScore
+            })
+        }
         setVisible(!isVisible)
     }
 
@@ -162,6 +171,9 @@ function DisplayContents(props) {
                             isVisible={isVisible}
                             setVisible={handleVisible}
                             navigation={navigation}
+                            levelId={userProgData.CONTENT.currLevelId}
+                            languageId={userProgData.CONTENT.languageId}
+
                         /> :
                         null
                 }

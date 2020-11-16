@@ -34,13 +34,17 @@ const LeftComponent = (props) => {
 }
 
 const RightComponent = (props) => {
+
+    const handleQuizz = () => {
+        props.navigation.navigate('quizzPage')
+    }
     return (
         <Icon
             name="school"
             type='material'
             size={40}
             color='white'
-            onPress={() => props.navigation.navigate('quizzPage')}
+            onPress={handleQuizz}
     />
     )
 }

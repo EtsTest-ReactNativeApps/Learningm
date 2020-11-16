@@ -1,8 +1,8 @@
 
-import {all,fork,take,takeEvery} from "redux-saga/effects";
+import {all,fork,take,takeEvery, takeLatest} from "redux-saga/effects";
 import {signUpHandler,logInHandler,logOutHandler,languageChooseHandler} from './userSaga';
 import { getLevelHandler, getLevelContentHandler,resetLevelContentHandler,resetLevelHandler } from './levelSaga';
-import {updateProgressHandler,setUserProgressHandler,resetUserProgressHandler} from './userProgressSaga'
+import {updateProgressHandler,setUserProgressHandler,resetUserProgressHandler,getQuizzz,getLevelAssesmnt} from './userProgressSaga'
 
 function* userSignup(){
     yield takeEvery('SIGNUP_REQUEST',signUpHandler);
@@ -39,6 +39,14 @@ function* resetUserProgSaga() {
 function* setProgressSaga() {
     yield takeEvery('SETUSERPROGRESS', setUserProgressHandler);
 }
+function* assesmentSaga() {
+    yield take('GET_LEVEL_ASSMNT',getLevelAssesmnt)
+}
+ 
+function* quizzSaga() {
+    yield takeEvery('GET_QUIZZ_DATA',getQuizzz)
+}
+
 export function* sagas(){
     yield all([
         fork(userSignup),
@@ -52,5 +60,7 @@ export function* sagas(){
         fork(setProgressSaga),
         fork(updateProgress),
         fork(resetUserProgSaga),
+        fork(assesmentSaga),
+        fork(quizzSaga),
     ])
 }

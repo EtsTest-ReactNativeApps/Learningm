@@ -1,18 +1,25 @@
 import React from 'react';
 import {View,Text,StyleSheet} from 'react-native';
 import { Overlay,Button } from 'react-native-elements';
-
-
+import { connect } from 'react-redux';
+import {getlevelAssesment} from '../actions/index'
 function OverLayModal(props) {
     const {isVisible,setVisible} = props
     const handleYes = () => {
-        // console.log(props)
-        setVisible()
-        props.navigation.navigate('assesmentPage')
+        props.getLevelAssesment({
+            fk_languageId: props.languageId,
+            fk_levelId:props.levelId
+        })
     }
     const handleNo = () => {
         props.navigation.navigate("levelDetail")
     }
+//navigate to assesment page
+    React.useEffect(() => {
+        if (props.quizzState.CONTENT.STS == '200') {
+            props.navigation.navigate('assesmentPage')
+        }
+    },[props.quizzState])
     return (
         
             <Overlay
@@ -48,7 +55,17 @@ function OverLayModal(props) {
     )
 }
 
-export default OverLayModal;
+const mapDispatchToProps = (dispatch) => ({
+    getLevelAssesment:(data) => dispatch(getlevelAssesment(data)),
+})
+
+const mapStateToProps = (state) => {
+    return {
+        quizzState :state.assesmentData
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(OverLayModal);
 
 const styles = StyleSheet.create({
     overLayView: {

@@ -73,3 +73,25 @@ export function* getQuizzz(action) {
         })
     }
 }
+
+export function* getLevelAssesmnt(action) {
+    try {
+        const quizzData = yield call(ApiUser.getLevelAssesment, action);
+        if (quizzData.data.STS === '200') {
+            yield put({
+                type: 'GET_LEVEL_ASSMNT_SUCCESS',
+                payload:action.payload
+            })
+        } else {
+            yield put({
+                type: 'GET_LEVEL_ASSMNT_FAILURE',
+                payload:action.payload
+            })
+        }
+    } catch (err) {
+        yield put({
+            type: 'GET_LEVEL_ASSMNT_FAILURE',
+            payload:err
+        })
+    }
+}
