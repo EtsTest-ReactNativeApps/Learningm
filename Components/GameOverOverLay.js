@@ -1,38 +1,33 @@
 import React from 'react';
 import {View,Text,StyleSheet} from 'react-native';
 import { Overlay,Button } from 'react-native-elements';
-import { connect } from 'react-redux';
-import { getlevelAssesment } from '../actions/index';
-import GameOverOverLay from './GameOverOverLay';
-function OverLayModal(props) {
-    const {isVisible,setVisible} = props
+
+function GameOverOverLay(props) {
+    const {isGameOver,points} = props
     const handleYes = () => {
-        props.getLevelAssesment({
-            fk_languageId: props.languageId,
-            fk_levelId:props.levelId
-        })
+        props.navigation.navigate('assesmentPage')
     }
     const handleNo = () => {
         props.navigation.navigate("levelDetail")
     }
-//navigate to assesment page
-    React.useEffect(() => {
-        if (props.quizzState.CONTENT.STS == '200') {
-            props.navigation.navigate('assesmentPage')
-        }
-    },[props.quizzState])
+
     return (
         
             <Overlay
-                isVisible={isVisible}
-                onBackdropPress={setVisible}
+                isVisible={isGameOver}
+                // onBackdropPress={setVisible}
                 overlayStyle={styles.overLayView}
             >
                 <React.Fragment>
                 <View>
                     <Text style={styles.textStyle}>
-                        You have completed all the words .
-                        Do you wish to take the level assesment ? 
+                        Game Over !!!
+                    </Text>
+                    <Text style={styles.textStyle}>
+                        Your score is {points}
+                    </Text>
+                    <Text style={styles.textStyle}>
+                        Do you wish to take agian ?
                     </Text>
                 </View>
                 <View style={styles.buttonView}>
@@ -56,17 +51,9 @@ function OverLayModal(props) {
     )
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    getLevelAssesment:(data) => dispatch(getlevelAssesment(data)),
-})
 
-const mapStateToProps = (state) => {
-    return {
-        quizzState :state.assesmentData
-    }
-}
 
-export default connect(mapStateToProps,mapDispatchToProps)(OverLayModal);
+export default GameOverOverLay;
 
 const styles = StyleSheet.create({
     overLayView: {

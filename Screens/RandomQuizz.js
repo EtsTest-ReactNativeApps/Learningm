@@ -1,17 +1,22 @@
+import { forModalPresentationIOS } from '@react-navigation/stack/lib/typescript/src/TransitionConfigs/CardStyleInterpolators';
 import React from 'react';
 import {Alert} from 'react-native';
 import QuizzComponent from '../Components/QuizzComponent';
-import { quizzData } from '../QuizzData';
-
+import {quizScore} from '../environment'
+import {connect} from 'react-redux';
 function RandomQuizz(props) {
+    const {quizzState} = props
     const [index, setIndex] = React.useState(0);
-    const [questionData,setQuestionData] = React.useState({...quizzData[index]})
+    const [questionData,setQuestionData] = React.useState({...quizzState.CONTENT[index]})
     const [answered, setAnswered] = React.useState(null);
     const [points, setPoints] = React.useState(0);
     const [isGameOver, setGameOver] = React.useState(false);
     // console.log("qsndata",questionData)
     const checkCorrect = (answer) => {
         setAnswered(answer);
+        if (answerId === qsnId) {
+            setPoints(points+quizScore)
+        }
         setTimeout(() => {
             handleNext()
         },800)
@@ -23,8 +28,11 @@ function RandomQuizz(props) {
     }
 
     React.useEffect(() => {
-        if (quizzData[index]) {
-            setQuestionData({...quizzData[index]})
+        if (quizzState.CONTENT[index]) {
+            setQuestionData({...quizzState.CONTENT[index]})
+        }
+        else {
+            setGameOver(true)
         }
     },[index])
     const handleClose = () => {
@@ -64,6 +72,11 @@ function RandomQuizz(props) {
         </React.Fragment>
     )
 }
+const mapStateToProps = (state) => {
+    return {
+        quizzState:state.quizzData
+    }
+}
 
-export default RandomQuizz;
+export default connect(mapStateToProps,mapDispatchToProps)(RandomQuizz);
 

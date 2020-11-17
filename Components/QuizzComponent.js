@@ -1,187 +1,219 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import { Icon} from 'react-native-elements';
+import { Icon } from 'react-native-elements';
+import { Audio } from 'expo-av';
 import QuizzHeader from './QuizzHeader';
+import GameOverOverLay from './GameOverOverLay';
 
 
 function QuizzComponent(props) {
-    const { qsn, checkCorrect, answered, handleClose } = props
+    const { qsn, checkCorrect, answered, handleClose ,points,isGameOver} = props
     
+    Audio.setAudioModeAsync({
+        allowsRecordingIOS: false,
+        interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+        playsInSilentModeIOS: true,
+        interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DUCK_OTHERS,
+        shouldDuckAndroid: true,
+        staysActiveInBackground: false,
+        playThroughEarpieceAndroid: true
+    });
+    const sound = new Audio.Sound();
+    const status = {
+        shouldPlay:false
+    }
+    sound.loadAsync({ uri: qsn.quesContent.audioPath }, status, false)
+    const playSound = () => {
+        sound.playAsync().then(() => {
+            sound.replayAsync();
+        })
+    }
     return (
         <React.Fragment>
             <QuizzHeader   {...props} title="Assesment" handleClose={handleClose}/>
             <View style={styles.mainView}>
-                <View style={styles.qsnView}>
-                    <Text style={styles.qsnText}>{qsn.question}</Text>
-                    {
-                        qsn.questionType === 'WORD_TO_TRANS' ?
-                            (<Text style={styles.qsnText}>{qsn.quesContent.word}</Text>)
-                            : qsn.questionType === 'AUD_TO_TRANS' ?
-                                (
-                                    <Icon
-                                        name="volume-up"
-                                        type="font-awesome"
-                                        size={50}
-                                        />
-                                ) :
-                                qsn.questionType === 'AUD_TO_WORD' ?
-                                (
-                                    <Icon
-                                        name="volume-up"
-                                        type="font-awesome"
-                                        size={50}
-                                        />
-                                ) :
-                                    qsn.questionType === 'TRANS_TO_WORD' ?
-                                        (<Text style={styles.qsnText}>{qsn.quesContent.transcript}</Text>)
-                                : null    
-                    }
-                    
-                    
-                </View>
-                <View style={styles.optionView}>
-                    
-                    {
-                        qsn.questionType === 'WORD_TO_TRANS' ?
-                            (
-                                <>
-                                    <OptionButton
-                                        option={qsn.option1.transcript}
-                                        checkCorrect={checkCorrect}
-                                        answered={answered}
-                                        qsnId={qsn.quesContent.contentId}
-                                        contentId={qsn.option1.contentId}
-                                    />
-                                    <OptionButton
-                                        option={qsn.option2.transcript}
-                                        checkCorrect={checkCorrect}
-                                        answered={answered}
-                                        qsnId={qsn.quesContent.contentId}
-                                        contentId={qsn.option2.contentId}
-                                    />
-                                    <OptionButton
-                                        option={qsn.option3.transcript}
-                                        checkCorrect={checkCorrect}
-                                        answered={answered}
-                                        qsnId={qsn.quesContent.contentId}
-                                        contentId={qsn.option3.contentId}
-                                    />
-                                    <OptionButton
-                                        option={qsn.option4.transcript}
-                                        checkCorrect={checkCorrect}
-                                        answered={answered}
-                                        qsnId={qsn.quesContent.contentId}
-                                        contentId={qsn.option4.contentId}
-                                    />
-                                </>    
-                            ) : qsn.questionType === 'AUD_TO_TRANS' ?
-                            (
-                                <>
-                                    <OptionButton
-                                        option={qsn.option1.transcript}
-                                        checkCorrect={checkCorrect}
-                                        answered={answered}
-                                        qsnId={qsn.quesContent.contentId}
-                                        contentId={qsn.option1.contentId}
-                                    />
-                                    <OptionButton
-                                        option={qsn.option2.transcript}
-                                        checkCorrect={checkCorrect}
-                                        answered={answered}
-                                        qsnId={qsn.quesContent.contentId}
-                                        contentId={qsn.option2.contentId}
-                                    />
-                                    <OptionButton
-                                        option={qsn.option3.transcript}
-                                        checkCorrect={checkCorrect}
-                                        answered={answered}
-                                        qsnId={qsn.quesContent.contentId}
-                                        contentId={qsn.option3.contentId}
-                                    />
-                                    <OptionButton
-                                        option={qsn.option4.transcript}
-                                        checkCorrect={checkCorrect}
-                                        answered={answered}
-                                        qsnId={qsn.quesContent.contentId}
-                                        contentId={qsn.option4.contentId}
-                                    />
+                {
+                    isGameOver ?
+                        <GameOverOverLay
+                            points={points}
+                            isGameOver={isGameOver}
+                        /> :
+                        (
+                            <>
+                                <View style={styles.qsnView}>
+                                    <Text style={styles.qsnText}>{qsn.question}</Text>
+                                    {
+                                        qsn.questionType === 'WORD_TO_TRANS' ?
+                                            (<Text style={styles.qsnText}>{qsn.quesContent.word}</Text>)
+                                            : qsn.questionType === 'AUD_TO_TRANS' ?
+                                                (
+                                                    <Icon
+                                                        name="volume-up"
+                                                        type="font-awesome"
+                                                        size={50}
+                                                        onPress={playSound}
+                                                        />
+                                                ) :
+                                                qsn.questionType === 'AUD_TO_WORD' ?
+                                                (
+                                                    <Icon
+                                                        name="volume-up"
+                                                        type="font-awesome"
+                                                        size={50}
+                                                        onPress ={playSound}
+                                                        />
+                                                ) :
+                                                    qsn.questionType === 'TRANS_TO_WORD' ?
+                                                        (<Text style={styles.qsnText}>{qsn.quesContent.transcript}</Text>)
+                                                : null    
+                                    }
                                     
-                                </>    
-                                ) : qsn.questionType === 'AUD_TO_WORD' ?
                                     
-                                (
-                                    <>
-                                        <OptionButton
-                                            option={qsn.option1.word}
-                                            checkCorrect={checkCorrect}
-                                            answered={answered}
-                                            qsnId={qsn.quesContent.contentId}
-                                            contentId={qsn.option1.contentId}
-                                        />
-                                        <OptionButton
-                                            option={qsn.option2.word}
-                                            checkCorrect={checkCorrect}
-                                            answered={answered}
-                                            qsnId={qsn.quesContent.contentId}
-                                            contentId={qsn.option2.contentId}
-                                        />
-                                        <OptionButton
-                                            option={qsn.option3.word}
-                                            checkCorrect={checkCorrect}
-                                            answered={answered}
-                                            qsnId={qsn.quesContent.contentId}
-                                            contentId={qsn.option3.contentId}
-                                        />
-                                        <OptionButton
-                                            option={qsn.option4.word}
-                                            checkCorrect={checkCorrect}
-                                            answered={answered}
-                                            qsnId={qsn.quesContent.contentId}
-                                            contentId={qsn.option4.contentId}
-                                        />
-                                        
-                                    </>    
-                                    ) :
-                                    qsn.questionType === 'TRANS_TO_WORD' ?
-                                    (
-                                        <>
-                                            <OptionButton
-                                                option={qsn.option1.word}
-                                                checkCorrect={checkCorrect}
-                                                answered={answered}
-                                                qsnId={qsn.quesContent.contentId}
-                                                contentId={qsn.option1.contentId}
-                                            />
-                                            <OptionButton
-                                                option={qsn.option2.word}
-                                                checkCorrect={checkCorrect}
-                                                answered={answered}
-                                                qsnId={qsn.quesContent.contentId}
-                                                contentId={qsn.option2.contentId}
-                                            />
-                                            <OptionButton
-                                                option={qsn.option3.word}
-                                                checkCorrect={checkCorrect}
-                                                answered={answered}
-                                                qsnId={qsn.quesContent.contentId}
-                                                contentId={qsn.option3.contentId}
-                                            />
-                                            <OptionButton
-                                                option={qsn.option4.word}
-                                                checkCorrect={checkCorrect}
-                                                answered={answered}
-                                                qsnId={qsn.quesContent.contentId}
-                                                contentId={qsn.option4.contentId}
-                                            />
-                                        </>    
-                                        ):null
-                                
-                    }
+                                </View>
+                                <View style={styles.optionView}>
+                                    
+                                    {
+                                        qsn.questionType === 'WORD_TO_TRANS' ?
+                                            (
+                                                <>
+                                                    <OptionButton
+                                                        option={qsn.option1.transcript}
+                                                        checkCorrect={checkCorrect}
+                                                        answered={answered}
+                                                        qsnId={qsn.quesContent.contentId}
+                                                        contentId={qsn.option1.contentId}
+                                                    />
+                                                    <OptionButton
+                                                        option={qsn.option2.transcript}
+                                                        checkCorrect={checkCorrect}
+                                                        answered={answered}
+                                                        qsnId={qsn.quesContent.contentId}
+                                                        contentId={qsn.option2.contentId}
+                                                    />
+                                                    <OptionButton
+                                                        option={qsn.option3.transcript}
+                                                        checkCorrect={checkCorrect}
+                                                        answered={answered}
+                                                        qsnId={qsn.quesContent.contentId}
+                                                        contentId={qsn.option3.contentId}
+                                                    />
+                                                    <OptionButton
+                                                        option={qsn.option4.transcript}
+                                                        checkCorrect={checkCorrect}
+                                                        answered={answered}
+                                                        qsnId={qsn.quesContent.contentId}
+                                                        contentId={qsn.option4.contentId}
+                                                    />
+                                                </>    
+                                            ) : qsn.questionType === 'AUD_TO_TRANS' ?
+                                            (
+                                                <>
+                                                    <OptionButton
+                                                        option={qsn.option1.transcript}
+                                                        checkCorrect={checkCorrect}
+                                                        answered={answered}
+                                                        qsnId={qsn.quesContent.contentId}
+                                                        contentId={qsn.option1.contentId}
+                                                    />
+                                                    <OptionButton
+                                                        option={qsn.option2.transcript}
+                                                        checkCorrect={checkCorrect}
+                                                        answered={answered}
+                                                        qsnId={qsn.quesContent.contentId}
+                                                        contentId={qsn.option2.contentId}
+                                                    />
+                                                    <OptionButton
+                                                        option={qsn.option3.transcript}
+                                                        checkCorrect={checkCorrect}
+                                                        answered={answered}
+                                                        qsnId={qsn.quesContent.contentId}
+                                                        contentId={qsn.option3.contentId}
+                                                    />
+                                                    <OptionButton
+                                                        option={qsn.option4.transcript}
+                                                        checkCorrect={checkCorrect}
+                                                        answered={answered}
+                                                        qsnId={qsn.quesContent.contentId}
+                                                        contentId={qsn.option4.contentId}
+                                                    />
+                                                    
+                                                </>    
+                                                ) : qsn.questionType === 'AUD_TO_WORD' ?
+                                                    
+                                                (
+                                                    <>
+                                                        <OptionButton
+                                                            option={qsn.option1.word}
+                                                            checkCorrect={checkCorrect}
+                                                            answered={answered}
+                                                            qsnId={qsn.quesContent.contentId}
+                                                            contentId={qsn.option1.contentId}
+                                                        />
+                                                        <OptionButton
+                                                            option={qsn.option2.word}
+                                                            checkCorrect={checkCorrect}
+                                                            answered={answered}
+                                                            qsnId={qsn.quesContent.contentId}
+                                                            contentId={qsn.option2.contentId}
+                                                        />
+                                                        <OptionButton
+                                                            option={qsn.option3.word}
+                                                            checkCorrect={checkCorrect}
+                                                            answered={answered}
+                                                            qsnId={qsn.quesContent.contentId}
+                                                            contentId={qsn.option3.contentId}
+                                                        />
+                                                        <OptionButton
+                                                            option={qsn.option4.word}
+                                                            checkCorrect={checkCorrect}
+                                                            answered={answered}
+                                                            qsnId={qsn.quesContent.contentId}
+                                                            contentId={qsn.option4.contentId}
+                                                        />
+                                                        
+                                                    </>    
+                                                    ) :
+                                                    qsn.questionType === 'TRANS_TO_WORD' ?
+                                                    (
+                                                        <>
+                                                            <OptionButton
+                                                                option={qsn.option1.word}
+                                                                checkCorrect={checkCorrect}
+                                                                answered={answered}
+                                                                qsnId={qsn.quesContent.contentId}
+                                                                contentId={qsn.option1.contentId}
+                                                            />
+                                                            <OptionButton
+                                                                option={qsn.option2.word}
+                                                                checkCorrect={checkCorrect}
+                                                                answered={answered}
+                                                                qsnId={qsn.quesContent.contentId}
+                                                                contentId={qsn.option2.contentId}
+                                                            />
+                                                            <OptionButton
+                                                                option={qsn.option3.word}
+                                                                checkCorrect={checkCorrect}
+                                                                answered={answered}
+                                                                qsnId={qsn.quesContent.contentId}
+                                                                contentId={qsn.option3.contentId}
+                                                            />
+                                                            <OptionButton
+                                                                option={qsn.option4.word}
+                                                                checkCorrect={checkCorrect}
+                                                                answered={answered}
+                                                                qsnId={qsn.quesContent.contentId}
+                                                                contentId={qsn.option4.contentId}
+                                                            />
+                                                        </>    
+                                                        ):null
+                                                
+                                    } 
+                                </View>
+                            </>
 
-                            
-                        
-                    
-                </View>
+                        )
+                }
+                
             </View>
         </React.Fragment>
     )
@@ -197,7 +229,7 @@ const OptionButton = (props) => {
             styles.Correctoption : contentId === answered ?
                 styles.WrongOption :styles.option
         }
-             onPress={() =>option.checkCorrect(contentId)}
+             onPress={() =>option.checkCorrect(contentId,qsnId)}
         >
                 <Text style={styles.optionText}>
                     {option}
@@ -223,7 +255,7 @@ const styles = StyleSheet.create({
         // margin: 20,
         padding:20,
         flexDirection: "row",
-        justifyContent:"space-between",
+        justifyContent:"space-around",
         alignItems: "center",
         width: "100%",
     },

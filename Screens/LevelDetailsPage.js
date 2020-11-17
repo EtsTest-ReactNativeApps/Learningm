@@ -15,9 +15,7 @@ function LevelDetailsPage(props){
     return(
         <React.Fragment>
             <CustomHeader {...props} title="Introduction"/>
-            <ScrollView
-            contentContainerStyle={styles.detailView}
-            >
+            <ScrollView style={styles.detailView}>
                         {
                             levelContent.CONTENT.map((content,index)=> (
                                 <TouchableOpacity

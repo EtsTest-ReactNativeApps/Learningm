@@ -1,17 +1,34 @@
 import React from 'react';
 import { StyleSheet, Image,TouchableOpacity } from 'react-native';
-import {Header,Icon} from "react-native-elements";
+import { Header, Icon } from "react-native-elements";
+import { connect } from 'react-redux';
+import {getQuizzData} from '../actions/index'
 // import { Icon } from 'react-native-vector-icons/Icon';
 
 
-function CustomHeader(props){
-    // console.log(props)
+function CustomHeader(props) {
+    
+    const { quizzData, userProg } = props
+    
+    const handleQuizz = () => {
+        props.getQuizz({
+            fk_languageId:userProg.CONTENT.languageId,
+            levelSerialNo:userProg.CONTENT.currLevelId
+        })
+        
+    }
+    React.useEffect(() => {
+        if (props.quizzData.STS === '200') {
+            props.navigation.navigate('quizzPage')
+        }
+    },[props.quizzData])
+    
     return (
         <React.Fragment>
             <Header
                 leftComponent={<LeftComponent {...props}/>}
                 centerComponent={{text:`${props.title}`,style:{color: '#fff',fontSize:30}}}
-                rightComponent={<RightComponent  {...props}/>}
+                rightComponent={<RightComponent  {...props} handleQuizz={handleQuizz}/>}
                 linearGradientProps={{
                     colors: ['#399668','#33898f'],
                 }}
@@ -22,7 +39,18 @@ function CustomHeader(props){
     )
 }
 
-export default CustomHeader;
+const mapStateToProps = (state) => {
+    return {
+        quizzData: state.quizzData,
+        userProg:state.userProgress
+    }
+}
+
+const mapDispatchToProps = dispatch => ({
+    getQuizz:(data) => dispatch(getQuizzData(data)),
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(CustomHeader);
 const LeftComponent = (props) => {
     return(
         <TouchableOpacity 
@@ -35,16 +63,14 @@ const LeftComponent = (props) => {
 
 const RightComponent = (props) => {
 
-    const handleQuizz = () => {
-        props.navigation.navigate('quizzPage')
-    }
+    
     return (
         <Icon
             name="school"
             type='material'
             size={40}
             color='white'
-            onPress={handleQuizz}
+            onPress={props.handleQuizz}
     />
     )
 }
