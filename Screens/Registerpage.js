@@ -16,7 +16,7 @@ function RegisterPage(props) {
         email:'',
         userPassword:'',
     })
-    const [isLoading,setLoading] =React.useState(true);
+    const [isLoading,setLoading] =React.useState(false);
     const [error,setError] =React.useState({
         fNameErr:'',
         lNameErr:'',
@@ -149,12 +149,16 @@ function RegisterPage(props) {
             props.signup({
                 ...data
             }) 
+        setLoading(true)
     }
     React.useEffect(()=>{
         if(props.userState.isLogedIN){
-            setLoading(true)
-            // console.log(props.userState)
+            setLoading(false)
             navigation.navigate("Language")
+        }
+        else {
+            setLoading(false)
+            // alert("Sign in failed try again")
         }
     },[props.userState])
 
@@ -267,7 +271,7 @@ function RegisterPage(props) {
                             <TouchableOpacity
                                 style={styles.signIn}
                                 onPress={onSubmit}
-                                disabled={isDissable}
+                                disabled={isDissable || isLoading}
                             >
                             <LinearGradient
                                 colors={['#33898f', '#01ab9d']}
@@ -294,9 +298,15 @@ function RegisterPage(props) {
                 </ScrollView>
             </Animatable.View>
             {
-                isLoading?<ActivityIndicator/>:
-                null
-            }
+                isLoading?(
+                          
+                    <ActivityIndicator
+                      size="large"
+                      color="#c2be46"
+                      style={styles.activityStyle}
+                    />
+                  )
+                : null}
         </View>
   );
 }
@@ -379,5 +389,11 @@ const styles = StyleSheet.create({
     },
     color_textPrivate: {
         color: 'grey'
-    }
+    },
+    activityStyle: {
+        position: "absolute",
+        top: "50%",
+        left: "45%",
+        zIndex:1
+      }
   });

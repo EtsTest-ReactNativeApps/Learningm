@@ -7,7 +7,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {connect} from 'react-redux';
 import {logInRequest} from '../actions/index'
 function LoginPage(props) {
-  const {navigation} =props
+  const { navigation } = props
+  const [loading,setLoading] = React.useState(false)
   // let {userState} = props
   const [data,setData] =React.useState({
     userEmailId:'',
@@ -55,12 +56,19 @@ const validatePass =() =>{
         props.login({
           ...data
         })
+    setLoading(true)
 
   }
   React.useEffect(() =>{
     // console.log(userState)
-    if(props.userState.isLogedIN){
+    if (props.userState.isLogedIN) {
+      setLoading(false)
       navigation.navigate("Language")
+    }
+    else {
+      setTimeout(() => {
+        setLoading(false)
+      },2000)
     }
  },[props.userState])
   return (
@@ -116,6 +124,7 @@ const validatePass =() =>{
                   <TouchableOpacity
                       style={styles.signIn}
                      onPress={onSubmit}
+                     disabled={loading}
                   >
                       <LinearGradient
                           colors={['#33898f', '#01ab9d']}
@@ -141,6 +150,16 @@ const validatePass =() =>{
                 </View>
             </ScrollView>
           </Animatable.View>
+                {loading ? 
+                        (
+                          
+                              <ActivityIndicator
+                                size="large"
+                                color="#c2be46"
+                                style={styles.activityStyle}
+                              />
+                            )
+                          : null}
     </View>
   );
 }

@@ -4,14 +4,27 @@ import {Card} from 'react-native-elements'
 import CustomHeader from '../Components/CustomHeader';
 import CustomWordCard from '../Components/CustomWordCard';
 import {connect} from 'react-redux';
-
-function LevelDetailsPage(props){
+import { FAB } from 'react-native-paper';
+function LevelDetailsPage(props) {
+    const [visibleButton, setVisibleButton] = React.useState(false);
     const { levelContent, navigation,userProgData } = props
     const handleClick = (index) => {
         navigation.navigate("contentsPage",{
             index:index
         })
     }
+
+    React.useEffect(() => {
+        if (props.route.params.levlId === userProgData.CONTENT.currLevelId &&
+            userProgData.CONTENT.completedWords === levelContent.CONTENT.length)
+         {
+            setVisibleButton(true)
+        }
+        else {
+            setVisibleButton(false)
+        }
+    },[userProgData.CONTENT.completedWords,userProgData.CONTENT.currLevelId])
+
     return(
         <React.Fragment>
             <CustomHeader {...props} title="Introduction"/>
@@ -24,13 +37,24 @@ function LevelDetailsPage(props){
                                 >
                                     <CustomWordCard
                                         word={content.word}
-                                        isCompleted={index+1 <= userProgData.CONTENT.completedWords}
+                                        isCompleted={content.fk_levelId < userProgData.CONTENT.currLevelId ?
+                                            true:index+1 <= userProgData.CONTENT.completedWords}
                                     />
+                                    {/* {console.log(content.fk_levelId,)} */}
                                 </TouchableOpacity>
                             )) 
                         }
                 </ScrollView>
-                
+                {
+                    visibleButton?(
+                        <FAB
+                            style={styles.fab}
+                            label="take Assesment"
+                            icon="pencil"
+                            onPress={() => props.navigation.navigate('assesmentPage')}
+                        />
+                    ):null
+                }
         </React.Fragment>
     )
 }
@@ -51,4 +75,10 @@ const styles = StyleSheet.create({
         height: "100%",
         backgroundColor:"white"
     },
+    fab: {
+        position: 'absolute',
+        margin: 16,
+        right: 0,
+        bottom: 0,
+      },
 })

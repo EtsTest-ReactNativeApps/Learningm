@@ -1,11 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View ,TouchableOpacity,Image} from 'react-native';
+import { StyleSheet, Text, View ,TouchableOpacity,Image,ActivityIndicator} from 'react-native';
 import {connect} from 'react-redux'
 import * as Google from 'expo-google-app-auth';
 import {signUpRequest} from '../actions/index'
 function RegisterOptionPage(props) {
-  const {navigation} = props
-  //google sign up function
+  const { navigation } = props
+  const [loading,setLoading] = React.useState(false)
+  // google sign up function
   const signIn = async() =>{
     try{
         await Google.logInAsync({
@@ -19,6 +20,7 @@ function RegisterOptionPage(props) {
                 email:result.user.email,
                 userPassword:result.user.id
             })
+            setLoading(true);
           } else {
             console.log("canceled")
           }
@@ -29,8 +31,15 @@ function RegisterOptionPage(props) {
 }
 // after signup checking the user?
 React.useEffect(() =>{
-  if(props.userState.isRegistered){
+  if (props.userState.isRegistered) {
+    setLoading(false)
     navigation.navigate('Language')
+  }
+  else {
+    setTimeout(() => {
+      setLoading(false)
+    }, 2000)
+    // alert("Signup failed try again ")
   }
 },[props.userState])
 
@@ -51,6 +60,7 @@ React.useEffect(() =>{
                             borderWidth: 1,
                             marginTop: 15
                         }]}
+                        disabled={loading}
                     >
                         <Text style={[styles.textSign, {
                             color: '#009387'
@@ -58,6 +68,7 @@ React.useEffect(() =>{
                 </TouchableOpacity>
                 <TouchableOpacity
                         onPress={() => navigation.navigate("RegisterPage")}
+                        disabled={loading}
                         style={[styles.signIn, {
                             borderColor: '#009387',
                             borderWidth: 1,
@@ -76,7 +87,17 @@ React.useEffect(() =>{
               >
                 <Text style={{fontSize:18,fontWeight:"700",color:"#399668"}}>Sig In</Text>
               </TouchableOpacity>
-        </View>
+      </View>
+              {loading ? 
+                        (
+                          
+                              <ActivityIndicator
+                                size="large"
+                                color="#c2be46"
+                                style={styles.activityStyle}
+                              />
+                            )
+                          : null}
     </View>
   );
 }
@@ -131,7 +152,13 @@ const styles = StyleSheet.create({
 textSign: {
     fontSize: 18,
     fontWeight: 'bold'
-},
+  },
+  activityStyle: {
+    position: "absolute",
+    top: "50%",
+    left: "45%",
+    zIndex:1
+  }
 
 });
 

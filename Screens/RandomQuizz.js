@@ -1,4 +1,3 @@
-import { forModalPresentationIOS } from '@react-navigation/stack/lib/typescript/src/TransitionConfigs/CardStyleInterpolators';
 import React from 'react';
 import {Alert} from 'react-native';
 import QuizzComponent from '../Components/QuizzComponent';
@@ -78,5 +77,5 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(RandomQuizz);
+export default connect(mapStateToProps,null)(RandomQuizz);
 

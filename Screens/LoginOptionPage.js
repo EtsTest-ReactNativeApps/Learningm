@@ -5,7 +5,7 @@ import * as Google from 'expo-google-app-auth';
 import {logInRequest,setUserProgressRequest,languageRequest,levelRequest} from '../actions/index'
 function LoginOptionPage(props) {
   const {navigation} = props
-
+  const [loading,setLoading] = React.useState(false)
   const signIn = async() =>{
     try{
         await Google.logInAsync({
@@ -17,6 +17,7 @@ function LoginOptionPage(props) {
                   userEmailId: result.user.email,
                   userPassword:result.user.id
                 })
+            setLoading(true)
             }else{
               console.log("caceled")
           }
@@ -27,8 +28,14 @@ function LoginOptionPage(props) {
 }
 React.useEffect(() =>{
   if (props.userState.isLogedIN) {
+    setLoading(false)
     // console.log("userstate",props.userState)
     navigation.navigate('Language')
+  }
+  else {
+    setTimeout(() => {
+      setLoading(false)
+    },2000)
   }
 },[props.userState])
   return (
@@ -43,6 +50,7 @@ React.useEffect(() =>{
         <View style={styles.buttonView}>
                 <TouchableOpacity
                         onPress={signIn}
+                        disabled={loading}
                         style={[styles.signIn, {
                             borderColor: '#009387',
                             borderWidth: 1,
@@ -55,6 +63,7 @@ React.useEffect(() =>{
                 </TouchableOpacity>
                 <TouchableOpacity
                         onPress={() => navigation.navigate("LoginPage")}
+                        disabled={loading}
                         style={[styles.signIn, {
                             borderColor: '#009387',
                             borderWidth: 1,
@@ -74,6 +83,16 @@ React.useEffect(() =>{
                 <Text style={{fontSize:18,fontWeight:"700",color:"#399668"}}>Register</Text>
               </TouchableOpacity>
         </View>
+                {loading ? 
+                        (
+                          
+                              <ActivityIndicator
+                                size="large"
+                                color="#c2be46"
+                                style={styles.activityStyle}
+                              />
+                            )
+                          : null}
     </View>
   );
 }
@@ -129,7 +148,13 @@ const styles = StyleSheet.create({
 textSign: {
     fontSize: 18,
     fontWeight: 'bold'
-},
+  },
+  activityStyle: {
+    position: "absolute",
+    top: "50%",
+    left: "45%",
+    zIndex:1
+  }
 
 });
 

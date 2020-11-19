@@ -16,7 +16,7 @@ function LanguagePage(props){
         "Hindi"
     ]
     const handleChose = (l) => {
-        console.log("handlechoose")
+        // console.log("handlechoose")
         props.getLevel({
             "fk_languageId":1  
         })

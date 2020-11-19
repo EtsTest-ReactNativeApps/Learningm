@@ -9,8 +9,15 @@ import {logOutRequest,resetLevelReq,resetLevelContent,resetUserProgress} from '.
 function ProfilePage(props) {
     
     const { user, level, levelContent,userProg } = props
-    console.log(levelContent)
+    // console.log(level)
 
+    let totalMaxScore =0
+
+    level.CONTENT.forEach((l,i) => {
+        totalMaxScore +=l.levelMaxScore
+    });
+
+    // console.log(totalMaxScore)
     const handleLogout = () => {
         props.resetUser(user)
         props.resetLevel(level)
@@ -42,11 +49,11 @@ function ProfilePage(props) {
                         color="orange"
                     />
                     <View style={{ width: "70%", justifyContent: "flex-end" }}>
-                        <Text style={{ fontSize: 15, fontWeight: "bold", marginLeft: 10 }}>+{200} points to next level </Text>
+                        <Text style={{ fontSize: 15, fontWeight: "bold", marginLeft: 10 }}>{userProg.CONTENT.userScore} points out of {totalMaxScore} </Text>
                         <ProgressBarAndroid
                                 styleAttr="Horizontal" 
                                 indeterminate={false} 
-                                progress={0} 
+                                progress={userProg.CONTENT.userScore/totalMaxScore} 
                                 color="yellow" 
                                 style={{width:"100%"}}
                             />
@@ -66,7 +73,7 @@ function ProfilePage(props) {
                     >
                         <View style={{flexDirection:"row",justifyContent:"flex-start"}}>
                             <Text style={styles.cardText}>Words Completed:</Text>
-                            <Text style={{ ...styles.cardText, color: "#54718f", marginLeft: 20 }}>{userProg.CONTENT.completedWords}</Text>
+                            <Text style={{ ...styles.cardText, color: "#54718f", marginLeft: 20 }}>{userProg.CONTENT.totalCompletedWords}</Text>
                         </View> 
                         
                     </Card>

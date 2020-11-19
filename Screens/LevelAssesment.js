@@ -1,30 +1,35 @@
 import React from 'react';
-import {Alert} from 'react-native';
+import {Alert,Text} from 'react-native';
 import QuizzComponent from '../Components/QuizzComponent';
 import {quizScore} from '../environment'
 import { quizzData } from '../QuizzData';
 import { connect } from 'react-redux';
-import {getQuizzData} from '../actions/index'
+// import {getQuizzData} from '../actions/index'
 function LevelAssesment(props) {
+    // console.log("quizz state", props.quizzState.CONTENT)
+    const {quizzState} =props
     const [index, setIndex] = React.useState(0);
     const [questionData,setQuestionData] = React.useState({...quizzState.CONTENT[index]})
     const [answered, setAnswered] = React.useState(null);
     const [points, setPoints] = React.useState(0);
     const [isGameOver, setGameOver] = React.useState(false);
-    // console.log("qsndata",questionData)
-    const {quizzState} =props
+    const totalQsn = quizzState.CONTENT.length
+    const [currQsn, setCurrQsn] = React.useState(1);
+    
     const checkCorrect = (answerId,qsnId) => {
-        setAnswered(answer);
+        setAnswered(answerId);
         if (answerId === qsnId) {
             setPoints(points+quizScore)
         }
         setTimeout(() => {
             handleNext()
+            
         },800)
     }
 
     const handleNext = () => {
         setIndex(index + 1)
+        setCurrQsn(currQsn+1)
         setAnswered(false)
     }
 
@@ -72,7 +77,10 @@ function LevelAssesment(props) {
                 handleClose={handleClose}
                 points={points}
                 isGameOver={isGameOver}
+                totalQsn={totalQsn}
+                currQsn={currQsn}
             />
+            
         </React.Fragment>
     )
 }

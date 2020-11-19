@@ -21,11 +21,11 @@ export default class ApiUser {
         // console.log("level action call")
         const url = `${ROOT_URL}/adminSecure/getAllLevels`;
         const request = await axios.post(url, action.payload);
-        console.log("level data",request)
+        // console.log("level data",request)
         return request;
     }
     static async fetchLevelContents(action) {
-        console.log(action.payload)
+        // console.log(action.payload)
         const url = `${ROOT_URL}/adminSecure/getAllContent`;
         const request = await axios.post(url,action.payload);
         return request;
@@ -47,10 +47,10 @@ export default class ApiUser {
         return request;
     }
     static async getLevelAssesment(action) {
+        // console.log("level assesment api call",action.payload)
         const url = `${ROOT_URL}/lgmQuiz/getLevelAssesment`;
-
         const request = await axios.post(url, action.payload);
-
+        // console.log(request)
         return request;
     }
 }

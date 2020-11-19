@@ -3,10 +3,10 @@ import {View,Text,StyleSheet} from 'react-native';
 import { Overlay,Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { getlevelAssesment } from '../actions/index';
-import GameOverOverLay from './GameOverOverLay';
 function OverLayModal(props) {
     const {isVisible,setVisible} = props
     const handleYes = () => {
+        // console.log(props)
         props.getLevelAssesment({
             fk_languageId: props.languageId,
             fk_levelId:props.levelId
@@ -17,9 +17,13 @@ function OverLayModal(props) {
     }
 //navigate to assesment page
     React.useEffect(() => {
-        if (props.quizzState.CONTENT.STS == '200') {
-            props.navigation.navigate('assesmentPage')
+        // console.log(props.quizzState.STS)
+        if (props.quizzState.STS === '200') {
+            setVisible(false)
+            // console.log(props.quizzState)
+            props.navigation.navigate("assesmentPage")
         }
+        
     },[props.quizzState])
     return (
         

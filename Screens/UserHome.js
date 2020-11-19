@@ -2,23 +2,29 @@ import React from 'react';
 import { StyleSheet, ScrollView,TouchableOpacity,ActivityIndicator } from 'react-native';
 import CustomHeader from '../Components/CustomHeader';
 import CustomCards from '../Components/CustomCard';
-import {connect} from 'react-redux';
-import {levelContentRequest} from '../actions/index'
+import { connect } from 'react-redux';
+import { levelContentRequest } from '../actions/index';
+
 function UserHome(props){
   const { levels, userProgData } = props
-  // console.log(userProgData)
-  const [loading,setLoading] = React.useState(false)
+  const [loading, setLoading] = React.useState(false)
+  const [levlId,setLevelId] = React.useState(0)
   const handleClick = (l) =>{
-  setLoading(true)
+    setLoading(true)
+    setLevelId(l)
     props.getLevelContents({
       "fk_languageId":1,
       "fk_levelId":l 
     })
   }
+
+  
   React.useEffect(() =>{
     if (props.levelContent.STS === "200") {
       setLoading(false)
-      props.navigation.navigate("levelDetail")
+      props.navigation.navigate("levelDetail", {
+        levlId:levlId
+      })
     }
   },[props.levelContent])
   
@@ -35,24 +41,30 @@ function UserHome(props){
                           >
                             <CustomCards 
                               title={level.categoryName}
-                              completedWords={level.levelId == userProgData.CONTENT.currLevelId ? userProgData.CONTENT.completedWords:0}
+                              completedWords={userProgData.CONTENT.currLevelId > level.levelId ?
+                                userProgData.CONTENT.totalCompletedWords - userProgData.CONTENT.completedWords : userProgData.CONTENT.currLevelId == level.levelId ?
+                                userProgData.CONTENT.completedWords:0
+                              }
                               maxScore={level.levelMaxScore}
                               locked={!(level.levelId <= userProgData.CONTENT.currLevelId)}
-                              score={level.levelId == userProgData.CONTENT.currLevelId ? userProgData.CONTENT.userScore:0}
+                              score={userProgData.CONTENT.currLevelId > level.levelId ?
+                                level.levelMaxScore : userProgData.CONTENT.currLevelId == level.levelId ?
+                                userProgData.CONTENT.completedWords*10:0
+                              }
                             />
                           </TouchableOpacity>
                         ))
                       }
-                  {loading ? 
-                      (
-                        
-                            <ActivityIndicator
-                              size="large"
-                              color="#c2be46"
-                              style={styles.activityStyle}
-                            />
-                          )
-                        : null}
+                    {loading ? 
+                        (
+                          
+                              <ActivityIndicator
+                                size="large"
+                                color="#c2be46"
+                                style={styles.activityStyle}
+                              />
+                            )
+                          : null}
                     </ScrollView>
         </>
       

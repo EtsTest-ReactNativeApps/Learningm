@@ -3,12 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { Audio } from 'expo-av';
 import QuizzHeader from './QuizzHeader';
-import GameOverOverLay from './GameOverOverLay';
+import AssesmentOverOverlay from './AssesmentOverOverlay';
 
 
 function QuizzComponent(props) {
-    const { qsn, checkCorrect, answered, handleClose ,points,isGameOver} = props
-    
+    const { qsn, checkCorrect, answered, handleClose ,points,isGameOver,totalQsn,currQsn} = props
     Audio.setAudioModeAsync({
         allowsRecordingIOS: false,
         interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
@@ -34,15 +33,19 @@ function QuizzComponent(props) {
             <View style={styles.mainView}>
                 {
                     isGameOver ?
-                        <GameOverOverLay
+                        <AssesmentOverOverlay
                             points={points}
                             isGameOver={isGameOver}
+                            {...props}
                         /> :
                         (
                             <>
+                                
                                 <View style={styles.qsnView}>
-                                    <Text style={styles.qsnText}>{qsn.question}</Text>
-                                    {
+                                    <Text style={{...styles.qsnText,fontSize:22}}>{qsn.question}</Text>
+                                    <Text style={{ ...styles.qsnText,fontSize:18}}>{currQsn}/{totalQsn}</Text>
+                                </View>
+                                {
                                         qsn.questionType === 'WORD_TO_TRANS' ?
                                             (<Text style={styles.qsnText}>{qsn.quesContent.word}</Text>)
                                             : qsn.questionType === 'AUD_TO_TRANS' ?
@@ -68,8 +71,6 @@ function QuizzComponent(props) {
                                                 : null    
                                     }
                                     
-                                    
-                                </View>
                                 <View style={styles.optionView}>
                                     
                                     {
@@ -223,13 +224,13 @@ function QuizzComponent(props) {
 export default QuizzComponent;
 
 const OptionButton = (props) => {
-    const {answered,qsnId,contentId,option} =props
+    const {answered,qsnId,contentId,option,checkCorrect} =props
     return (
         <TouchableOpacity style={contentId === qsnId && answered ===qsnId ?
             styles.Correctoption : contentId === answered ?
                 styles.WrongOption :styles.option
         }
-             onPress={() =>option.checkCorrect(contentId,qsnId)}
+             onPress={() =>checkCorrect(contentId,qsnId)}
         >
                 <Text style={styles.optionText}>
                     {option}
@@ -255,12 +256,12 @@ const styles = StyleSheet.create({
         // margin: 20,
         padding:20,
         flexDirection: "row",
-        justifyContent:"space-around",
+        justifyContent:"space-between",
         alignItems: "center",
         width: "100%",
     },
     qsnText: {
-        fontSize: 22,
+        fontSize: 25,
         fontWeight: "bold",
         color: "#47705e",
     },
