@@ -7,7 +7,7 @@ import AssesmentOverOverlay from './AssesmentOverOverlay';
 
 
 function QuizzComponent(props) {
-    const { qsn, checkCorrect, answered, handleClose ,points,isGameOver,totalQsn,currQsn} = props
+    const { qsn, checkCorrect, answered, handleClose ,totalQsn,currQsn,title} = props
     Audio.setAudioModeAsync({
         allowsRecordingIOS: false,
         interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
@@ -29,18 +29,8 @@ function QuizzComponent(props) {
     }
     return (
         <React.Fragment>
-            <QuizzHeader   {...props} title="Assesment" handleClose={handleClose}/>
-            <View style={styles.mainView}>
-                {
-                    isGameOver ?
-                        <AssesmentOverOverlay
-                            points={points}
-                            isGameOver={isGameOver}
-                            {...props}
-                        /> :
-                        (
-                            <>
-                                
+            <QuizzHeader   {...props} title={title} handleClose={handleClose}/>
+            <View style={styles.mainView}>                
                                 <View style={styles.qsnView}>
                                     <Text style={{...styles.qsnText,fontSize:22}}>{qsn.question}</Text>
                                     <Text style={{ ...styles.qsnText,fontSize:18}}>{currQsn}/{totalQsn}</Text>
@@ -209,12 +199,7 @@ function QuizzComponent(props) {
                                                         ):null
                                                 
                                     } 
-                                </View>
-                            </>
-
-                        )
-                }
-                
+                                </View>   
             </View>
         </React.Fragment>
     )

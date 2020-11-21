@@ -65,21 +65,32 @@ function LevelAssesment(props) {
     }
     const handleExit = () => {
         setIndex(0);
+        // setGameOver(false)
         props.navigation.navigate('UserHome');
     }
     return (
         <React.Fragment> 
-            <QuizzComponent
-                {...props}
-                qsn={questionData}
-                checkCorrect={checkCorrect}
-                answered={answered}
-                handleClose={handleClose}
-                points={points}
-                isGameOver={isGameOver}
-                totalQsn={totalQsn}
-                currQsn={currQsn}
-            />
+            {
+                isGameOver ?
+                <AssesmentOverOverlay
+                    points={points}
+                    isGameOver={isGameOver}
+                    setGameOver={setGameOver}
+                    {...props}
+                    /> : (
+                        <QuizzComponent
+                        {...props}
+                        title="Assesment"
+                        qsn={questionData}
+                        checkCorrect={checkCorrect}
+                        answered={answered}
+                        handleClose={handleClose}
+                        totalQsn={totalQsn}
+                        currQsn={currQsn}
+                    />
+                )
+            }
+            
             
         </React.Fragment>
     )

@@ -5,7 +5,7 @@ import {updateUserProgess} from '../actions/index'
 import { connect } from 'react-redux';
 import {progressPercent} from '../environment'
 function AssesmentOverOverlay(props) {
-    const { isGameOver, points, userProg, levelsData } = props
+    const { isGameOver, points, userProg, levelsData,setGameOver} = props
     const [cleared,setcleared] = React.useState(false)
     let maxScore
     let currLevelIndex
@@ -45,7 +45,8 @@ function AssesmentOverOverlay(props) {
                 isLvlAsntComplt:"N"
             })
         }
-       setVisible(false)
+        setVisible(false)
+        setGameOver(false)
        props.navigation.navigate('UserHome')
     }
 
@@ -62,7 +63,6 @@ function AssesmentOverOverlay(props) {
                     </Text>
                     <Text style={styles.textStyle}>
                         Your score is {points}
-                       
                     </Text>
                     {
                         cleared ?

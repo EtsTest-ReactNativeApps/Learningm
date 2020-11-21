@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View ,TouchableOpacity,ScrollView,Platform} from 'react-native';
+import { StyleSheet, Text, View ,TouchableOpacity,ScrollView,Platform,ActivityIndicator} from 'react-native';
 import { Input } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 import { LinearGradient } from 'expo-linear-gradient';

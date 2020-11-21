@@ -8,12 +8,19 @@ import {getQuizzData} from '../actions/index'
 
 function CustomHeader(props) {
     
-    const { quizzData, userProg } = props
-    
+    const { userProg,levels} = props
+    let levSlno;
+    //geting levelsl no
+    levels.CONTENT.forEach(level => {
+        if (level.levelId === userProg.CONTENT.currLevelId) {
+            levSlno= level.levelSerialNo
+        }
+    });
+
     const handleQuizz = () => {
         props.getQuizz({
             fk_languageId:userProg.CONTENT.languageId,
-            levelSerialNo:userProg.CONTENT.currLevelId
+            levelSerialNo:levSlno
         })
         
     }
@@ -42,7 +49,8 @@ function CustomHeader(props) {
 const mapStateToProps = (state) => {
     return {
         quizzData: state.quizzData,
-        userProg:state.userProgress
+        userProg: state.userProgress,
+        levels:state.levelsData
     }
 }
 
@@ -65,13 +73,17 @@ const RightComponent = (props) => {
 
     
     return (
-        <Icon
+        <TouchableOpacity
+        onPress={props.handleQuizz}
+        >
+            <Icon
             name="school"
             type='material'
             size={40}
             color='white'
-            onPress={props.handleQuizz}
-    />
+            
+         />
+        </TouchableOpacity>
     )
 }
 const styles = StyleSheet.create({

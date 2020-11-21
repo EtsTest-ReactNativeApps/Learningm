@@ -88,10 +88,10 @@ const DrawerNavigation =() =>{
                 name="assesmentPage"
                 component={LevelAssesment}
               />
-              {/* <Drawer.Screen
+              <Drawer.Screen
                 name="quizzPage"
                 component={RandomQuizz}
-              /> */}
+              />
               
           </Drawer.Navigator>
   )

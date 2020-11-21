@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View ,TouchableOpacity,Image} from 'react-native';
+import { StyleSheet, Text, View ,TouchableOpacity,Image,ActivityIndicator} from 'react-native';
 import {connect} from 'react-redux'
 import * as Google from 'expo-google-app-auth';
 import {logInRequest,setUserProgressRequest,languageRequest,levelRequest} from '../actions/index'
