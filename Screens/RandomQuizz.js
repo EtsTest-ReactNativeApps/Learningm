@@ -1,10 +1,13 @@
 import React from 'react';
-import { Alert,StyleSheet,View,Text } from 'react-native';
+import { Alert,StyleSheet,View,Text,Image } from 'react-native';
 import { Overlay, Button } from 'react-native-elements';
 import QuizzComponent from '../Components/QuizzComponent';
 import {quizScore} from '../environment'
 import {connect} from 'react-redux';
-
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+  } from '../utils/react-native-responsive-screen';
 function RandomQuizz(props) {
     const {quizzState} = props
     const [index, setIndex] = React.useState(0);
@@ -111,16 +114,21 @@ const GameOverOverlay = ({ isVisible, points, handleExit }) => {
             >
                 <React.Fragment>
                     <View>
-                        <Text style={styles.textStyle}>
-                            Game Over !!!
-                        </Text>
-                        <Text style={styles.textStyle}>
-                            Your score is {points}
-                        </Text>
-                        <Text style={{ ...styles.textStyle,fontSize:18 }}>
-                            You can retake the test as much you want ..
+                    <Image
+                        style={styles.tinyLogo}
+                        source={{
+                            uri: 'https://media1.giphy.com/media/xUA7barHyuFW6RCF44/giphy.gif',
+                        }}
+                        
+                    />
+                    
+                    <Text style={{...styles.textStyle,fontSize:35,}}>
+                        You earned {points} points 
+                    </Text>
+                    <Text style={{...styles.textStyle,fontSize:20,color:"#f25633",}}>
+                        You can retake the test as much you want ..
                             
-                        </Text>
+                    </Text>
                     
                     </View>
                     <View style={styles.buttonView}>
@@ -138,15 +146,20 @@ const GameOverOverlay = ({ isVisible, points, handleExit }) => {
 
 const styles = StyleSheet.create({
     overLayView: {
-        width: "80%",
-        height: "30%",
+        width: wp("80%"),
+        height: hp("50%"),
         justifyContent:"space-around"
     },
+    tinyLogo: {
+        height: "50%",
+        width: "100%",
+        borderRadius:10
+    },
     textStyle: {
-        fontSize: 25,
+        fontSize: hp("3%"),
         fontWeight:"bold",
         textAlign: "center",
-        color:"#525c51"
+        color:"white"
     },
     buttonView: {
         width: "100%",

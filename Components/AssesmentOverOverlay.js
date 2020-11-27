@@ -1,5 +1,5 @@
 import React from 'react';
-import {View,Text,StyleSheet} from 'react-native';
+import {View,Text,StyleSheet,Image} from 'react-native';
 import { Overlay, Button } from 'react-native-elements';
 import {updateUserProgess} from '../actions/index'
 import { connect } from 'react-redux';
@@ -57,23 +57,32 @@ function AssesmentOverOverlay(props) {
                 overlayStyle={styles.overLayView}
             >
                 <React.Fragment>
-                <View>
-                    <Text style={styles.textStyle}>
-                        Game Over !!!
+                <View style={{flexGrow:0.5,justifyContent:"space-around"}}>
+                    {/* <Text style={{ ...styles.textStyle, fontSize: 50, color:"#f5ad31"}}>
+                        Game Over !!
+                    </Text> */}
+                    <Image
+                        style={styles.tinyLogo}
+                        source={{
+                            uri: 'https://media1.giphy.com/media/xUA7barHyuFW6RCF44/giphy.gif',
+                        }}
+                        
+                    />
+                    
+                    <Text style={{...styles.textStyle,fontSize:35,}}>
+                        You earned {points} points 
                     </Text>
-                    <Text style={styles.textStyle}>
-                        Your score is {points}
-                    </Text>
+                    
                     {
                         cleared ?
                             (
-                                <Text style={{...styles.textStyle,fontSize:20,color:"red"}}>
-                                    You have unlocked the next level congrats  !!
+                                <Text style={{...styles.textStyle,fontSize:20,color:"#67a35f"}}>
+                                    You have unlocked the {"\n"}next level congrats  !!
                                 </Text>
                             ) :
                             (
-                                <Text style={{...styles.textStyle,fontSize:20,color:"red"}}>
-                                    Retake the assement to unlock next level !
+                                <Text style={{...styles.textStyle,fontSize:20,color:"#f25633",}}>
+                                    Retake the assement to {"\n"}unlock next level !
                                 </Text>
                             )
                     }
@@ -82,7 +91,8 @@ function AssesmentOverOverlay(props) {
                     <Button
                         title="Ok"
                         onPress={handleYes}
-                        buttonStyle={{backgroundColor:"#67a35f"}}
+                        titleStyle={{fontSize:20}}
+                        buttonStyle={{backgroundColor:"#41abd1"}}
                         containerStyle={styles.containerStyle}
                     />
                 </View>
@@ -108,15 +118,21 @@ export default connect(mapStateToProps,mapDispatchToProps)(AssesmentOverOverlay)
 
 const styles = StyleSheet.create({
     overLayView: {
+        backgroundColor:"#c6fc14",
         width: "80%",
-        height: "30%",
+        height: "50%",
         justifyContent:"space-around"
+    },
+    tinyLogo: {
+        height: "50%",
+        width: "100%",
+        borderRadius:10
     },
     textStyle: {
         fontSize: 25,
         fontWeight:"bold",
         textAlign: "center",
-        color:"#525c51"
+        color:"white"
     },
     buttonView: {
         width: "100%",

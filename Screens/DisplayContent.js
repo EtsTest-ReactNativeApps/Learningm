@@ -8,7 +8,11 @@ import {connect} from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
 import {updateUserProgess} from '../actions/index'
 import OverLayModal from '../Components/OverLayModal';
-import {wordIncrement,wordProgressScore} from '../environment'
+import { wordIncrement, wordProgressScore } from '../environment';
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+  } from '../utils/react-native-responsive-screen';
 function DisplayContents(props) {
     const { userProgData ,navigation} = props
     const levelContent = props.levelContent.CONTENT;
@@ -136,11 +140,11 @@ function DisplayContents(props) {
                             </View>
                             <View style={styles.transcriptView}>
                                 <View>
-                                    <Text style={{...styles.textStyle,fontSize:22}}>English</Text>
+                                    <Text style={{...styles.textStyle,fontSize:hp("2.2%")}}>English</Text>
                                     <Text style={{ ...styles.textStyle, fontWeight: "normal", }}>{content.transcript}</Text>
                                 </View>
                                 <View>
-                                    <Text style={{...styles.textStyle,fontSize:20,}}>Literal Translation</Text>
+                                    <Text style={{...styles.textStyle,fontSize:hp("2.2%"),}}>Literal Translation</Text>
                                     <Text style={{ ...styles.textStyle, fontWeight: "normal" }}>{content.word}</Text>
                                 </View>
                             </View>
@@ -199,24 +203,23 @@ export default connect(mapStateToProps,mapDispatchToProps)(DisplayContents);
 const styles = StyleSheet.create({
     mainView:{
         flex:1,
-        width:"100%",
+        width:wp("100%"),
         alignItems: "center",
         backgroundColor:"white"
     },
     videoView: {
-        width:"100%",
-        height:'40%',
-        borderRadius:20
+        width:wp("100%"),
+        height:hp('40%'),
     },
     textStyle: {
         textAlign: "center",
-        fontSize: 20,
+        fontSize: hp("2.2%"),
         fontWeight: "bold",
         color: "#6f6285"   
     },
     contentView: {
-        height: "50%",
-        width: "100%",
+        height: hp("50%"),
+        width: wp("100%"),
         alignItems:"center",
         justifyContent:'space-evenly'
     },
@@ -225,24 +228,19 @@ const styles = StyleSheet.create({
         height:"30%"
     },
     buttonView: {
-        width:"90%",
+        width:wp("90%"),
     },
     button:{
         backgroundColor:"orange",
         justifyContent:"center",
         alignItems:"center",
         borderRadius:10,
-        height:45
-    },
-    controlBar:{
-        position:"absolute",
-        top:"45%",
-        left:"45%"
+        height:hp("5%")
     },
     activityStyle: {
         position: "absolute",
-        top: "40%",
-        left: "45%",
+        top:hp("40%"),
+        left: wp("45%"),
         zIndex:1
       }
 })

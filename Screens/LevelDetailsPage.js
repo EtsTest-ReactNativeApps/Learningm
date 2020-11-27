@@ -1,10 +1,14 @@
 import React from 'react';
 import { Text, StyleSheet, ScrollView, View, TouchableOpacity } from 'react-native';
-import {Card} from 'react-native-elements'
+import {Button} from 'react-native-elements'
 import CustomHeader from '../Components/CustomHeader';
 import CustomWordCard from '../Components/CustomWordCard';
 import {connect} from 'react-redux';
 import { FAB } from 'react-native-paper';
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+  } from '../utils/react-native-responsive-screen';
 function LevelDetailsPage(props) {
     const [visibleButton, setVisibleButton] = React.useState(false);
     const { levelContent, navigation,userProgData } = props
@@ -15,6 +19,7 @@ function LevelDetailsPage(props) {
     }
 
     React.useEffect(() => {
+        // console.log(props.route.params,userProgData.CONTENT.currLevelId)
         if (props.route.params.levlId === userProgData.CONTENT.currLevelId &&
             userProgData.CONTENT.completedWords === levelContent.CONTENT.length)
          {
@@ -23,7 +28,7 @@ function LevelDetailsPage(props) {
         else {
             setVisibleButton(false)
         }
-    },[userProgData.CONTENT.completedWords,userProgData.CONTENT.currLevelId])
+    },[])
 
     return(
         <React.Fragment>
@@ -44,8 +49,19 @@ function LevelDetailsPage(props) {
                                 </TouchableOpacity>
                             )) 
                         }
+                        {
+                            visibleButton?
+                            (<View style={styles.buttonView}>
+                                <Button
+                                    title="Take Assement"
+                                    titleStyle={{fontSize:hp("3%")}}
+                                    containerStyle={{margin:wp("1%"),width:wp("70%"),borderRadius:10}}
+                                    onPress={() => props.navigation.navigate('assesmentPage')}
+                                />
+                            </View>):null
+                        }
                 </ScrollView>
-                {
+                {/* {
                     visibleButton?(
                         <FAB
                             style={styles.fab}
@@ -54,7 +70,7 @@ function LevelDetailsPage(props) {
                             onPress={() => props.navigation.navigate('assesmentPage')}
                         />
                     ):null
-                }
+                } */}
         </React.Fragment>
     )
 }
@@ -71,9 +87,17 @@ export default connect(mapStateToProps)(LevelDetailsPage);
 
 const styles = StyleSheet.create({
     detailView: {
-        width:"100%",
-        height: "100%",
-        backgroundColor:"white"
+        
+        width:wp("100%"),
+        height: hp("100%"),
+        backgroundColor: "white",
+        
+    },
+    buttonView: {
+        // flexGrow:1,
+        width: "100%",
+        alignItems:"center"
+        // justifyContent:"space-around"  
     },
     fab: {
         position: 'absolute',

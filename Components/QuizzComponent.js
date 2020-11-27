@@ -3,8 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { Audio } from 'expo-av';
 import QuizzHeader from './QuizzHeader';
-import AssesmentOverOverlay from './AssesmentOverOverlay';
 
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+  } from '../utils/react-native-responsive-screen';
 
 function QuizzComponent(props) {
     const { qsn, checkCorrect, answered, handleClose ,totalQsn,currQsn,title} = props
@@ -32,10 +35,11 @@ function QuizzComponent(props) {
             <QuizzHeader   {...props} title={title} handleClose={handleClose}/>
             <View style={styles.mainView}>                
                                 <View style={styles.qsnView}>
-                                    <Text style={{...styles.qsnText,fontSize:22}}>{qsn.question}</Text>
-                                    <Text style={{ ...styles.qsnText,fontSize:18}}>{currQsn}/{totalQsn}</Text>
-                                </View>
-                                {
+                                        <View style={{flexDirection:"row",justifyContent:"space-between",width:"100%"}}>
+                                                <Text style={{...styles.qsnText,fontSize:hp('2.5%'),color:"#47705e"}}>{qsn.question}</Text>
+                                                <Text style={{ ...styles.qsnText,fontSize:hp('2.1%'),color:"#47705e"}}>{currQsn}/{totalQsn}</Text>
+                                        </View>
+                                        {
                                         qsn.questionType === 'WORD_TO_TRANS' ?
                                             (<Text style={styles.qsnText}>{qsn.quesContent.word}</Text>)
                                             : qsn.questionType === 'AUD_TO_TRANS' ?
@@ -43,7 +47,7 @@ function QuizzComponent(props) {
                                                     <Icon
                                                         name="volume-up"
                                                         type="font-awesome"
-                                                        size={50}
+                                                        size={60}
                                                         onPress={playSound}
                                                         />
                                                 ) :
@@ -52,14 +56,17 @@ function QuizzComponent(props) {
                                                     <Icon
                                                         name="volume-up"
                                                         type="font-awesome"
-                                                        size={50}
+                                                        size={60}
+                                                        // color=""
                                                         onPress ={playSound}
                                                         />
                                                 ) :
                                                     qsn.questionType === 'TRANS_TO_WORD' ?
-                                                        (<Text style={styles.qsnText}>{qsn.quesContent.transcript}</Text>)
-                                                : null    
-                                    }
+                                                            (<Text style={styles.qsnText}>{qsn.quesContent.transcript}</Text>)
+                                                    : null    
+                                        }
+                                </View>
+                                
                                     
                                 <View style={styles.optionView}>
                                     
@@ -228,35 +235,32 @@ const styles = StyleSheet.create({
     mainView: {
         // padding: 20,
         flex: 1,
-        width: "100%",
+        width: wp("100%"),
         alignItems:'center',
         backgroundColor:"#ebebeb"
     },
-    scoreView: {
-        flexDirection: "row",
-        width:"100%",
-        justifyContent:"space-between"
-    },
     qsnView: {
-        // margin: 20,
-        padding:20,
-        flexDirection: "row",
-        justifyContent:"space-between",
+        paddingRight: wp('2%'),
+        paddingLeft: wp("2%"),
+        justifyContent:"space-evenly",
         alignItems: "center",
-        width: "100%",
+        width: wp("100%"),
+        height:hp("25%")
+    
     },
     qsnText: {
-        fontSize: 25,
+        margin:wp('2%'),
+        fontSize: hp('5%'),
         fontWeight: "bold",
-        color: "#47705e",
+        color: "#f51b81",
     },
     optionView: {
-        marginTop: "25%",
+        marginTop: hp("2%"),
         flexDirection: "row",
         justifyContent: "space-around",
         flexWrap:"wrap",
-        width: "90%",
-        height: "70%",
+        width: wp("90%"),
+        height: hp("70%"),
         borderRadius:20,
     },
     Correctoption: {
@@ -310,7 +314,7 @@ const styles = StyleSheet.create({
         elevation: 25,
     },
     optionText: {
-        fontSize: 20,
-        color:"green"   
+        fontSize: hp("3%"),
+        color:"#0c789c"   
     }
 })

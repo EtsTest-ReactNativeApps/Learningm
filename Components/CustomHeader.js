@@ -7,7 +7,7 @@ import {getQuizzData} from '../actions/index'
 
 
 function CustomHeader(props) {
-    
+    const [loading,setLoading] = React.useState(false)
     const { userProg,levels} = props
     let levSlno;
     //geting levelsl no
@@ -22,11 +22,15 @@ function CustomHeader(props) {
             fk_languageId:userProg.CONTENT.languageId,
             levelSerialNo:levSlno
         })
+        setLoading(true);
         
     }
     React.useEffect(() => {
-        if (props.quizzData.STS === '200') {
-            props.navigation.navigate('quizzPage')
+        if (loading) {
+            if (props.quizzData.STS === '200') {
+                setLoading(false)
+                props.navigation.navigate('quizzPage')
+            }
         }
     },[props.quizzData])
     

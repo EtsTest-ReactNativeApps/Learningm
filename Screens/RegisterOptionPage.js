@@ -2,7 +2,11 @@ import React from 'react';
 import { StyleSheet, Text, View ,TouchableOpacity,Image,ActivityIndicator} from 'react-native';
 import {connect} from 'react-redux'
 import * as Google from 'expo-google-app-auth';
-import {signUpRequest} from '../actions/index'
+import { signUpRequest } from '../actions/index';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp
+} from '../utils/react-native-responsive-screen';
 function RegisterOptionPage(props) {
   const { navigation } = props
   const [loading,setLoading] = React.useState(false)
@@ -122,10 +126,10 @@ const styles = StyleSheet.create({
   },
   logo:{
     position:"relative",
-    width:"70%",
-    height:"35%",
+    width:wp("70%"),
+    height:hp("35%"),
     borderRadius:25,
-    top:"20%"
+    top:hp("20%")
   },
   image:{
     width:"100%",
@@ -134,13 +138,13 @@ const styles = StyleSheet.create({
   },
   registerOptionView:{
       position:"absolute",
-      bottom:"10%",
+      bottom:hp("10%"),
       alignItems:"center"
   },
   buttonView:{
-    width:"80%",
+    width:wp("80%"),
     position:"absolute",
-    bottom:"20%"
+    bottom:hp("20%")
   },
   signIn: {
     width: '100%',
@@ -150,13 +154,13 @@ const styles = StyleSheet.create({
     borderRadius: 10
 },
 textSign: {
-    fontSize: 18,
+    fontSize: hp("2.1%"),
     fontWeight: 'bold'
   },
   activityStyle: {
     position: "absolute",
-    top: "50%",
-    left: "45%",
+    top: hp("50%"),
+    left: wp("45%"),
     zIndex:1
   }
 

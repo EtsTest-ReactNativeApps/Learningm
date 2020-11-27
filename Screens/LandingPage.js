@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View,Image} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Button } from 'react-native-elements';
+import {heightPercentageToDP as hp ,widthPercentageToDP as wp} from '../utils/react-native-responsive-screen'
 function LandingPage(props) {
   const { navigation} =props
   return (
@@ -42,11 +43,11 @@ const styles = StyleSheet.create({
   },
   logoView:{
     position:"relative",
-    width:"70%",
-    height:"35%",
+    width:wp("70%"),
+    height:hp("35%"),
     backgroundColor:"white",
     borderRadius:25,
-    top:"15%"
+    top:hp("15%")
   },
   image:{
     width:"100%",
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
   },
   titleStyle:{
     color:"#399668",
-    fontSize:25,
+    fontSize:hp("3%"),
     fontWeight:"100"
   }
 

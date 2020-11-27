@@ -2,7 +2,7 @@ import React from 'react';
 import {Alert,Text} from 'react-native';
 import QuizzComponent from '../Components/QuizzComponent';
 import {quizScore} from '../environment'
-import { quizzData } from '../QuizzData';
+import AssesmentOverOverlay from '../Components/AssesmentOverOverlay'
 import { connect } from 'react-redux';
 // import {getQuizzData} from '../actions/index'
 function LevelAssesment(props) {

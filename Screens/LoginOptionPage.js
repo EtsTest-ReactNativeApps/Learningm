@@ -2,6 +2,10 @@ import React from 'react';
 import { StyleSheet, Text, View ,TouchableOpacity,Image,ActivityIndicator} from 'react-native';
 import {connect} from 'react-redux'
 import * as Google from 'expo-google-app-auth';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp
+} from '../utils/react-native-responsive-screen';
 import {logInRequest,setUserProgressRequest,languageRequest,levelRequest} from '../actions/index'
 function LoginOptionPage(props) {
   const {navigation} = props
@@ -76,11 +80,11 @@ React.useEffect(() =>{
                 </TouchableOpacity>
         </View>
         <View style={styles.registerOptionView}>
-              <Text style={{fontSize:20,color:"#399668"}}> Don't Have an account ??</Text>
+              <Text style={styles.registerOptionText}> Don't Have an account ??</Text>
               <TouchableOpacity 
                 onPress={() => navigation.navigate("RegisterOption")}
               >
-                <Text style={{fontSize:18,fontWeight:"700",color:"#399668"}}>Register</Text>
+                <Text style={styles.registerText}>Register</Text>
               </TouchableOpacity>
         </View>
                 {loading ? 
@@ -118,10 +122,10 @@ const styles = StyleSheet.create({
   },
   logo:{
     position:"relative",
-    width:"70%",
-    height:"35%",
+    width:wp("70%"),
+    height:hp("35%"),
     borderRadius:25,
-    top:"20%"
+    top:hp("20%")
   },
   image:{
     width:"100%",
@@ -130,31 +134,39 @@ const styles = StyleSheet.create({
   },
   registerOptionView:{
       position:"absolute",
-      bottom:"10%",
+      bottom:hp("10%"),
       alignItems:"center"
   },
   buttonView:{
-    width:"80%",
+    width:wp("80%"),
     position:"absolute",
-    bottom:"20%"
+    bottom:hp("20%")
   },
   signIn: {
     width: '100%',
-    height: 50,
+    height: wp("12%"),
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10
 },
 textSign: {
-    fontSize: 18,
+    fontSize: hp("2.1%"),
     fontWeight: 'bold'
   },
   activityStyle: {
     position: "absolute",
-    top: "50%",
-    left: "45%",
+    top: hp("50%"),
+    left: wp("45%"),
     zIndex:1
+  },
+  registerOptionText: {
+    fontSize: hp("2.2%"),
+    color: "#399668"
+  },
+  registerText: {
+    fontSize: hp("2.1%"),
+    fontWeight: "700",
+    color: "#399668"
   }
-
 });
 

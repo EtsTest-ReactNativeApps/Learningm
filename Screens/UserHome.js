@@ -4,11 +4,14 @@ import CustomHeader from '../Components/CustomHeader';
 import CustomCards from '../Components/CustomCard';
 import { connect } from 'react-redux';
 import { levelContentRequest } from '../actions/index';
-
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp
+} from '../utils/react-native-responsive-screen';
 function UserHome(props){
   const { levels, userProgData } = props
   const [loading, setLoading] = React.useState(false)
-  const [levlId,setLevelId] = React.useState(0)
+  const [levlId,setLevelId] = React.useState(1)
   const handleClick = (l) =>{
     setLoading(true)
     setLevelId(l)
@@ -88,12 +91,12 @@ export default connect(mapStateToProps,mapDispatchToProps)(UserHome);
 const styles  = StyleSheet.create({
   containerView:{
     backgroundColor: "#d7d8db",
-    height:"100%"
+    height:hp("100%")
   },
   activityStyle: {
     position: "absolute",
-    top: "50%",
-    left: "45%",
+    top: hp("50%"),
+    left: wp("45%"),
     zIndex:1
   }
 })

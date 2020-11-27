@@ -1,6 +1,6 @@
 // environment.js
 
-const ROOT_URL = "http://caa3e3aa03b2.ngrok.io";
+const ROOT_URL = "http://e53d66a5658c.ngrok.io";
 const quizScore =10;
 const wordProgressScore = 10;
 const wordIncrement = 1;

@@ -1,7 +1,10 @@
 import React from 'react';
 import {View,Text,StyleSheet,ProgressBarAndroid} from "react-native";
 import {ListItem,Avatar,Card} from 'react-native-elements';
-import TouchableScale from 'react-native-touchable-scale'; 
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+  } from '../utils/react-native-responsive-screen';
 function CustomWordCard(props){
     const {isCompleted,word} = props
     return (
@@ -16,7 +19,7 @@ function CustomWordCard(props){
                             />
                     </View>
                     <View style={styles.textCellStyle}>
-                            <Text style={{fontSize:25,fontWeight:"bold",color:"#441f70",textTransform:"capitalize"}}>{word}</Text>
+                            <Text style={styles.wordText}>{word}</Text>
                     </View>
                     <View style={styles.iconCellStyle}>
                         {isCompleted?
@@ -37,8 +40,8 @@ export default CustomWordCard;
 
 const styles = StyleSheet.create({
     containerStyle:{
-        margin: 5,
-        marginBottom:5,
+        margin: wp("3%"),
+        // marginBottom:5,
         borderRadius: 10,
         shadowColor: "#000",
         shadowOffset: {
@@ -59,5 +62,11 @@ const styles = StyleSheet.create({
     },
     iconCellStyle:{
         width:"20%",
+    },
+    wordText: {
+        fontSize: hp("3.2%"),
+        fontWeight: "bold",
+        color: "#441f70",
+        textTransform: "capitalize"
     }
 })

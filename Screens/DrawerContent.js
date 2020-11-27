@@ -3,7 +3,11 @@ import {View,Text,StyleSheet,Image} from 'react-native';
 import {DrawerContentScrollView,DrawerItem} from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {connect} from 'react-redux';
-import {logOutRequest,resetLevelReq,resetLevelContent,resetUserProgress} from '../actions/index'
+import { logOutRequest, resetLevelReq, resetLevelContent, resetUserProgress } from '../actions/index';
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+  } from '../utils/react-native-responsive-screen';
 function DrawerContent(props){
     const {user,level,levelContent,userProg} = props
     const handleLogOut =() =>{
@@ -17,7 +21,7 @@ function DrawerContent(props){
         <View style={{flex:1}}>
             <View style={styles.drawerHeader}>
                     <Image
-                        style={{width:"100%",height:200}}
+                        style={{width:"100%",height:hp('25%')}}
                         source={require("../assets/logo2.png")}
                     />
             </View>
@@ -109,19 +113,19 @@ export default connect(mapStateToProps,mapDispatchToProps)(DrawerContent);
 const styles = StyleSheet.create({
     drawerHeader:{
         
-        marginTop:50,
-        marginLeft:30,
+        marginTop:hp('5%'),
+        marginLeft:wp('8%'),
         width:"75%"
     },
     drawerContent:{
-        marginLeft:20
+        marginLeft:wp("6%")
     },
     labelStyle:{
-        fontSize:20,
+        fontSize:hp('2.4%'),
         fontWeight:"bold"
     },
     drawerFooter:{
-        bottom:40,
-        marginLeft:20
+        bottom:hp('2%'),
+        marginLeft:wp("6%")
     }
 })

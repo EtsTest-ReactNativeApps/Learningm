@@ -3,7 +3,11 @@ import { StyleSheet, Text, View ,} from 'react-native';
 import { Button,ListItem,Card,Icon} from 'react-native-elements';
 // import { List } from 'react-native-paper';
 import {connect} from 'react-redux';
-import {languageRequest,levelRequest,updateUserProgess,setUserProgressRequest} from '../actions/index'
+import { languageRequest, levelRequest, updateUserProgess, setUserProgressRequest } from '../actions/index';
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+  } from '../utils/react-native-responsive-screen';
 
 function LanguagePage(props){
     const { navigation,userState} =props
@@ -91,7 +95,7 @@ const renderSelectedLanguage = (langList,handleClick) => {
     return (
         <View style={{...styles.languagePageView,backgroundColor:"#33898f"}}>
         <View style={styles.nativeLangView}>
-            <Text style={{fontSize:30,color:"white",fontWeight:"bold"}}>My Languages Are </Text>
+            <Text style={styles.langText}>My Languages Are </Text>
         </View>
         {/* <Text style={styles.chooseLangText}>I want to learn</Text> */}
         <View style={styles.selectedOuterView}>
@@ -99,8 +103,8 @@ const renderSelectedLanguage = (langList,handleClick) => {
                         {
                     langList.map(l => (
                         <Card containerStyle={styles.selectedlangView} key={l.languageId}>
-                            <View style={{flexDirection:"row",alignItems:"center",justifyContent:"space-around"}}>
-                                <Text style={{ fontSize: 25, color: "green" }}>{l.language}</Text>
+                            <View style={styles.langListStyle}>
+                                <Text style={styles.langListText}>{l.language}</Text>
                             <Icon
                                 name="chevron-right"
                                 type="font-awesome"
@@ -170,34 +174,34 @@ const styles = StyleSheet.create({
         alignItems:"center"
     },
     nativeLangView:{
-        width:"100%",
-        top:"27%",
+        width:wp("100%"),
+        top:hp("15%"),// 27% to 15% reduced.
         flexDirection:"row",
         justifyContent:"center"
     },
     chooseLangText:{
-        top:"17%",
-        fontSize:30,
+        top:hp("17%"),
+        fontSize:hp("3.5%"),
         color:"#399668"
     },
     buttonStyle:{
-        width:150,
+        width:wp("37%"),
         borderWidth:2,
         borderRadius:30,
         borderColor:"#399668",
     },
     titleStyle:{
         textAlign:"center",
-        fontSize:25,
+        fontSize:hp("2.5%"),
         fontWeight:"600",
         color:"#399668"
     },
     outerView:{
-        top:"22%",
-        width:330,
+        top:hp("22%"),
+        width:wp("75%"),
         alignItems:"center",
         justifyContent:"center",
-        minHeight:"10%",
+        minHeight:hp("10%"),
         backgroundColor:"#399668",
         borderRadius:35,
         transform:[
@@ -205,9 +209,9 @@ const styles = StyleSheet.create({
         ]
     },
     selectedOuterView: {
-        top:"30%",
-        width: 330,
-        height:"40%",
+        top:hp("30%"),
+        width: wp("75%"),
+        minHeight:hp("35%"),
         alignItems:"center",
         justifyContent:"center",
         backgroundColor:"white",
@@ -215,7 +219,7 @@ const styles = StyleSheet.create({
     },
     selectedlangView: {
         width:"80%",
-        margin: 20,
+        // margin: 20,
         borderRadius: 20,
         shadowColor: "#000",
         shadowOffset: {
@@ -236,7 +240,21 @@ const styles = StyleSheet.create({
         ]
     },
     listTitle:{
-        fontSize:25,
+        fontSize:hp("3%"),
         color:"#399668"
+    },
+    langText: {
+        fontSize: hp("3.5%"),
+        color: "white",
+        fontWeight: "bold"
+    },
+    langListStyle: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-around"
+    },
+    langListText:{
+        fontSize: hp("3%"),
+        color: "green"
     }
 })

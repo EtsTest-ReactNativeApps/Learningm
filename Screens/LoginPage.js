@@ -5,7 +5,11 @@ import * as Animatable from 'react-native-animatable';
 import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {connect} from 'react-redux';
-import {logInRequest} from '../actions/index'
+import { logInRequest } from '../actions/index';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp
+} from '../utils/react-native-responsive-screen';
 function LoginPage(props) {
   const { navigation } = props
   const [loading,setLoading] = React.useState(false)
@@ -81,7 +85,7 @@ const validatePass =() =>{
                       left: 0,
                       right: 0,
                       top: 0,
-                      height:"100%",
+                      height:hp("100%"),
                   }}
                   />
               <Text style={styles.text_header}>Sign In  !</Text>
@@ -181,8 +185,8 @@ const styles = StyleSheet.create({
     header: {
         flex: 1,
         justifyContent: 'flex-end',
-        paddingHorizontal: 20,
-        paddingBottom: 50
+        paddingHorizontal: wp("5%"),
+        paddingBottom: hp("5%")
     },
     footer: {
         flex: Platform.OS === 'ios' ? 3 : 5,
@@ -195,25 +199,25 @@ const styles = StyleSheet.create({
     text_header: {
         color: '#fff',
         fontWeight: 'bold',
-        fontSize: 30
+        fontSize: hp('4%')
     },
     text_footer: {
         color: '#05375a',
-        fontSize: 18
+        fontSize: hp("2.1")
     },
     signView:{
-      marginTop:100
+      marginTop:hp("10%")
     },
     action: {
         flexDirection: 'row',
-        marginTop: 10,
+        marginTop: hp("1%"),
         borderBottomWidth: 1,
         borderBottomColor: '#f2f2f2',
         paddingBottom: 5
     },
     textInput: {
         flex: 1,
-        paddingLeft: 10,
+        paddingLeft: wp("3%"),
         color: '#05375a',
     },
     button: {
@@ -221,19 +225,19 @@ const styles = StyleSheet.create({
     },
     signIn: {
         width: '100%',
-        height: 50,
+        height: hp("6%"),
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop:20,
+        marginTop:hp("2%"),
         borderRadius: 10
     },
     textSign: {
-        fontSize: 18,
+        fontSize: hp("2.1%"),
         fontWeight: 'bold'
     },
     textPrivate: {
       alignItems:"center",
-      marginTop: 20
+      marginTop: hp("2%")
   },
   color_textPrivate: {
       color: 'gray',

@@ -6,7 +6,10 @@ import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {connect} from 'react-redux'
 import {signUpRequest} from '../actions/index'
-
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+  } from '../utils/react-native-responsive-screen';
 
 function RegisterPage(props) {
     const {navigation} =props;
@@ -335,8 +338,8 @@ const styles = StyleSheet.create({
     header: {
         flex: 1,
         justifyContent: 'flex-end',
-        paddingHorizontal: 20,
-        paddingBottom: 50
+        paddingHorizontal: wp("5%"),
+        paddingBottom: hp("5%")
     },
     footer: {
         flex: Platform.OS === 'ios' ? 3 : 5,
@@ -349,11 +352,11 @@ const styles = StyleSheet.create({
     text_header: {
         color: '#fff',
         fontWeight: 'bold',
-        fontSize: 30
+        fontSize: hp("3.5%")
     },
     text_footer: {
         color: '#05375a',
-        fontSize: 18
+        fontSize: hp("2.1%")
     },
     action: {
         flexDirection: 'row',
@@ -369,7 +372,7 @@ const styles = StyleSheet.create({
     },
     button: {
         alignItems: 'center',
-        marginTop: 50
+        marginTop: hp("4%")
     },
     signIn: {
         width: '100%',
@@ -379,7 +382,7 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     textSign: {
-        fontSize: 18,
+        fontSize: hp("2.1%"),
         fontWeight: 'bold'
     },
     textPrivate: {
