@@ -3,8 +3,27 @@ import {View,StyleSheet,Text,ProgressBarAndroid,TouchableOpacity} from 'react-na
 import {Avatar} from 'react-native-elements';
 import HeaderWithGoBack from '../Components/HeaderWithGoBack';
 import { Card, Icon } from 'react-native-elements';
+import { connect } from 'react-redux';
+import {logOutRequest,resetLevelReq,resetLevelContent,resetUserProgress} from '../actions/index'
 
-function ProfilePage(props){
+function ProfilePage(props) {
+    
+    const { user, level, levelContent,userProg } = props
+    // console.log(level)
+
+    let totalMaxScore =0
+
+    level.CONTENT.forEach((l,i) => {
+        totalMaxScore +=l.levelMaxScore
+    });
+
+    // console.log(totalMaxScore)
+    const handleLogout = () => {
+        props.resetUser(user)
+        props.resetLevel(level)
+        props.resetLevelContent(levelContent)
+        props.resetUserProg(userProg)
+    }
     return(
         <React.Fragment>
             <HeaderWithGoBack
@@ -19,7 +38,7 @@ function ProfilePage(props){
                             avatarStyle={styles.avatarStyle}
                         />
                     <View>
-                        <Text style={styles.textStyles}>Bharadwaj K R</Text>
+                        <Text style={styles.textStyles}>{user.payload.CONTENT.firstName}</Text>
                         <Text style={styles.textStyles}>yajamankr@gmail.com</Text>
                     </View> 
                 </View>
@@ -30,11 +49,11 @@ function ProfilePage(props){
                         color="orange"
                     />
                     <View style={{ width: "70%", justifyContent: "flex-end" }}>
-                        <Text style={{fontSize:15,fontWeight:"bold",marginLeft:10}}>+600 points to next level </Text>
+                        <Text style={{ fontSize: 15, fontWeight: "bold", marginLeft: 10 }}>{userProg.CONTENT.userScore} points out of {totalMaxScore} </Text>
                         <ProgressBarAndroid
                                 styleAttr="Horizontal" 
                                 indeterminate={false} 
-                                progress={0.7} 
+                                progress={userProg.CONTENT.userScore/totalMaxScore} 
                                 color="yellow" 
                                 style={{width:"100%"}}
                             />
@@ -45,16 +64,16 @@ function ProfilePage(props){
                         containerStyle={styles.cardContainer}
                     >
                         <View style={{flexDirection:"row",justifyContent:"flex-start"}}>
-                            <Text style={{ fontSize: 20, fontWeight:"bold",color:"#6f548f"}}>Languages:</Text>
-                            <Text style={{ fontSize: 20, fontWeight:"bold",color:"#54718f",marginLeft:20}}>Kannada</Text>
+                            <Text style={styles.cardText}>Languages:</Text>
+                            <Text style={{ ...styles.cardText, color: "#54718f", marginLeft: 20 }}>{user.payload.CONTENT.languageList[0].language}</Text>
                         </View>   
                     </Card>
                     <Card
                         containerStyle={styles.cardContainer}
                     >
                         <View style={{flexDirection:"row",justifyContent:"flex-start"}}>
-                            <Text style={{ fontSize: 20, fontWeight:"bold",color:"#6f548f"}}>Words Completed:</Text>
-                            <Text style={{ fontSize: 20, fontWeight:"bold",color:"#54718f",marginLeft:20}}>10</Text>
+                            <Text style={styles.cardText}>Words Completed:</Text>
+                            <Text style={{ ...styles.cardText, color: "#54718f", marginLeft: 20 }}>{userProg.CONTENT.totalCompletedWords}</Text>
                         </View> 
                         
                     </Card>
@@ -62,15 +81,24 @@ function ProfilePage(props){
                         containerStyle={styles.cardContainer}
                     >
                         <View style={{flexDirection:"row",justifyContent:"flex-start"}}>
-                            <Text style={{ fontSize: 20, fontWeight:"bold",color:"#6f548f"}}>Words Completed:</Text>
-                            <Text style={{ fontSize: 20, fontWeight:"bold",color:"#54718f",marginLeft:20}}>10</Text>
+                            <Text style={styles.cardText}>Status:</Text>
+                            <Text style={{ ...styles.cardText, color: "#54718f", marginLeft: 20 }}>{userProg.CONTENT.langStatus}</Text>
+                        </View> 
+                        
+                    </Card>
+                    <Card
+                        containerStyle={styles.cardContainer}
+                    >
+                        <View style={{flexDirection:"row",justifyContent:"flex-start"}}>
+                            <Text style={styles.cardText}>Score:</Text>
+                            <Text style={{ ...styles.cardText, color: "#54718f", marginLeft: 20 }}>{userProg.CONTENT.userScore}</Text>
                         </View> 
                         
                     </Card>
                     
                     <TouchableOpacity
                         style={styles.buttonStyle}
-                        onPress={()=> console.log("logout")}
+                        onPress={handleLogout}
                     >
                             <Icon
                             name='exit-to-app'
@@ -87,7 +115,21 @@ function ProfilePage(props){
     )
 }
 
-export default ProfilePage;
+const mapStateToProps =(state) =>{
+    return {
+        user: state.user,
+        level: state.levelsData,
+        levelContent: state.levelContent,
+        userProg:state.userProgress
+    }
+}
+const mapDispatchToProps =(dispatch) =>({
+    resetUser: (data) => dispatch(logOutRequest(data)),
+    resetLevel: (data) => dispatch(resetLevelReq(data)),
+    resetLevelContent: (data) => dispatch(resetLevelContent(data)),
+    resetUserProg: (data) => dispatch(resetUserProgress(data)),
+})
+export default connect(mapStateToProps,mapDispatchToProps)(ProfilePage);
 
 const styles = StyleSheet.create({
     profileView:{
@@ -138,6 +180,12 @@ const styles = StyleSheet.create({
         shadowRadius: 5,
         elevation: 8
         
+    },
+    cardText: {
+        fontSize: 20,
+        fontWeight: "bold",
+        color: "#6f548f",
+        textTransform:"capitalize"
     },
     buttonStyle: {
         marginTop:40,

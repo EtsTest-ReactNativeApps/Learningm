@@ -1,30 +1,54 @@
 import {call, put} from "redux-saga/effects";
 import ApiUser from '../apis/index';
 
-export function* getUserProgressHandler(action) {
+export function* setUserProgressHandler(action) {
     try {
         yield put({
-            type:'USERPROGRESS_SUCCESS',
+            type: 'SETUSERPROG_SUCCESS',
             payload:action.payload
-        });
+        })
     } catch (err) {
         yield put({
-            type:'USERPROGRESS_FAILURE',
+            type: 'SETUSERPROG_FAILURE',
             payload:err
-        });
+        })        
     }
 }
 
-export function* updateUserProgress(action) {
+export function* updateProgressHandler(action) {
     try {
-        yield put({
-            type: 'UPDATEUSERPROGRESS_SUCCESS',
-            payload: action.payload
-        });
+        const userProgress = yield call(ApiUser.updateUserProgress, action)
+        if (userProgress.data.STS == '200') {
+            yield put({
+                type: 'UPDATEUSERPROG_SUCCESS',
+                payload: userProgress.data
+            });
+        }
+        else {
+            yield put({
+                type: 'UPDATEUSERPROG_FAILURE',
+                payload: userProgress.data
+            });
+        }
     } catch (err) {
         yield put({
-            type: 'UPDATEUSERPROGRESS_FAILURE',
+            type: 'UPDATEUSERPROG_FAILURE',
             payload: err
         });
     }
 }
+
+export function* resetUserProgressHandler(action){
+    try{
+        yield put({
+            type:'RESETUSER_PROG_SUCCESS',
+            payload:{}
+        })
+    }catch(err){
+        yield put({
+            type:'RESETUSER_PROG_FAILURE',
+            payload:action.payload
+        })
+    }
+}
+

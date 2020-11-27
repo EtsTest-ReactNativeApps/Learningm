@@ -6,7 +6,10 @@ import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {connect} from 'react-redux'
 import {signUpRequest} from '../actions/index'
-
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+  } from '../utils/react-native-responsive-screen';
 
 function RegisterPage(props) {
     const {navigation} =props;
@@ -16,7 +19,7 @@ function RegisterPage(props) {
         email:'',
         userPassword:'',
     })
-    const [isLoading,setLoading] =React.useState(true);
+    const [isLoading,setLoading] =React.useState(false);
     const [error,setError] =React.useState({
         fNameErr:'',
         lNameErr:'',
@@ -149,12 +152,16 @@ function RegisterPage(props) {
             props.signup({
                 ...data
             }) 
+        setLoading(true)
     }
     React.useEffect(()=>{
         if(props.userState.isLogedIN){
-            setLoading(true)
-            console.log(props.userState)
+            setLoading(false)
             navigation.navigate("Language")
+        }
+        else {
+            setLoading(false)
+            // alert("Sign in failed try again")
         }
     },[props.userState])
 
@@ -267,7 +274,7 @@ function RegisterPage(props) {
                             <TouchableOpacity
                                 style={styles.signIn}
                                 onPress={onSubmit}
-                                disabled={isDissable}
+                                disabled={isDissable || isLoading}
                             >
                             <LinearGradient
                                 colors={['#33898f', '#01ab9d']}
@@ -294,9 +301,15 @@ function RegisterPage(props) {
                 </ScrollView>
             </Animatable.View>
             {
-                isLoading?<ActivityIndicator/>:
-                null
-            }
+                isLoading?(
+                          
+                    <ActivityIndicator
+                      size="large"
+                      color="#c2be46"
+                      style={styles.activityStyle}
+                    />
+                  )
+                : null}
         </View>
   );
 }
@@ -325,8 +338,8 @@ const styles = StyleSheet.create({
     header: {
         flex: 1,
         justifyContent: 'flex-end',
-        paddingHorizontal: 20,
-        paddingBottom: 50
+        paddingHorizontal: wp("5%"),
+        paddingBottom: hp("5%")
     },
     footer: {
         flex: Platform.OS === 'ios' ? 3 : 5,
@@ -339,11 +352,11 @@ const styles = StyleSheet.create({
     text_header: {
         color: '#fff',
         fontWeight: 'bold',
-        fontSize: 30
+        fontSize: hp("3.5%")
     },
     text_footer: {
         color: '#05375a',
-        fontSize: 18
+        fontSize: hp("2.1%")
     },
     action: {
         flexDirection: 'row',
@@ -359,7 +372,7 @@ const styles = StyleSheet.create({
     },
     button: {
         alignItems: 'center',
-        marginTop: 50
+        marginTop: hp("4%")
     },
     signIn: {
         width: '100%',
@@ -369,7 +382,7 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     textSign: {
-        fontSize: 18,
+        fontSize: hp("2.1%"),
         fontWeight: 'bold'
     },
     textPrivate: {
@@ -379,5 +392,11 @@ const styles = StyleSheet.create({
     },
     color_textPrivate: {
         color: 'grey'
-    }
+    },
+    activityStyle: {
+        position: "absolute",
+        top: "50%",
+        left: "45%",
+        zIndex:1
+      }
   });

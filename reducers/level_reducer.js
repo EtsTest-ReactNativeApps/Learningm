@@ -3,7 +3,7 @@ const initialState = {}
 export const levelReducer = (state=initialState,action)=>{
     switch(action.type){
         case 'LEVELREQUEST_SUCCESS':
-            console.log("level success",action.payload)
+            // console.log("level success",action.payload)
             return {
                 ...action.payload,
             }
@@ -13,6 +13,16 @@ export const levelReducer = (state=initialState,action)=>{
                 ...action.payload,
             }
             break;
+        case 'RESETLEVEL_SUCCESS':
+            // console.log("action in level reducer")
+            return {
+                ...action.payload
+            }
+            break;
+        case 'RESETLEVEL_FAILURE':
+            return{
+                ...action.payload
+            }
     }
     return state
 }

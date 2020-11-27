@@ -49,3 +49,29 @@ export function* getLevelContentHandler(action){
         })
     }
 }
+export function* resetLevelHandler(action){
+    try{
+        yield put({
+            type:'RESETLEVEL_SUCCESS',
+            payload:{}
+        })
+    }catch(err){
+        yield put({
+            type:'RESETLEVEL_FAILURE',
+            payload:action.payload
+        })
+    }
+}
+export function* resetLevelContentHandler(action){
+    try{
+        yield put({
+            type:'RESETLEVELCONTENT_SUCCESS',
+            payload:{}
+        })
+    }catch(err){
+        yield put({
+            type:'RESETLEVELCONTENT_FAILURE',
+            payload:action.payload
+        })
+    }
+}

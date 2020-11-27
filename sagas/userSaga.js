@@ -29,8 +29,8 @@ export function* signUpHandler(action){
 
 export function* logInHandler(action){
     try{
-      
-        const user = yield call(ApiUser.fetchUser, action)
+
+        const user = yield call(ApiUser.fetchUser,action)
         if(user.data.STS == "200"){
             yield put({
                 type:'LOGIN_SUCCESS',
@@ -54,12 +54,12 @@ export function* logInHandler(action){
 export function* logOutHandler(action){
     try{
         yield put({
-            type:'LOGOUT_SUCCESS',
+            type:'RESETUSER_SUCCESS',
             payload:{}
         })
     }catch(err){
         yield put({
-            type:'LOGOUT_FAILURE',
+            type:'RESETUSER_FAILURE',
             payload:action.payload
         })
     }

@@ -21,6 +21,7 @@ function HeaderWithGoBack(props){
 }
 
 export default HeaderWithGoBack;
+
 const LeftComponent = (props) => {
     return(
         <TouchableOpacity 

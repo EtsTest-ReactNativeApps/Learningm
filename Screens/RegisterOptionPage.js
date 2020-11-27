@@ -1,48 +1,49 @@
 import React from 'react';
-import { StyleSheet, Text, View ,TouchableOpacity,Image} from 'react-native';
+import { StyleSheet, Text, View ,TouchableOpacity,Image,ActivityIndicator} from 'react-native';
 import {connect} from 'react-redux'
 import * as Google from 'expo-google-app-auth';
-import {signUpRequest} from '../actions/index'
+import { signUpRequest } from '../actions/index';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp
+} from '../utils/react-native-responsive-screen';
 function RegisterOptionPage(props) {
-  const {navigation} = props
-  const [data,setData] =React.useState({
-    firstName:'',
-    lastName:'',
-    email:'',
-    userPassword:'',
-  });
-  
-  
-  //google sign up function
+  const { navigation } = props
+  const [loading,setLoading] = React.useState(false)
+  // google sign up function
   const signIn = async() =>{
     try{
-        const result = await Google.logInAsync({
+        await Google.logInAsync({
             androidClientId:"371785710764-omslvo1td435sns5lj99mhge53jai4dg.apps.googleusercontent.com",
             scopes:["profile", "email"]
-        })
-        if(result.type=== "success"){
-          console.log(result.user)
-            setData({
+        }).then(result => {
+          if (result.type === 'success') {
+            props.signup({
                 firstName:result.user.givenName,
                 lastName:result.user.familyName,
                 email:result.user.email,
                 userPassword:result.user.id
             })
-            // console.log(data)
-            props.signup({
-              ...data
-            })
-        }else{
-            console.log("caceled")
-        }
+            setLoading(true);
+          } else {
+            console.log("canceled")
+          }
+        })
     }catch(err){
         console.log(err)
     }
 }
 // after signup checking the user?
 React.useEffect(() =>{
-  if(props.userState.isLogedIN){
+  if (props.userState.isRegistered) {
+    setLoading(false)
     navigation.navigate('Language')
+  }
+  else {
+    setTimeout(() => {
+      setLoading(false)
+    }, 2000)
+    // alert("Signup failed try again ")
   }
 },[props.userState])
 
@@ -63,6 +64,7 @@ React.useEffect(() =>{
                             borderWidth: 1,
                             marginTop: 15
                         }]}
+                        disabled={loading}
                     >
                         <Text style={[styles.textSign, {
                             color: '#009387'
@@ -70,6 +72,7 @@ React.useEffect(() =>{
                 </TouchableOpacity>
                 <TouchableOpacity
                         onPress={() => navigation.navigate("RegisterPage")}
+                        disabled={loading}
                         style={[styles.signIn, {
                             borderColor: '#009387',
                             borderWidth: 1,
@@ -88,7 +91,17 @@ React.useEffect(() =>{
               >
                 <Text style={{fontSize:18,fontWeight:"700",color:"#399668"}}>Sig In</Text>
               </TouchableOpacity>
-        </View>
+      </View>
+              {loading ? 
+                        (
+                          
+                              <ActivityIndicator
+                                size="large"
+                                color="#c2be46"
+                                style={styles.activityStyle}
+                              />
+                            )
+                          : null}
     </View>
   );
 }
@@ -113,10 +126,10 @@ const styles = StyleSheet.create({
   },
   logo:{
     position:"relative",
-    width:"70%",
-    height:"35%",
+    width:wp("70%"),
+    height:hp("35%"),
     borderRadius:25,
-    top:"20%"
+    top:hp("20%")
   },
   image:{
     width:"100%",
@@ -125,13 +138,13 @@ const styles = StyleSheet.create({
   },
   registerOptionView:{
       position:"absolute",
-      bottom:"10%",
+      bottom:hp("10%"),
       alignItems:"center"
   },
   buttonView:{
-    width:"80%",
+    width:wp("80%"),
     position:"absolute",
-    bottom:"20%"
+    bottom:hp("20%")
   },
   signIn: {
     width: '100%',
@@ -141,9 +154,15 @@ const styles = StyleSheet.create({
     borderRadius: 10
 },
 textSign: {
-    fontSize: 18,
+    fontSize: hp("2.1%"),
     fontWeight: 'bold'
-},
+  },
+  activityStyle: {
+    position: "absolute",
+    top: hp("50%"),
+    left: wp("45%"),
+    zIndex:1
+  }
 
 });
 

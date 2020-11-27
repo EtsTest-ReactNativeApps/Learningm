@@ -1,17 +1,45 @@
 import React from 'react';
 import { StyleSheet, Image,TouchableOpacity } from 'react-native';
-import {Header,Icon} from "react-native-elements";
+import { Header, Icon } from "react-native-elements";
+import { connect } from 'react-redux';
+import {getQuizzData} from '../actions/index'
 // import { Icon } from 'react-native-vector-icons/Icon';
 
 
-function CustomHeader(props){
-    // console.log(props)
+function CustomHeader(props) {
+    const [loading,setLoading] = React.useState(false)
+    const { userProg,levels} = props
+    let levSlno;
+    //geting levelsl no
+    levels.CONTENT.forEach(level => {
+        if (level.levelId === userProg.CONTENT.currLevelId) {
+            levSlno= level.levelSerialNo
+        }
+    });
+
+    const handleQuizz = () => {
+        props.getQuizz({
+            fk_languageId:userProg.CONTENT.languageId,
+            levelSerialNo:levSlno
+        })
+        setLoading(true);
+        
+    }
+    React.useEffect(() => {
+        if (loading) {
+            if (props.quizzData.STS === '200') {
+                setLoading(false)
+                props.navigation.navigate('quizzPage')
+            }
+        }
+    },[props.quizzData])
+    
     return (
         <React.Fragment>
             <Header
                 leftComponent={<LeftComponent {...props}/>}
                 centerComponent={{text:`${props.title}`,style:{color: '#fff',fontSize:30}}}
-                rightComponent={<RightComponent  {...props}/>}
+                rightComponent={<RightComponent  {...props} handleQuizz={handleQuizz}/>}
                 linearGradientProps={{
                     colors: ['#399668','#33898f'],
                 }}
@@ -22,7 +50,19 @@ function CustomHeader(props){
     )
 }
 
-export default CustomHeader;
+const mapStateToProps = (state) => {
+    return {
+        quizzData: state.quizzData,
+        userProg: state.userProgress,
+        levels:state.levelsData
+    }
+}
+
+const mapDispatchToProps = dispatch => ({
+    getQuizz:(data) => dispatch(getQuizzData(data)),
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(CustomHeader);
 const LeftComponent = (props) => {
     return(
         <TouchableOpacity 
@@ -34,14 +74,20 @@ const LeftComponent = (props) => {
 }
 
 const RightComponent = (props) => {
+
+    
     return (
-        <Icon
-            name="user-circle-o"
-            type='font-awesome'
+        <TouchableOpacity
+        onPress={props.handleQuizz}
+        >
+            <Icon
+            name="school"
+            type='material'
             size={40}
             color='white'
-            onPress={() => props.navigation.navigate('profilePage')}
-    />
+            
+         />
+        </TouchableOpacity>
     )
 }
 const styles = StyleSheet.create({

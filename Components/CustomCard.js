@@ -1,12 +1,14 @@
 import React from 'react';
 import {View,Text,StyleSheet,ProgressBarAndroid} from "react-native";
 import {Card,ListItem,Avatar} from 'react-native-elements';
-
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+  } from '../utils/react-native-responsive-screen';
 
 function CustomCards(props){
-    const {title,maxScore,locked} =props
+    const {title,maxScore,locked,score,completedWords} =props
     return (
-
             <ListItem
             disabled={locked}
             friction={90} 
@@ -20,21 +22,28 @@ function CustomCards(props){
             containerStyle={styles.containerStyle}
             >
                 <ListItem.Content>
-                    <View style={{flexDirection:"row",justifyContent:"space-around"}}>
+                    <View style={styles.listItemView}>
                     {/* <View style={styles.levelImg}/> */}
                         <View style={styles.levelInfoView}>
-                            <ListItem.Title style={{ color: 'white', fontWeight: 'bold',fontSize:25 }}>
+                            <ListItem.Title style={styles.listItemTitle}>
                             {title}
                             </ListItem.Title>
                             
                             <View>
                                 
-                         <Text>10/{maxScore}</Text>
-                                {/* <Text>100 Points</Text> */}
+                            
+                                {
+                                locked ? <Text style={styles.lockedText}>Level is Locked</Text> :
+                                    <>
+                                        <Text style={styles.completedWordsText}>{completedWords} words completed</Text>
+                                        <Text style={styles.pointsText}>{score} Points out of {maxScore}</Text>
+                                    </>
+                                    
+                                }
                                 <ProgressBarAndroid 
                                 styleAttr="Horizontal" 
                                 indeterminate={false} 
-                                progress={0.1} 
+                                progress={score/maxScore} 
                                 color="yellow" 
                                 style={styles.progressBar}
                                 />
@@ -54,7 +63,7 @@ function CustomCards(props){
                     </View>
                 </ListItem.Content>
                 <ListItem.Chevron color="white" size={30} />
-            </ListItem>      
+        </ListItem>      
     )
 }
 
@@ -65,7 +74,7 @@ const styles = StyleSheet.create({
         flexDirection:"row"
     },
     containerStyle:{
-        margin:10,
+        margin:hp("1%"),
         flexDirection:"row",
         borderRadius: 20,
         shadowColor: "#000",
@@ -78,22 +87,35 @@ const styles = StyleSheet.create({
         
         elevation: 7,
     },
-    levelImg:{
-        width:150,
-        height:150,
-        borderWidth:3,
-        backgroundColor:"#7cdea0",
-        borderTopRightRadius:40,
-        borderBottomLeftRadius:40,
-        borderColor:"#7cdea0"
-    },
     levelInfoView:{
         flex:1,
         justifyContent:"space-evenly",
-        marginLeft:30,
-        width:"70%",
+        marginLeft:wp("5%"),
+        width:wp("70%"),
     },
     progressBar:{
         width:"100%",
     },
+    listItemView: {
+        flexDirection: "row",
+        justifyContent: "space-around"
+    },
+    listItemTitle: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: hp("3%")
+    },
+    lockedText: {
+        color: "yellow",
+        fontSize: hp("2.1%")
+    },
+    completedWordsText: {
+        marginTop: hp("1%"),
+        fontSize: hp('2%'),
+        color: "#383f6b"
+    },
+    pointsText: {
+        fontSize: hp('2%'),
+        color: "#383f6b"
+    }
 })

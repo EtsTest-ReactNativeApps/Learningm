@@ -1,26 +1,39 @@
 import React from 'react';
 import { Text, StyleSheet, ScrollView, View, TouchableOpacity } from 'react-native';
-import {Card} from 'react-native-elements'
+import {Button} from 'react-native-elements'
 import CustomHeader from '../Components/CustomHeader';
 import CustomWordCard from '../Components/CustomWordCard';
 import {connect} from 'react-redux';
-
-function LevelDetailsPage(props){
-    const { levelContent, navigation } = props
-    const [loading, setLoading] = React.useState(false);
-    // console.log("level content in leveldetail page",levelContent.CONTENT)
+import { FAB } from 'react-native-paper';
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+  } from '../utils/react-native-responsive-screen';
+function LevelDetailsPage(props) {
+    const [visibleButton, setVisibleButton] = React.useState(false);
+    const { levelContent, navigation,userProgData } = props
     const handleClick = (index) => {
-        setLoading(true);
         navigation.navigate("contentsPage",{
             index:index
         })
     }
+
+    React.useEffect(() => {
+        // console.log(props.route.params,userProgData.CONTENT.currLevelId)
+        if (props.route.params.levlId === userProgData.CONTENT.currLevelId &&
+            userProgData.CONTENT.completedWords === levelContent.CONTENT.length)
+         {
+            setVisibleButton(true)
+        }
+        else {
+            setVisibleButton(false)
+        }
+    },[])
+
     return(
         <React.Fragment>
-            <CustomHeader {...props} title="Introduction"/>    
-            <ScrollView
-            contentContainerStyle={styles.detailView}
-            >
+            <CustomHeader {...props} title="Introduction"/>
+            <ScrollView style={styles.detailView}>
                         {
                             levelContent.CONTENT.map((content,index)=> (
                                 <TouchableOpacity
@@ -29,20 +42,43 @@ function LevelDetailsPage(props){
                                 >
                                     <CustomWordCard
                                         word={content.word}
-                                        isCompleted={true}
+                                        isCompleted={content.fk_levelId < userProgData.CONTENT.currLevelId ?
+                                            true:index+1 <= userProgData.CONTENT.completedWords}
                                     />
+                                    {/* {console.log(content.fk_levelId,)} */}
                                 </TouchableOpacity>
                             )) 
                         }
+                        {
+                            visibleButton?
+                            (<View style={styles.buttonView}>
+                                <Button
+                                    title="Take Assement"
+                                    titleStyle={{fontSize:hp("3%")}}
+                                    containerStyle={{margin:wp("1%"),width:wp("70%"),borderRadius:10}}
+                                    onPress={() => props.navigation.navigate('assesmentPage')}
+                                />
+                            </View>):null
+                        }
                 </ScrollView>
-                
+                {/* {
+                    visibleButton?(
+                        <FAB
+                            style={styles.fab}
+                            label="take Assesment"
+                            icon="pencil"
+                            onPress={() => props.navigation.navigate('assesmentPage')}
+                        />
+                    ):null
+                } */}
         </React.Fragment>
     )
 }
 
 const mapStateToProps =(state) =>{
     return{
-        levelContent:state.levelContent
+        levelContent: state.levelContent,
+        userProgData:state.userProgress
     }
 }
 
@@ -51,8 +87,22 @@ export default connect(mapStateToProps)(LevelDetailsPage);
 
 const styles = StyleSheet.create({
     detailView: {
-        width:"100%",
-        height: "100%",
-        backgroundColor:"white"
+        
+        width:wp("100%"),
+        height: hp("100%"),
+        backgroundColor: "white",
+        
     },
+    buttonView: {
+        // flexGrow:1,
+        width: "100%",
+        alignItems:"center"
+        // justifyContent:"space-around"  
+    },
+    fab: {
+        position: 'absolute',
+        margin: 16,
+        right: 0,
+        bottom: 0,
+      },
 })

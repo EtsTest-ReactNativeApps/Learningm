@@ -1,15 +1,16 @@
 import React from 'react';
-import { StyleSheet, Text, View ,TouchableOpacity} from 'react-native';
-import { Button,ListItem} from 'react-native-elements';
+import { StyleSheet, Text, View ,} from 'react-native';
+import { Button,ListItem,Card,Icon} from 'react-native-elements';
 // import { List } from 'react-native-paper';
 import {connect} from 'react-redux';
-import {languageRequest,levelRequest} from '../actions/index'
+import { languageRequest, levelRequest, updateUserProgess, setUserProgressRequest } from '../actions/index';
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+  } from '../utils/react-native-responsive-screen';
 
 function LanguagePage(props){
     const { navigation,userState} =props
-    const languageList= userState.CONTENT.languageList
-    const [langChoosed, setLangChoosed] = React.useState(null);
-    console.log(userState)
     const LangData =[
         "Kannada",
         "Telgu",
@@ -18,53 +19,151 @@ function LanguagePage(props){
         "Marati",
         "Hindi"
     ]
-    const handleChose = (l) =>{
-        props.choose({
-            ...props.userState
+    const handleChose = (l) => {
+        // console.log("handlechoose")
+        props.getLevel({
+            "fk_languageId":1  
+        })
+    }
+    const handleClick = () => {  
+        props.setUserProgress({
+            CONTENT: {
+                ...userState.CONTENT.userProgList[0]
+            }
         })
         props.getLevel({
             "fk_languageId":1  
         })
     }
- 
-    return(
-        <View style={styles.languagePageView}>
-            <View style={styles.nativeLangView}>
-                <Text style={{fontSize:30,color:"#399668"}}>I speak </Text>
-                <Button
-                    title="English"
-                    type="outline"
-                    titleStyle={styles.titleStyle}
-                    buttonStyle={styles.buttonStyle}
-                    onPress={() => {}}
-                />
-            </View>
-            <Text style={styles.chooseLangText}>I want to learn</Text>
-            <View style={styles.outerView}>
-                <View style={styles.languageView}> 
-                {
-                    LangData.map((l,i) =>(
-                        <ListItem key={i} bottomDivider>
-                            <ListItem.Content>
-                                <ListItem.Title style={styles.listTitle}>{l}</ListItem.Title>
-                            </ListItem.Content>
-                            <ListItem.Chevron size={30} color="green" onPress={handleChose}/>
-                        </ListItem>
-                    ))
+    React.useEffect(() => {
+        if (props.levels.STS === "200") {
+            if (userState.isRegistered) {
+                const leveldata = props.levels.CONTENT[0]
+                props.updateProgress({
+                    userId: userState.CONTENT.userId,
+                    languageId: leveldata.fk_languageId,
+                    currLevelId: leveldata.levelId,
+                    completedWords: 0,
+                    userScore: 0,
+                    isLvlAsntComplt: 'N',
+                    isCurLvlAsgnTkn: 'N',
+                    levelSerialNo: leveldata.levelSerialNo,
+                    totalCompletedWords:0,
+                })
+            }
+            if (userState.CONTENT.isLanguageChoosen === "N") {
+                const leveldata = props.levels.CONTENT[0]
+                props.updateProgress({
+                    userId: userState.CONTENT.userId,
+                    languageId: leveldata.fk_languageId,
+                    currLevelId: leveldata.levelId,
+                    completedWords: 0,
+                    userScore: 0,
+                    isLvlAsntComplt: 'N',
+                    isCurLvlAsgnTkn: 'N',
+                    levelSerialNo: leveldata.levelSerialNo,
+                    totalCompletedWords:0,
+                })
+            }
+            if (userState.CONTENT.isLanguageChoosen === 'Y') {
+                if (props.levels.STS == '200') {
+                    props.choose({
+                        ...userState
+                    })
                 }
-                </View>
-            </View>
+            }
+            if (props.userProgData.STS == "200") {
+                props.choose({
+                    ...userState
+                })
+            }
+        }
+
+    }, [props.levels, props.userProgData])
+    
+    return(
+        <React.Fragment>
+            {
+                userState.CONTENT.isLanguageChoosen === 'Y'
+                ? renderSelectedLanguage(userState.CONTENT.languageList,handleClick):
+                renderLanguageList(LangData, handleChose)}
+            {/* {renderLanguageList(LangData,handleChose)} */}
+       </React.Fragment>
+    )
+}
+const renderSelectedLanguage = (langList,handleClick) => {
+    return (
+        <View style={{...styles.languagePageView,backgroundColor:"#33898f"}}>
+        <View style={styles.nativeLangView}>
+            <Text style={styles.langText}>My Languages Are </Text>
         </View>
+        {/* <Text style={styles.chooseLangText}>I want to learn</Text> */}
+        <View style={styles.selectedOuterView}>
+
+                        {
+                    langList.map(l => (
+                        <Card containerStyle={styles.selectedlangView} key={l.languageId}>
+                            <View style={styles.langListStyle}>
+                                <Text style={styles.langListText}>{l.language}</Text>
+                            <Icon
+                                name="chevron-right"
+                                type="font-awesome"
+                                color="green"
+                                onPress={handleClick}
+                            />
+                            </View>
+                        </Card>
+                            ))
+                        }
+        </View>
+    </View>
+    )
+}
+
+const renderLanguageList = (LangData,handleChose) => {
+    return (
+        <View style={styles.languagePageView}>
+        <View style={styles.nativeLangView}>
+            <Text style={{fontSize:30,color:"#399668"}}>I speak </Text>
+            <Button
+                title="English"
+                type="outline"
+                titleStyle={styles.titleStyle}
+                buttonStyle={styles.buttonStyle}
+                onPress={() => {}}
+            />
+        </View>
+        <Text style={styles.chooseLangText}>I want to learn</Text>
+        <View style={styles.outerView}>
+            
+                    <View style={styles.languageView}> 
+                    {
+                        LangData.map((l,i) =>(
+                            <ListItem key={i} bottomDivider>
+                                <ListItem.Content>
+                                    <ListItem.Title style={styles.listTitle}>{l}</ListItem.Title>
+                                </ListItem.Content>
+                                <ListItem.Chevron size={30} color="green" onPress={handleChose}/>
+                            </ListItem>
+                        ))
+                    }
+                 </View>
+        </View>
+    </View>
     )
 }
 const mapStateToProps =(state) =>{
     return {
-        userState:state.user
+        userState: state.user,
+        levels: state.levelsData,
+        userProgData:state.userProgress
     }
 }
 const mapDispatchToProps =(dispatch) =>({
-    choose:(data) =>dispatch(languageRequest(data)),
-    getLevel:(data) => dispatch(levelRequest(data))
+    choose: (data) => dispatch(languageRequest(data)),
+    updateProgress: (data) => dispatch(updateUserProgess(data)),
+    getLevel: (data) => dispatch(levelRequest(data)),
+    setUserProgress: (data) => dispatch(setUserProgressRequest(data)),
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(LanguagePage);
@@ -75,39 +174,62 @@ const styles = StyleSheet.create({
         alignItems:"center"
     },
     nativeLangView:{
-        width:"100%",
-        top:"27%",
+        width:wp("100%"),
+        top:hp("15%"),// 27% to 15% reduced.
         flexDirection:"row",
         justifyContent:"center"
     },
     chooseLangText:{
-        top:"17%",
-        fontSize:30,
+        top:hp("17%"),
+        fontSize:hp("3.5%"),
         color:"#399668"
     },
     buttonStyle:{
-        width:150,
+        width:wp("37%"),
         borderWidth:2,
         borderRadius:30,
         borderColor:"#399668",
     },
     titleStyle:{
         textAlign:"center",
-        fontSize:25,
+        fontSize:hp("2.5%"),
         fontWeight:"600",
         color:"#399668"
     },
     outerView:{
-        top:"22%",
-        width:330,
+        top:hp("22%"),
+        width:wp("75%"),
         alignItems:"center",
         justifyContent:"center",
-        minHeight:"10%",
+        minHeight:hp("10%"),
         backgroundColor:"#399668",
         borderRadius:35,
         transform:[
             {rotate:"-2deg"}
         ]
+    },
+    selectedOuterView: {
+        top:hp("30%"),
+        width: wp("75%"),
+        minHeight:hp("35%"),
+        alignItems:"center",
+        justifyContent:"center",
+        backgroundColor:"white",
+        borderRadius:35,
+    },
+    selectedlangView: {
+        width:"80%",
+        // margin: 20,
+        borderRadius: 20,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+
+        elevation: 10,
     },
     languageView:{
         position:"relative",
@@ -118,7 +240,21 @@ const styles = StyleSheet.create({
         ]
     },
     listTitle:{
-        fontSize:25,
+        fontSize:hp("3%"),
         color:"#399668"
+    },
+    langText: {
+        fontSize: hp("3.5%"),
+        color: "white",
+        fontWeight: "bold"
+    },
+    langListStyle: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-around"
+    },
+    langListText:{
+        fontSize: hp("3%"),
+        color: "green"
     }
 })

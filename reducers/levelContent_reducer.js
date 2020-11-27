@@ -12,6 +12,16 @@ export const levelContentReducer = (state = initialState, action) => {
                 ...action.payload,
             }
             break;
+        case 'RESETLEVELCONTENT_SUCCESS':
+            // console.log("action in level content reducer")
+            return {
+                ...action.payload
+            }
+            break;
+        case 'RESETLEVELCONTENT_FAILURE':
+            return{
+                ...action.payload
+            }
     }
     return state
 }

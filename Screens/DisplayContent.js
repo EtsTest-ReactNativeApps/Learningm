@@ -1,23 +1,28 @@
 import React from 'react';
-import {StyleSheet,View,Text,TouchableOpacity,ActivityIndicator} from 'react-native';
-import { Video,Audio } from 'expo-av';
+import {StyleSheet,View,Text,TouchableOpacity,ActivityIndicator,Dimensions} from 'react-native';
+import { Video, Audio } from 'expo-av';
+import VideoPlayer from 'expo-video-player'
 import {Icon} from 'react-native-elements';
 import CustomHeader from '../Components/CustomHeader';
 import {connect} from 'react-redux';
-import { LinearGradient } from 'expo-linear-gradient'
+import { LinearGradient } from 'expo-linear-gradient';
+import {updateUserProgess} from '../actions/index'
+import OverLayModal from '../Components/OverLayModal';
+import { wordIncrement, wordProgressScore } from '../environment';
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+  } from '../utils/react-native-responsive-screen';
 function DisplayContents(props) {
-    const [shouldPlay,setShouldPlay] = React.useState(true);
-    const [playing,setPlaying] = React.useState(true)
-    const { navigation } = props
+    const { userProgData ,navigation} = props
     const levelContent = props.levelContent.CONTENT;
     const [index,setIndex] = React.useState(props.route.params.index);
     const [content, setContent] = React.useState(levelContent[index]);
     const [loading, setLoading] = React.useState(true);
-
+    const [isVisible, setVisible] = React.useState(false);
     setTimeout(() => {
         setLoading(false);
-    }, 5000);
-    // console.log(props.route.params.index,props.levelContent)
+    }, 1000);
 
     Audio.setAudioModeAsync({
         allowsRecordingIOS: false,
@@ -28,31 +33,47 @@ function DisplayContents(props) {
         staysActiveInBackground: false,
         playThroughEarpieceAndroid: true
     });
-
     const sound = new Audio.Sound();
     const status = {
         shouldPlay:false
     }
     sound.loadAsync({ uri: content.audioPath },status,false)
     
-    const handlePlayAndResume = () => {
-        // console.log("handle play")
-        setShouldPlay(!shouldPlay);
-    }
-    const playBackStatus = (playback) =>{
-        if(playback.isPlaying){
-            setPlaying(true);
-        }else{
-            setPlaying(false)
+    const handleVisible = () => {
+        if (index + 1 > userProgData.CONTENT.completedWords  && content.fk_levelId == userProgData.CONTENT.currLevelId) {
+            // console.log("2nd ",index,userProgData.CONTENT.completedWords)
+            props.updateProgress({
+                ...userProgData.CONTENT,
+                completedWords: userProgData.CONTENT.completedWords + wordIncrement,
+                totalCompletedWords: userProgData.CONTENT.totalCompletedWords + wordIncrement,
+                userScore:userProgData.CONTENT.userScore + wordProgressScore
+            })
         }
+        setVisible(!isVisible)
     }
-    
-    const handleNext = (index) => {
+
+    const handleNext = (i) => {
         setLoading(true);
-        setIndex(index);
+        setIndex(i);
+        if (index + 1 <= userProgData.CONTENT.completedWords) {
+        //    console.log("1st",index,userProgData.CONTENT.completedWords)
+            props.updateProgress({
+                ...userProgData
+            })
+        } 
+        if (index + 1 > userProgData.CONTENT.completedWords && content.fk_levelId == userProgData.CONTENT.currLevelId) {
+            // console.log("2nd ",index,userProgData.CONTENT.completedWords)
+            props.updateProgress({
+                ...userProgData.CONTENT,
+                completedWords: userProgData.CONTENT.completedWords + wordIncrement,
+                totalCompletedWords: userProgData.CONTENT.totalCompletedWords + wordIncrement,
+                userScore:userProgData.CONTENT.userScore + wordProgressScore
+            })
+        }
+        
         setTimeout(() => {
             setLoading(false);
-        }, 5000);
+        }, 1000);
     }
     
     const playSound = () => {
@@ -65,10 +86,9 @@ function DisplayContents(props) {
     },[props.route.params.index])
     
     React.useEffect(()=>{
-        if(levelContent[index]){
+        if (index <levelContent.length-1) {
             setContent(levelContent[index])
-        }
-        
+        } 
     },[index])
     
     return(
@@ -88,53 +108,78 @@ function DisplayContents(props) {
                         style={styles.activityStyle}
                     />
                     :(<View style={styles.mainView}>
-                        <View style={styles.videoView}>
-                            <Video
-                                source={{ uri: content.videoPath}}
-                                rate={1.0}
-                                volume={1.0}
-                                resizeMode="cover"
-                                shouldPlay={shouldPlay}
-                                style={{ width:"100%", height:"90%" }}
-                                onPlaybackStatusUpdate={playBackStatus}
-                                />
-                                <View style={styles.controlBar}>
-                                    <Icon
-                                        name={playing?null:"repeat"}
-                                        type="font-awesome"
-                                        size={45}
-                                        color="#a5ada7"
-                                        onPress={handlePlayAndResume}
-                                    />
-                                </View>
-                                <View style={{backgroundColor:"#c5e5e8"}}>
+                        <View style={styles.videoView}>    
+                            <VideoPlayer
+                                videoProps={{
+                                    shouldPlay: true,
+                                    resizeMode: "cover",
+                                    source: {
+                                        uri: content.videoPath,
+                                    },
+                                    
+                                }}
+                                width={Dimensions.get('window').width}
+                                height={Dimensions.get('window').height*0.4}
+                            />
+                                <View style={{backgroundColor:"#c5e5e8",padding:10}}>
                                     <Text
-                                        style={{ textAlign: "center", margin: 10, fontSize: 20, fontWeight: "bold",color:"#6f6285" }}
+                                    style={styles.textStyle}
                                     >{content.word}</Text>
                                 </View>
                         </View>
-                        <View style={styles.audioView}>
-                                <TouchableOpacity onPress={playSound}>
-                                    <Icon  
-                                        name="volume-up"
-                                        type="font-awesome"
-                                        size={45}
-                                        color="orange"
-                                    />
-                                </TouchableOpacity>
+                        <View style={styles.contentView}>
+                            <View>
+                                    <TouchableOpacity onPress={playSound}>
+                                        <Icon  
+                                            name="volume-up"
+                                            type="font-awesome"
+                                            size={45}
+                                            color="orange"
+                                        />
+                                    </TouchableOpacity>
+                            </View>
+                            <View style={styles.transcriptView}>
+                                <View>
+                                    <Text style={{...styles.textStyle,fontSize:hp("2.2%")}}>English</Text>
+                                    <Text style={{ ...styles.textStyle, fontWeight: "normal", }}>{content.transcript}</Text>
+                                </View>
+                                <View>
+                                    <Text style={{...styles.textStyle,fontSize:hp("2.2%"),}}>Literal Translation</Text>
+                                    <Text style={{ ...styles.textStyle, fontWeight: "normal" }}>{content.word}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.buttonView}>
+                            {index < levelContent.length-1 ?
+                                (
+                                    <TouchableOpacity style={styles.button}
+                                    onPress={() => handleNext(index+1)}
+                                    >
+                                        <Text style={{...styles.textStyle,color:"white"}}>Ok Got it !</Text>
+                                    </TouchableOpacity>
+                                ) :
+                                (
+                                    <TouchableOpacity style={styles.button}
+                                    onPress={handleVisible}
+                                    >
+                                        <Text style={{...styles.textStyle,color:"white"}}>Ok Got it !</Text>
+                                    </TouchableOpacity>
+                                )
+                        }
                         </View>
-                        <View style={styles.transcriptView}>
-                            <Text style={{fontSize:20,fontWeight:"bold",margin:10,color:"#6f6285"}}>English</Text>
-                                <Text style={{fontSize:18,fontWeight:"600",color:"#6f6285"}}>{content.transcript}</Text>
-                        </View>
-                        <View style={styles.buttonView}>
-                            <TouchableOpacity style={styles.button}
-                            onPress={() => handleNext(index+1)}
-                            >
-                                <Text style={{fontSize:20,fontWeight:"bold",color:"white"}}>Ok Got it !</Text>
-                            </TouchableOpacity>
                         </View>
                     </View>)
+                }
+                {
+                    isVisible ?
+                        <OverLayModal
+                            isVisible={isVisible}
+                            setVisible={handleVisible}
+                            navigation={navigation}
+                            levelId={content.fk_levelId}
+                            languageId={content.fk_languageId}
+
+                        /> :
+                        null
                 }
             </LinearGradient>
         </React.Fragment>
@@ -143,11 +188,13 @@ function DisplayContents(props) {
 
 const mapStateToProps = (state) =>{
     return{
-        levelContent:state.levelContent
+        levelContent: state.levelContent,
+        userProgData:state.userProgress
     }
 }
 
 const mapDispatchToProps =(dispatch) =>({
+    updateProgress:(data) =>dispatch(updateUserProgess(data)),
     
 })
 
@@ -156,42 +203,44 @@ export default connect(mapStateToProps,mapDispatchToProps)(DisplayContents);
 const styles = StyleSheet.create({
     mainView:{
         flex:1,
-        width:"100%",
+        width:wp("100%"),
+        alignItems: "center",
+        backgroundColor:"white"
+    },
+    videoView: {
+        width:wp("100%"),
+        height:hp('40%'),
+    },
+    textStyle: {
+        textAlign: "center",
+        fontSize: hp("2.2%"),
+        fontWeight: "bold",
+        color: "#6f6285"   
+    },
+    contentView: {
+        height: hp("50%"),
+        width: wp("100%"),
         alignItems:"center",
+        justifyContent:'space-evenly'
     },
-    videoView:{
-        width:"100%",
-        height:400,
-        borderRadius:20
-    },
-    audioView:{
-        margin:50
-    },
-    transcriptView:{
-        margin:20,
-        width:"70%",
-        alignItems:"center"
+    transcriptView: {
+        justifyContent: "space-between",
+        height:"30%"
     },
     buttonView: {
-        top:30,
-        width:"70%",
+        width:wp("90%"),
     },
     button:{
         backgroundColor:"orange",
         justifyContent:"center",
         alignItems:"center",
         borderRadius:10,
-        height:45
-    },
-    controlBar:{
-        position:"absolute",
-        top:"45%",
-        left:"45%"
+        height:hp("5%")
     },
     activityStyle: {
         position: "absolute",
-        top: "40%",
-        left: "45%",
+        top:hp("40%"),
+        left: wp("45%"),
         zIndex:1
       }
 })
