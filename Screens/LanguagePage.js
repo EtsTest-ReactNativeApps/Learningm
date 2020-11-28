@@ -83,11 +83,11 @@ function LanguagePage(props){
     
     return(
         <React.Fragment>
-            {
+            {/* {
                 userState.CONTENT.isLanguageChoosen === 'Y'
                 ? renderSelectedLanguage(userState.CONTENT.languageList,handleClick):
-                renderLanguageList(LangData, handleChose)}
-            {/* {renderLanguageList(LangData,handleChose)} */}
+                renderLanguageList(LangData, handleChose)} */}
+            {renderLanguageList(LangData,handleChose)}
        </React.Fragment>
     )
 }
@@ -124,7 +124,7 @@ const renderLanguageList = (LangData,handleChose) => {
     return (
         <View style={styles.languagePageView}>
         <View style={styles.nativeLangView}>
-            <Text style={{fontSize:30,color:"#399668"}}>I speak </Text>
+            <Text style={{fontSize:30,color:"#33898f"}}>I speak </Text>
             <Button
                 title="English"
                 type="outline"
@@ -143,7 +143,7 @@ const renderLanguageList = (LangData,handleChose) => {
                                 <ListItem.Content>
                                     <ListItem.Title style={styles.listTitle}>{l}</ListItem.Title>
                                 </ListItem.Content>
-                                <ListItem.Chevron size={30} color="green" onPress={handleChose}/>
+                                <ListItem.Chevron size={30} color="#33898f" onPress={handleChose}/>
                             </ListItem>
                         ))
                     }
@@ -182,19 +182,19 @@ const styles = StyleSheet.create({
     chooseLangText:{
         top:hp("17%"),
         fontSize:hp("3.5%"),
-        color:"#399668"
+        color:"#33898f"
     },
     buttonStyle:{
         width:wp("37%"),
         borderWidth:2,
         borderRadius:30,
-        borderColor:"#399668",
+        borderColor:"#33898f",
     },
     titleStyle:{
         textAlign:"center",
         fontSize:hp("2.5%"),
         fontWeight:"600",
-        color:"#399668"
+        color:"#33898f"
     },
     outerView:{
         top:hp("22%"),
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
         alignItems:"center",
         justifyContent:"center",
         minHeight:hp("10%"),
-        backgroundColor:"#399668",
+        backgroundColor:"#33898f",
         borderRadius:35,
         transform:[
             {rotate:"-2deg"}
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
     },
     listTitle:{
         fontSize:hp("3%"),
-        color:"#399668"
+        color:"#33898f"
     },
     langText: {
         fontSize: hp("3.5%"),
@@ -255,6 +255,6 @@ const styles = StyleSheet.create({
     },
     langListText:{
         fontSize: hp("3%"),
-        color: "green"
+        color: "#33898f"
     }
 })

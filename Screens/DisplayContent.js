@@ -23,7 +23,7 @@ function DisplayContents(props) {
     setTimeout(() => {
         setLoading(false);
     }, 1000);
-
+    // console.log(content)
     Audio.setAudioModeAsync({
         allowsRecordingIOS: false,
         interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
