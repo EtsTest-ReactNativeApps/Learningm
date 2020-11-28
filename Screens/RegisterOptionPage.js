@@ -35,15 +35,17 @@ function RegisterOptionPage(props) {
 }
 // after signup checking the user?
 React.useEffect(() =>{
-  if (props.userState.isRegistered) {
-    setLoading(false)
-    navigation.navigate('Language')
-  }
-  else {
-    setTimeout(() => {
+  if (loading) {
+    if (props.userState.isRegistered) {
       setLoading(false)
-    }, 2000)
-    // alert("Signup failed try again ")
+      navigation.navigate('Language')
+    }
+    else {
+      setTimeout(() => {
+        setLoading(false)
+      }, 2000)
+      alert("Signup failed try again ")
+    }
   }
 },[props.userState])
 
