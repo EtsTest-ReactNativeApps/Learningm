@@ -5,7 +5,10 @@ import HeaderWithGoBack from '../Components/HeaderWithGoBack';
 import { Card, Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import {logOutRequest,resetLevelReq,resetLevelContent,resetUserProgress} from '../actions/index'
-
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+  } from '../utils/react-native-responsive-screen';
 function ProfilePage(props) {
     
     const { user, level, levelContent,userProg } = props
@@ -39,7 +42,7 @@ function ProfilePage(props) {
                         />
                     <View>
                         <Text style={styles.textStyles}>{user.payload.CONTENT.firstName}</Text>
-                        <Text style={styles.textStyles}>yajamankr@gmail.com</Text>
+                        <Text style={styles.textStyles}>{user.payload.CONTENT.email}</Text>
                     </View> 
                 </View>
                 <View style={styles.progressBar}>
@@ -48,8 +51,8 @@ function ProfilePage(props) {
                         size={50}
                         color="orange"
                     />
-                    <View style={{ width: "70%", justifyContent: "flex-end" }}>
-                        <Text style={{ fontSize: 15, fontWeight: "bold", marginLeft: 10 }}>{userProg.CONTENT.userScore} points out of {totalMaxScore} </Text>
+                    <View style={styles.progressBarView}>
+                        <Text style={styles.progressScoreContent}>{userProg.CONTENT.userScore} points out of {totalMaxScore} </Text>
                         <ProgressBarAndroid
                                 styleAttr="Horizontal" 
                                 indeterminate={false} 
@@ -63,35 +66,35 @@ function ProfilePage(props) {
                     <Card
                         containerStyle={styles.cardContainer}
                     >
-                        <View style={{flexDirection:"row",justifyContent:"flex-start"}}>
+                        <View style={styles.cardContainerView}>
                             <Text style={styles.cardText}>Languages:</Text>
-                            <Text style={{ ...styles.cardText, color: "#54718f", marginLeft: 20 }}>{user.payload.CONTENT.languageList[0].language}</Text>
+                            <Text style={{ ...styles.cardText, color: "#54718f", marginLeft: wp("4%") }}>{user.payload.CONTENT.languageList[0].language}</Text>
                         </View>   
                     </Card>
                     <Card
                         containerStyle={styles.cardContainer}
                     >
-                        <View style={{flexDirection:"row",justifyContent:"flex-start"}}>
+                        <View style={styles.cardContainerView}>
                             <Text style={styles.cardText}>Words Completed:</Text>
-                            <Text style={{ ...styles.cardText, color: "#54718f", marginLeft: 20 }}>{userProg.CONTENT.totalCompletedWords}</Text>
+                            <Text style={{ ...styles.cardText, color: "#54718f", marginLeft: wp("4%") }}>{userProg.CONTENT.totalCompletedWords}</Text>
                         </View> 
                         
                     </Card>
                     <Card
                         containerStyle={styles.cardContainer}
                     >
-                        <View style={{flexDirection:"row",justifyContent:"flex-start"}}>
+                        <View style={styles.cardContainerView}>
                             <Text style={styles.cardText}>Status:</Text>
-                            <Text style={{ ...styles.cardText, color: "#54718f", marginLeft: 20 }}>{userProg.CONTENT.langStatus}</Text>
+                            <Text style={{ ...styles.cardText, color: "#54718f", marginLeft: wp("4%") }}>{userProg.CONTENT.langStatus}</Text>
                         </View> 
                         
                     </Card>
                     <Card
                         containerStyle={styles.cardContainer}
                     >
-                        <View style={{flexDirection:"row",justifyContent:"flex-start"}}>
+                        <View style={styles.cardContainerView}>
                             <Text style={styles.cardText}>Score:</Text>
-                            <Text style={{ ...styles.cardText, color: "#54718f", marginLeft: 20 }}>{userProg.CONTENT.userScore}</Text>
+                            <Text style={{ ...styles.cardText, color: "#54718f", marginLeft: wp("4%") }}>{userProg.CONTENT.userScore}</Text>
                         </View> 
                         
                     </Card>
@@ -104,7 +107,7 @@ function ProfilePage(props) {
                             name='exit-to-app'
                             color="#6f548f"
                             />
-                        <Text style={{ fontSize: 20, marginLeft: 20,fontWeight:"bold", color:'#54718f'}}>Logout</Text>
+                        <Text style={styles.logoutText}>Logout</Text>
                         </TouchableOpacity>
                     
                 </View>
@@ -137,28 +140,37 @@ const styles = StyleSheet.create({
         backgroundColor: "#33898f",
     },
     textStyles: {
-        margin: 15,
-        fontSize: 20,
+        margin: hp("1%"),
+        fontSize: hp("2.3%"),
         fontWeight: "bold",
         color:"white"
     },
     profileDetails:{
-        width: "100%",
+        width: wp("100%"),
         flexDirection: "row",
-        height: "30%",
+        height: hp("30%"),
         alignItems: "center",
         justifyContent:"space-around",
         
     },
     progressBar: {
         flexDirection: "row",
-        width:"100%",
+        width:wp("100%"),
         justifyContent:"center",
     },
+    progressBarView: {
+        width: wp("70%"),
+        justifyContent: "flex-end" 
+    },
+    progressScoreContent: {
+        fontSize: hp("1.7%"),
+        fontWeight: "bold",
+        marginLeft: wp("3%")
+    },
     progressView: {
-        top: 50,
-        paddingTop:20,
-        width: "100%",
+        top: hp("5%"),
+        paddingTop:hp("2%"),
+        width: wp("100%"),
         height: "100%",
         borderTopEndRadius: 60,
         borderTopStartRadius:60,
@@ -166,12 +178,12 @@ const styles = StyleSheet.create({
         alignItems:"center"
     },
     cardContainer: {
-        width: "80%",
-        height: 50,
+        width: wp("80%"),
+        height: hp("6%"),
         borderRadius: 10,
     
         shadowColor: "#000",
-        margin:20,
+        margin:hp("2.5%"),
         shadowOffset: {
             width: 0,
             height: 4,
@@ -181,23 +193,27 @@ const styles = StyleSheet.create({
         elevation: 8
         
     },
+    cardContainerView: {
+        flexDirection: "row",
+        justifyContent: "flex-start"
+    },
     cardText: {
-        fontSize: 20,
+        fontSize: hp("2.3%"),
         fontWeight: "bold",
         color: "#6f548f",
         textTransform:"capitalize"
     },
     buttonStyle: {
-        marginTop:40,
+        marginTop:hp("4.5%"),
         flexDirection: "row",
-        width: "50%",
+        width: wp("50%"),
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "white",
-        height: 40,
+        height: hp("5%"),
         borderRadius: 10,
         shadowColor: "#000",
-        margin:20,
+        margin:hp("2%"),
         shadowOffset: {
             width: 0,
             height: 4,
@@ -205,6 +221,12 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.30,
         shadowRadius: 5,
         elevation: 15
+    },
+    logoutText: {
+        fontSize: hp("2.3%"),
+        marginLeft: wp("4%"),
+        fontWeight: "bold",
+        color: '#54718f'
     }
     
 })
