@@ -3,7 +3,11 @@ import {View,Text,StyleSheet,Image} from 'react-native';
 import { Overlay, Button } from 'react-native-elements';
 import {updateUserProgess} from '../actions/index'
 import { connect } from 'react-redux';
-import {progressPercent} from '../environment'
+import { progressPercent } from '../environment';
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+  } from '../utils/react-native-responsive-screen';
 function AssesmentOverOverlay(props) {
     const { isGameOver, points, userProg, levelsData,setGameOver} = props
     const [cleared,setcleared] = React.useState(false)
@@ -63,9 +67,7 @@ function AssesmentOverOverlay(props) {
                     </Text> */}
                     <Image
                         style={styles.tinyLogo}
-                        source={{
-                            uri: 'https://media1.giphy.com/media/xUA7barHyuFW6RCF44/giphy.gif',
-                        }}
+                        source={require("../assets/gameover.jpg")}
                         
                     />
                     
@@ -118,13 +120,13 @@ export default connect(mapStateToProps,mapDispatchToProps)(AssesmentOverOverlay)
 
 const styles = StyleSheet.create({
     overLayView: {
-        backgroundColor:"#c6fc14",
+        backgroundColor:"white",
         width: "80%",
         height: "50%",
         justifyContent:"space-around"
     },
     tinyLogo: {
-        height: "50%",
+        height: "30%",
         width: "100%",
         borderRadius:10
     },
@@ -132,7 +134,7 @@ const styles = StyleSheet.create({
         fontSize: 25,
         fontWeight:"bold",
         textAlign: "center",
-        color:"white"
+        color:"orange"
     },
     buttonView: {
         width: "100%",
