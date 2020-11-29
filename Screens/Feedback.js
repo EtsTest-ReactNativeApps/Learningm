@@ -7,7 +7,10 @@ import {LinearGradient} from 'expo-linear-gradient'
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { ROOT_URL } from '../environment';
-
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+  } from '../utils/react-native-responsive-screen';
 
 const postFeedBack = (data) => {
     const url = `${ROOT_URL}/userProgress/provideFeedBack`;
@@ -69,8 +72,8 @@ function FeedBack(props) {
                 <LinearGradient
                 colors={['#33898f', '#82baab']}
                 style={{
-                width:"100%",
-                height:"100%"
+                width:wp("100%"),
+                height:hp("100%")
                 }}
             >   
                 <View style={styles.mainView}>
@@ -95,7 +98,7 @@ function FeedBack(props) {
                                     mode="outlined"
                                     placeholder="Provide Feedback"
                             />
-                            <View style={{marginTop:20}}>
+                            <View style={{marginTop:hp("2%")}}>
                                 <Rating
                                     type="star"
                                     ratingCount={5}
@@ -106,7 +109,7 @@ function FeedBack(props) {
                                     imageSize={40}
                                 />
                             </View>
-                            <View style={{width:"60%",marginTop:20}}>
+                            <View style={{width:"60%",marginTop:hp("2%")}}>
                                 <TouchableOpacity style={styles.button}
                                     onPress={handleSubmit}
                                     disabled ={loading}
@@ -140,14 +143,14 @@ export default connect(mapStateToProps,null)(FeedBack);
 const styles = StyleSheet.create({
     mainView: {
         // flex:1,
-        height: "100%",
-        width: "100%",
+        height: hp("100%"),
+        width: wp("100%"),
         alignItems: "center",
     },
     feedBackView: {    
-        top:'10%',
-        width:"80%",
-        height:"60%",
+        top:hp('10%'),
+        width:wp("80%"),
+        height:hp("60%"),
         backgroundColor: "white",
         alignItems: "center",
         justifyContent:'space-around',
@@ -167,7 +170,7 @@ const styles = StyleSheet.create({
         alignItems: "center"  
     },
     textStyle: {
-        fontSize: 21,
+        fontSize: hp("2.5%"),
         fontWeight: "bold",
         color: "#5c8d9e",
         textAlign: "center"  
@@ -177,7 +180,7 @@ const styles = StyleSheet.create({
     },
     button: {
         width: "100%",
-        height: 40,
+        height: hp("4%"),
         alignItems: "center",
         justifyContent: "center",
         borderRadius:15,
