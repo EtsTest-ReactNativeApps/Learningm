@@ -116,9 +116,7 @@ const GameOverOverlay = ({ isVisible, points, handleExit }) => {
                     <View>
                     <Image
                         style={styles.tinyLogo}
-                        source={{
-                            uri: 'https://media1.giphy.com/media/xUA7barHyuFW6RCF44/giphy.gif',
-                        }}
+                        source={require("../assets/gameover.jpg")}
                         
                     />
                     
@@ -146,12 +144,13 @@ const GameOverOverlay = ({ isVisible, points, handleExit }) => {
 
 const styles = StyleSheet.create({
     overLayView: {
+        backgroundColor:"white",
         width: wp("80%"),
         height: hp("50%"),
         justifyContent:"space-around"
     },
     tinyLogo: {
-        height: "50%",
+        height: "30%",
         width: "100%",
         borderRadius:10
     },
@@ -159,7 +158,7 @@ const styles = StyleSheet.create({
         fontSize: hp("3%"),
         fontWeight:"bold",
         textAlign: "center",
-        color:"white"
+        color:"orange"
     },
     buttonView: {
         width: "100%",

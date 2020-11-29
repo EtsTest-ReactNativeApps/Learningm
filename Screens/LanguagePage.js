@@ -83,11 +83,11 @@ function LanguagePage(props){
     
     return(
         <React.Fragment>
-            {/* {
+            {
                 userState.CONTENT.isLanguageChoosen === 'Y'
                 ? renderSelectedLanguage(userState.CONTENT.languageList,handleClick):
-                renderLanguageList(LangData, handleChose)} */}
-            {renderLanguageList(LangData,handleChose)}
+                renderLanguageList(LangData, handleChose)}
+            {/* {renderLanguageList(LangData,handleChose)} */}
        </React.Fragment>
     )
 }

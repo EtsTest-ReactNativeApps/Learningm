@@ -30,6 +30,12 @@ function QuizzComponent(props) {
             sound.replayAsync();
         })
     }
+
+    React.useEffect(() => {
+        if (qsn.questionType === "AUD_TO_TRANS" || qsn.questionType === "AUD_TO_WORD") {
+            sound.playAsync();
+        }
+    })
     return (
         <React.Fragment>
             <QuizzHeader   {...props} title={title} handleClose={handleClose}/>

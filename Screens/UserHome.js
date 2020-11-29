@@ -42,6 +42,7 @@ function UserHome(props){
                             onPress={() => handleClick(level.levelId)}
                             disabled={loading?true:false || !(level.levelId <= userProgData.CONTENT.currLevelId)}
                           >
+                           
                             <CustomCards 
                               title={level.categoryName}
                               completedWords={userProgData.CONTENT.currLevelId > level.levelId ?

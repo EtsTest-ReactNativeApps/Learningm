@@ -3,7 +3,11 @@ import {View,Text,StyleSheet,Image} from 'react-native';
 import { Overlay, Button } from 'react-native-elements';
 import {updateUserProgess} from '../actions/index'
 import { connect } from 'react-redux';
-import {progressPercent} from '../environment'
+import { progressPercent } from '../environment';
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+  } from '../utils/react-native-responsive-screen';
 function AssesmentOverOverlay(props) {
     const { isGameOver, points, userProg, levelsData,setGameOver} = props
     const [cleared,setcleared] = React.useState(false)
