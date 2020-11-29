@@ -156,13 +156,13 @@ function RegisterPage(props) {
     }
     React.useEffect(()=>{
         if (isLoading) {
-            if(props.userState.isLogedIN){
+            if(props.userState.isRegistered){
                 setLoading(false)
                 navigation.navigate("Language")
             }
             else {
                 setLoading(false)
-                alert("Sign in failed try again")
+                alert("Sign Up failed try again")
             }
         }
     },[props.userState])

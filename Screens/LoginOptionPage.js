@@ -31,15 +31,19 @@ function LoginOptionPage(props) {
     }
 }
 React.useEffect(() =>{
-  if (props.userState.isLogedIN) {
-    setLoading(false)
-    // console.log("userstate",props.userState)
-    navigation.navigate('Language')
-  }
-  else {
-    setTimeout(() => {
+  if (loading) {
+    if (props.userState.isLogedIN) {
       setLoading(false)
-    },2000)
+      // console.log("userstate",props.userState)
+      navigation.navigate('Language')
+    }
+    else {
+
+      setTimeout(() => {
+        setLoading(false)
+      }, 2000)
+      alert("Sign In failed try again ")
+    }
   }
 },[props.userState])
   return (
