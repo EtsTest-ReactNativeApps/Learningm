@@ -87,7 +87,6 @@ function LanguagePage(props){
                 userState.CONTENT.isLanguageChoosen === 'Y'
                 ? renderSelectedLanguage(userState.CONTENT.languageList,handleClick):
                 renderLanguageList(LangData, handleChose)}
-            {/* {renderLanguageList(LangData,handleChose)} */}
        </React.Fragment>
     )
 }
@@ -97,7 +96,6 @@ const renderSelectedLanguage = (langList,handleClick) => {
         <View style={styles.nativeLangView}>
             <Text style={styles.langText}>My Languages Are </Text>
         </View>
-        {/* <Text style={styles.chooseLangText}>I want to learn</Text> */}
         <View style={styles.selectedOuterView}>
 
                         {

@@ -33,9 +33,11 @@ function QuizzComponent(props) {
 
     React.useEffect(() => {
         if (qsn.questionType === "AUD_TO_TRANS" || qsn.questionType === "AUD_TO_WORD") {
-            sound.playAsync();
+            if (sound._loaded) {
+                playSound()
+            }
         }
-    })
+    },[sound._loaded])
     return (
         <React.Fragment>
             <QuizzHeader   {...props} title={title} handleClose={handleClose}/>
@@ -320,7 +322,8 @@ const styles = StyleSheet.create({
         elevation: 25,
     },
     optionText: {
-        fontSize: hp("3%"),
-        color:"#0c789c"   
+        fontSize: hp("2.5%"),
+        color: "#0c789c",
+        textAlign:"center"
     }
 })

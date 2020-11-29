@@ -65,6 +65,7 @@ function LevelAssesment(props) {
     }
     const handleExit = () => {
         setIndex(0);
+        setCurrQsn(1)
         // setGameOver(false)
         props.navigation.navigate('UserHome');
     }

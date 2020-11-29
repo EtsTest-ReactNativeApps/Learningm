@@ -64,6 +64,7 @@ function RandomQuizz(props) {
 
     const handleExit = () => {
         setIndex(0);
+        setCurrQsn(1)
         setGameOver(false)
         props.navigation.navigate('UserHome');
     }
@@ -113,7 +114,7 @@ const GameOverOverlay = ({ isVisible, points, handleExit }) => {
                 overlayStyle={styles.overLayView}
             >
                 <React.Fragment>
-                    <View>
+                    <View style={{flexGrow:0.5,justifyContent:"space-around"}}>
                     <Image
                         style={styles.tinyLogo}
                         source={require("../assets/gameover.jpg")}
@@ -121,7 +122,7 @@ const GameOverOverlay = ({ isVisible, points, handleExit }) => {
                     />
                     
                     <Text style={{...styles.textStyle,fontSize:35,}}>
-                        You earned {points} points 
+                         {points} points 
                     </Text>
                     <Text style={{...styles.textStyle,fontSize:20,color:"#f25633",}}>
                         You can retake the test as much you want ..

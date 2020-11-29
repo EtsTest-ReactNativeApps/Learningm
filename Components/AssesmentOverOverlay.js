@@ -72,7 +72,7 @@ function AssesmentOverOverlay(props) {
                     />
                     
                     <Text style={{...styles.textStyle,fontSize:35,}}>
-                        You earned {points} points 
+                         {points} points 
                     </Text>
                     
                     {

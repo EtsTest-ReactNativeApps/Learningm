@@ -40,6 +40,7 @@ function DisplayContents(props) {
     sound.loadAsync({ uri: content.audioPath },status,false)
     
     const handleVisible = () => {
+        console.log("at last index",index)
         if (index + 1 > userProgData.CONTENT.completedWords  && content.fk_levelId == userProgData.CONTENT.currLevelId) {
             // console.log("2nd ",index,userProgData.CONTENT.completedWords)
             props.updateProgress({
@@ -53,16 +54,14 @@ function DisplayContents(props) {
     }
 
     const handleNext = (i) => {
-        setLoading(true);
         setIndex(i);
+        setLoading(true);
         if (index + 1 <= userProgData.CONTENT.completedWords) {
-        //    console.log("1st",index,userProgData.CONTENT.completedWords)
             props.updateProgress({
                 ...userProgData
             })
         } 
         if (index + 1 > userProgData.CONTENT.completedWords && content.fk_levelId == userProgData.CONTENT.currLevelId) {
-            // console.log("2nd ",index,userProgData.CONTENT.completedWords)
             props.updateProgress({
                 ...userProgData.CONTENT,
                 completedWords: userProgData.CONTENT.completedWords + wordIncrement,
@@ -85,8 +84,8 @@ function DisplayContents(props) {
         setIndex(props.route.params.index)
     },[props.route.params.index])
     
-    React.useEffect(()=>{
-        if (index <levelContent.length-1) {
+    React.useEffect(() => {
+        if (index <levelContent.length) {
             setContent(levelContent[index])
         } 
     },[index])
@@ -149,14 +148,17 @@ function DisplayContents(props) {
                                 </View>
                             </View>
                             <View style={styles.buttonView}>
-                            {index < levelContent.length-1 ?
+                                
+                                {index < levelContent.length - 1 ?
+                                    
                                 (
                                     <TouchableOpacity style={styles.button}
                                     onPress={() => handleNext(index+1)}
                                     >
                                         <Text style={{...styles.textStyle,color:"white"}}>Ok Got it !</Text>
                                     </TouchableOpacity>
-                                ) :
+                                    ) :
+                                    
                                 (
                                     <TouchableOpacity style={styles.button}
                                     onPress={handleVisible}
@@ -170,6 +172,7 @@ function DisplayContents(props) {
                     </View>)
                 }
                 {
+                    // console.log(content.fk_levelId)
                     isVisible ?
                         <OverLayModal
                             isVisible={isVisible}

@@ -28,7 +28,7 @@ function LevelDetailsPage(props) {
         else {
             setVisibleButton(false)
         }
-    },[])
+    },[userProgData.CONTENT.completedWords])
 
     return(
         <React.Fragment>
@@ -45,7 +45,6 @@ function LevelDetailsPage(props) {
                                         isCompleted={content.fk_levelId < userProgData.CONTENT.currLevelId ?
                                             true:index+1 <= userProgData.CONTENT.completedWords}
                                     />
-                                    {/* {console.log(content.fk_levelId,)} */}
                                 </TouchableOpacity>
                             )) 
                         }
@@ -55,7 +54,7 @@ function LevelDetailsPage(props) {
                                 <Button
                                     title="Take Assement"
                                     titleStyle={{fontSize:hp("3%")}}
-                                    containerStyle={{margin:wp("1%"),width:wp("70%"),borderRadius:10}}
+                                    containerStyle={{margin:wp("2%"),width:wp("95%"),borderRadius:10}}
                                     onPress={() => props.navigation.navigate('assesmentPage')}
                                 />
                             </View>):null
