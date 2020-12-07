@@ -23,26 +23,27 @@ function DisplayContents(props) {
     setTimeout(() => {
         setLoading(false);
     }, 1000);
-    // console.log(content)
-    Audio.setAudioModeAsync({
-        allowsRecordingIOS: false,
-        interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-        playsInSilentModeIOS: true,
-        interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DUCK_OTHERS,
-        shouldDuckAndroid: true,
-        staysActiveInBackground: false,
-        playThroughEarpieceAndroid: true
-    });
-    const sound = new Audio.Sound();
-    const status = {
-        shouldPlay:false
-    }
-    sound.loadAsync({ uri: content.audioPath },status,false)
+    // let sound;
+    
+        Audio.setAudioModeAsync({
+            allowsRecordingIOS: false,
+            interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+            playsInSilentModeIOS: true,
+            interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DUCK_OTHERS,
+            shouldDuckAndroid: true,
+            staysActiveInBackground: false,
+            playThroughEarpieceAndroid: true
+        });
+        const sound = new Audio.Sound();
+        const status = {
+            shouldPlay:false
+        }
+        sound.loadAsync({ uri: content.audioPath },status,false)
+    
     
     const handleVisible = () => {
-        console.log("at last index",index)
+        // console.log("at last index",index)
         if (index + 1 > userProgData.CONTENT.completedWords  && content.fk_levelId == userProgData.CONTENT.currLevelId) {
-            // console.log("2nd ",index,userProgData.CONTENT.completedWords)
             props.updateProgress({
                 ...userProgData.CONTENT,
                 completedWords: userProgData.CONTENT.completedWords + wordIncrement,
@@ -56,11 +57,11 @@ function DisplayContents(props) {
     const handleNext = (i) => {
         setIndex(i);
         setLoading(true);
-        if (index + 1 <= userProgData.CONTENT.completedWords) {
-            props.updateProgress({
-                ...userProgData
-            })
-        } 
+        // if (index + 1 <= userProgData.CONTENT.completedWords) {
+        //     props.updateProgress({
+        //         ...userProgData
+        //     })
+        // } 
         if (index + 1 > userProgData.CONTENT.completedWords && content.fk_levelId == userProgData.CONTENT.currLevelId) {
             props.updateProgress({
                 ...userProgData.CONTENT,
@@ -69,7 +70,7 @@ function DisplayContents(props) {
                 userScore:userProgData.CONTENT.userScore + wordProgressScore
             })
         }
-        
+
         setTimeout(() => {
             setLoading(false);
         }, 1000);

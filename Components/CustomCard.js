@@ -7,7 +7,7 @@ import {
   } from '../utils/react-native-responsive-screen';
 
 function CustomCards(props){
-    const {title,maxScore,locked,score,completedWords} =props
+    const {title,maxScore,locked,score,completedWords,totalwords} =props
     return (
             <ListItem
             disabled={locked}
@@ -35,15 +35,15 @@ function CustomCards(props){
                                 {
                                 locked ? <Text style={styles.lockedText}>Level is Locked</Text> :
                                     <>
-                                        <Text style={styles.completedWordsText}>{completedWords} words completed</Text>
-                                        <Text style={styles.pointsText}>{score} Points out of {maxScore}</Text>
+                                        <Text style={styles.completedWordsText}> Total words {totalwords}</Text>
+                                        <Text style={styles.pointsText}>{completedWords} Words completed</Text>
                                     </>
                                     
                                 }
                                 <ProgressBarAndroid 
                                 styleAttr="Horizontal" 
                                 indeterminate={false} 
-                                progress={score/maxScore} 
+                                progress={completedWords/totalwords} 
                                 color="yellow" 
                                 style={styles.progressBar}
                                 />
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     listItemTitle: {
         color: 'white',
         fontWeight: 'bold',
-        fontSize: hp("3%")
+        fontSize: hp("2.5%")
     },
     lockedText: {
         color: "yellow",

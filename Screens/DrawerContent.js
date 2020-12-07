@@ -51,7 +51,7 @@ function DrawerContent(props){
                             labelStyle={styles.labelStyle}
                             label="Profile"
                         />
-                        <DrawerItem
+                        {/* <DrawerItem
                             icon={({color,size}) =>(
                                 <Icon
                                 name="translate"
@@ -61,7 +61,7 @@ function DrawerContent(props){
                             )}
                             labelStyle={styles.labelStyle}
                             label="Choose Languages"
-                        />
+                        /> */}
                         <DrawerItem
                             icon={({color,size}) =>(
                                 <Icon

@@ -29,10 +29,10 @@ function LevelDetailsPage(props) {
             setVisibleButton(false)
         }
     },[userProgData.CONTENT.completedWords])
-
+    // console.log(levelContent)
     return(
         <React.Fragment>
-            <CustomHeader {...props} title="Introduction"/>
+            <CustomHeader {...props} title={props.route.params.levlName}/>
             <ScrollView style={styles.detailView}>
                         {
                             levelContent.CONTENT.map((content,index)=> (

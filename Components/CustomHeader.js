@@ -38,7 +38,7 @@ function CustomHeader(props) {
         <React.Fragment>
             <Header
                 leftComponent={<LeftComponent {...props}/>}
-                centerComponent={{text:`${props.title}`,style:{color: '#fff',fontSize:30}}}
+                centerComponent={{ text: `${props.title}`, style: { color: '#fff', fontSize: 25 } }}
                 rightComponent={<RightComponent  {...props} handleQuizz={handleQuizz}/>}
                 linearGradientProps={{
                     colors: ['#399668','#33898f'],

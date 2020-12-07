@@ -1,8 +1,8 @@
 // environment.js
 
 
-// const ROOT_URL = "http://newlearningmmauli-env.eba-jemmappg.ap-south-1.elasticbeanstalk.com";
-const ROOT_URL = "http://6483a2a27ff2.ngrok.io"
+const ROOT_URL = "http://learningmappmauli-env.eba-hxwvginb.ap-south-1.elasticbeanstalk.com";
+// const ROOT_URL = "http://a2c75d9f4872.ngrok.io";
 
 const quizScore =10;
 const wordProgressScore = 10;

@@ -40,7 +40,7 @@ export default CustomWordCard;
 
 const styles = StyleSheet.create({
     containerStyle:{
-        margin: wp("3%"),
+        margin: wp("1.7%"),
         // marginBottom:5,
         borderRadius: 10,
         shadowColor: "#000",
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
         width:"20%",
     },
     wordText: {
-        fontSize: hp("3.2%"),
+        fontSize: hp("3%"),
         fontWeight: "bold",
         color: "#441f70",
         textTransform: "capitalize"

@@ -12,15 +12,12 @@ import {
     widthPercentageToDP as wp
   } from '../utils/react-native-responsive-screen';
 
-const postFeedBack = (data) => {
-    const url = `${ROOT_URL}/userProgress/provideFeedBack`;
-    axios.post(url, data).then(res => {
-        if (res.data.STS == '200') {
-            return true
-        }
-    })
 
-    return false;
+const postFeedBack = async (data) => {
+    const url = `${ROOT_URL}/userProgress/provideFeedBack`;
+    const request = await axios.post(url, data)
+    // console.log(request)
+    return request.data;
 }
 
 function FeedBack(props) {
@@ -35,32 +32,40 @@ function FeedBack(props) {
         setFeedBack(value.nativeEvent.text)
     } 
     const handleSubmit = () => {
-        let status  = postFeedBack({
+        setLoading(true)
+        postFeedBack({
             userId:userProg.CONTENT.userId,
             languageId:userProg.CONTENT.languageId,
             ratings:rating,
             feedBack:feedBack
+        }).then(res => {
+            if (res.STS === '200') {
+                setFeedBack('');
+                setRating(0);
+                setLoading(false);
+                Alert.alert(
+                    "Feedback Status",
+                    "Thank you for provoding feedback"
+                )
+            } else {
+                setFeedBack('');
+                setRating(0);
+                setLoading(false);
+                Alert.alert(
+                    "Feedback Status",
+                    "failed to submit feedback try again"
+                )
+            }
+        }).catch(err => {
+            console.log(err);
+            setFeedBack('');
+                setRating(0);
+                setLoading(false);
+                Alert.alert(
+                    "Feedback Status",
+                    "failed to submit feedback try again"
+                )
         })
-        
-        if (status) {
-            setFeedBack('');
-            setRating(0);
-            setLoading(false);
-            Alert.alert(
-                "Feedback Status",
-                "Thank you for provoding feedback"
-            )
-        }
-        else {
-            setFeedBack('');
-            setRating(0);
-            setLoading(false);
-            Alert.alert(
-                "Feedback Status",
-                "failed to submit feedback try again"
-            )
-        }
-        // setLoading(true);
     }
 
     return (
@@ -109,7 +114,7 @@ function FeedBack(props) {
                                     imageSize={40}
                                 />
                             </View>
-                            <View style={{width:"60%",marginTop:hp("2%")}}>
+                            <View style={{width:"60%",marginTop:hp("3%")}}>
                                 <TouchableOpacity style={styles.button}
                                     onPress={handleSubmit}
                                     disabled ={loading}

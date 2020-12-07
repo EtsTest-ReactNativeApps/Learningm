@@ -3,6 +3,8 @@ import { StyleSheet, ScrollView,TouchableOpacity,ActivityIndicator } from 'react
 import CustomHeader from '../Components/CustomHeader';
 import CustomCards from '../Components/CustomCard';
 import { connect } from 'react-redux';
+import { ROOT_URL } from '../environment';
+import axios from 'axios';
 import { levelContentRequest } from '../actions/index';
 import {
   heightPercentageToDP as hp,
@@ -11,25 +13,28 @@ import {
 function UserHome(props){
   const { levels, userProgData } = props
   const [loading, setLoading] = React.useState(false)
-  const [levlId,setLevelId] = React.useState(1)
-  const handleClick = (l) =>{
+  const [levlId, setLevelId] = React.useState(1)
+  const [levelName,setLevelName] =React.useState('')
+  const handleClick = (lvlId,lvlName) =>{
     setLoading(true)
-    setLevelId(l)
+    setLevelId(lvlId)
+    setLevelName(lvlName)
     props.getLevelContents({
       "fk_languageId":1,
-      "fk_levelId":l 
+      "fk_levelId":lvlId 
     })
   }
 
-  
+  // console.log(props)
   React.useEffect(() =>{
     if (props.levelContent.STS === "200") {
       setLoading(false)
       props.navigation.navigate("levelDetail", {
-        levlId:levlId
+        levlId: levlId,
+        levlName:levelName
       })
     }
-  },[props.levelContent])
+  }, [props.levelContent])
   
     return (   
         <>
@@ -39,16 +44,22 @@ function UserHome(props){
                         levels.CONTENT.map(level =>(
                           <TouchableOpacity 
                             key={level.levelId}
-                            onPress={() => handleClick(level.levelId)}
+                            onPress={() => handleClick(level.levelId,level.categoryName)}
                             disabled={loading?true:false || !(level.levelId <= userProgData.CONTENT.currLevelId)}
                           >
-                           
+                            
                             <CustomCards 
                               title={level.categoryName}
                               completedWords={userProgData.CONTENT.currLevelId > level.levelId ?
-                                userProgData.CONTENT.totalCompletedWords - userProgData.CONTENT.completedWords : userProgData.CONTENT.currLevelId == level.levelId ?
+                                (level.levelMaxScore / 2 >= 100 ? (level.levelMaxScore - 100) / 10 :
+                                (level.levelMaxScore/20)
+                                )
+                                : userProgData.CONTENT.currLevelId == level.levelId ?
                                 userProgData.CONTENT.completedWords:0
                               }
+                              totalwords={
+                                  level.levelMaxScore/2 >= 100 ? (level.levelMaxScore -100)/10 : level.levelMaxScore/20
+                                }
                               maxScore={level.levelMaxScore}
                               locked={!(level.levelId <= userProgData.CONTENT.currLevelId)}
                               score={userProgData.CONTENT.currLevelId > level.levelId ?
@@ -87,7 +98,19 @@ const mapDispatchToProps =(dispatch) =>({
   getLevelContents:(data) =>dispatch(levelContentRequest(data))
 })
 
-export default connect(mapStateToProps,mapDispatchToProps)(UserHome);
+export default connect(mapStateToProps, mapDispatchToProps)(UserHome);
+
+// const getlevelTotalWords = async(levelId) => {
+//   const url = `${ROOT_URL}/adminSecure/getAllContent`;
+//   const postData = {
+//     "fk_languageId":1,
+//     "fk_levelId":levelId
+//   }
+//   const requst = await axios.post(url, postData);
+
+//   // console.log(requst.data.CONTENT.length)
+//   return requst.data.CONTENT.length;
+// }
 
 const styles  = StyleSheet.create({
   containerView:{
