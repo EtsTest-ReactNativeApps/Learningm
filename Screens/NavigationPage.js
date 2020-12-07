@@ -15,6 +15,11 @@ import {connect} from 'react-redux';
 import ProfilePage from './ProfilePage';
 import DrawerContent from './DrawerContent';
 import OnBoardScreen from './OnBoardScreen';
+import LevelDetailsPage from './LevelDetailsPage';
+import DisplayContents from './DisplayContent';
+import FeedBack from './Feedback';
+import LevelAssesment from './LevelAssesment';
+import RandomQuizz from './RandomQuizz';
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
@@ -50,21 +55,44 @@ const StackNavigation =() =>{
                       name="RegisterPage"
                       component={RegisterPage}  
                     />
-                    {/* <Stack.Screen
-                      name="Profile"
-                      component={ProfilePage}
-                    /> */}
+                    
       </Stack.Navigator>
   )
 }
 
 const DrawerNavigation =() =>{
+  // console.log(props)
   return (
-          <Drawer.Navigator drawerContent={props => <DrawerContent  {...props}/>}>
+          <Drawer.Navigator drawerContent={props => <DrawerContent  {...props}/>}   >
               <Drawer.Screen 
                 name="UserHome"
                 component={UserHome}
               />
+              <Drawer.Screen
+                name="levelDetail"
+                component={LevelDetailsPage}
+              />
+              <Drawer.Screen
+                name="contentsPage"
+                component={DisplayContents}
+              />
+              <Drawer.Screen
+                name="profilePage"
+                component={ProfilePage}
+              />
+              <Drawer.Screen
+                name='feedback'
+                component={FeedBack}
+              />
+              <Drawer.Screen
+                name="assesmentPage"
+                component={LevelAssesment}
+              />
+              <Drawer.Screen
+                name="quizzPage"
+                component={RandomQuizz}
+              />
+              
           </Drawer.Navigator>
   )
 }

@@ -1,13 +1,18 @@
 import React from 'react';
-import { StyleSheet, Text, View ,TouchableOpacity,ScrollView,Platform} from 'react-native';
+import { StyleSheet, Text, View ,TouchableOpacity,ScrollView,Platform,ActivityIndicator} from 'react-native';
 import { Input } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {connect} from 'react-redux';
-import {logInRequest} from '../actions/index'
+import { logInRequest } from '../actions/index';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp
+} from '../utils/react-native-responsive-screen';
 function LoginPage(props) {
-  const {navigation} =props
+  const { navigation } = props
+  const [loading,setLoading] = React.useState(false)
   // let {userState} = props
   const [data,setData] =React.useState({
     userEmailId:'',
@@ -55,12 +60,19 @@ const validatePass =() =>{
         props.login({
           ...data
         })
+    setLoading(true)
 
   }
   React.useEffect(() =>{
     // console.log(userState)
-    if(props.userState.isLogedIN){
+    if (props.userState.isLogedIN) {
+      setLoading(false)
       navigation.navigate("Language")
+    }
+    else {
+      setTimeout(() => {
+        setLoading(false)
+      },2000)
     }
  },[props.userState])
   return (
@@ -73,7 +85,7 @@ const validatePass =() =>{
                       left: 0,
                       right: 0,
                       top: 0,
-                      height:"100%",
+                      height:hp("100%"),
                   }}
                   />
               <Text style={styles.text_header}>Sign In  !</Text>
@@ -116,6 +128,7 @@ const validatePass =() =>{
                   <TouchableOpacity
                       style={styles.signIn}
                      onPress={onSubmit}
+                     disabled={loading}
                   >
                       <LinearGradient
                           colors={['#33898f', '#01ab9d']}
@@ -141,6 +154,16 @@ const validatePass =() =>{
                 </View>
             </ScrollView>
           </Animatable.View>
+                {loading ? 
+                        (
+                          
+                              <ActivityIndicator
+                                size="large"
+                                color="#c2be46"
+                                style={styles.activityStyle}
+                              />
+                            )
+                          : null}
     </View>
   );
 }
@@ -162,8 +185,8 @@ const styles = StyleSheet.create({
     header: {
         flex: 1,
         justifyContent: 'flex-end',
-        paddingHorizontal: 20,
-        paddingBottom: 50
+        paddingHorizontal: wp("5%"),
+        paddingBottom: hp("5%")
     },
     footer: {
         flex: Platform.OS === 'ios' ? 3 : 5,
@@ -176,25 +199,25 @@ const styles = StyleSheet.create({
     text_header: {
         color: '#fff',
         fontWeight: 'bold',
-        fontSize: 30
+        fontSize: hp('4%')
     },
     text_footer: {
         color: '#05375a',
-        fontSize: 18
+        fontSize: hp("2.1")
     },
     signView:{
-      marginTop:100
+      marginTop:hp("10%")
     },
     action: {
         flexDirection: 'row',
-        marginTop: 10,
+        marginTop: hp("1%"),
         borderBottomWidth: 1,
         borderBottomColor: '#f2f2f2',
         paddingBottom: 5
     },
     textInput: {
         flex: 1,
-        paddingLeft: 10,
+        paddingLeft: wp("3%"),
         color: '#05375a',
     },
     button: {
@@ -202,19 +225,19 @@ const styles = StyleSheet.create({
     },
     signIn: {
         width: '100%',
-        height: 50,
+        height: hp("6%"),
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop:20,
+        marginTop:hp("2%"),
         borderRadius: 10
     },
     textSign: {
-        fontSize: 18,
+        fontSize: hp("2.1%"),
         fontWeight: 'bold'
     },
     textPrivate: {
       alignItems:"center",
-      marginTop: 20
+      marginTop: hp("2%")
   },
   color_textPrivate: {
       color: 'gray',
