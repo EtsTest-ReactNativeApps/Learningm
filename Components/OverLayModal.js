@@ -15,10 +15,6 @@ function OverLayModal(props) {
         setLoading(true)
     }
     const handleNo = () => {
-        props.getLevelAssesment({
-            fk_languageId: props.languageId,
-            fk_levelId:props.levelId
-        })
         props.navigation.navigate("levelDetail")
     }
 //navigate to assesment page

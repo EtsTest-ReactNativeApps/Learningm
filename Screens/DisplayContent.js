@@ -42,11 +42,20 @@ function DisplayContents(props) {
         const status = {
             shouldPlay:false
         }
+
         sound.loadAsync({ uri: audioUrl },status,false)
         
+
+        // sound.loadAsync({ uri: content.audioPath },status,false)
+       // React.useEffect(() =>{
+         //   async()=>{
+           //     await sound.loadAsync({ uri: content.audioPath },status,false)
+            //}
+        //},[content.audioPath])
+
     
     const handleVisible = () => {
-        // console.log("at last index",index)
+        
         if (index + 1 > userProgData.CONTENT.completedWords  && content.fk_levelId == userProgData.CONTENT.currLevelId) {
             props.updateProgress({
                 ...userProgData.CONTENT,
@@ -75,15 +84,13 @@ function DisplayContents(props) {
         }, 1000);
     }
     
-    const playSound = async () => {
-        // console.log(sound._loaded)
+
+    const playSound = () => {
         if (sound._loaded) {
-            await sound.playAsync().then(() => {
+            sound.playAsync().then(() => {
                 sound.replayAsync();
             })
         }
-           
-        
     }
     React.useEffect(() => {
         setIndex(props.route.params.index)
@@ -97,6 +104,7 @@ function DisplayContents(props) {
             // setVideoUrl(levelContent[index].videoPath)
         } 
     },[index])
+
     const handleOnLoad = (plaback) => {
         // console.log(plaback)
         setShouldPlay(true)
@@ -123,9 +131,8 @@ function DisplayContents(props) {
                                 videoProps={{
                                     shouldPlay: shouldPlay,
                                     resizeMode: "cover",
+
                                     onLoad: handleOnLoad,
-                                    
-                                    // onPlaybackStatusUpdate:handleOnLoad,
                                     source: {
                                         uri: content.videoPath,
                                     },

@@ -56,7 +56,7 @@ function OnBoardScreen(props){
         imageContainerStyles={styles.imageContainerStyles}
         onSkip={() => navigation.navigate("LandingPage")}
         onDone={() =>navigation.navigate("LandingPage")}
-        DoneButtonComponent ={DoneButton}
+        // DoneButtonComponent ={DoneButton}
         pages={pages}
         />
     )

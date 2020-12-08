@@ -13,11 +13,6 @@ function LanguagePage(props){
     const { navigation,userState} =props
     const LangData =[
         "Kannada",
-        "Telgu",
-        "Tamil",
-        "Konkani",
-        "Marati",
-        "Hindi"
     ]
     const handleChose = (l) => {
         // console.log("handlechoose")
