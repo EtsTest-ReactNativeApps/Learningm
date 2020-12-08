@@ -20,12 +20,13 @@ function LevelDetailsPage(props) {
     const [loading,setLoading] =React.useState(false)
     const handleClick = (index) => {
         navigation.navigate("contentsPage",{
-            index:index
+            index: index,
+            title:props.route.params.levlName
         })
     }
 
     React.useEffect(() => {
-        console.log(props.route.params,userProgData.CONTENT.currLevelId)
+        // console.log(props.route.params,userProgData.CONTENT.currLevelId)
         if (props.route.params.levlId === userProgData.CONTENT.currLevelId &&
             userProgData.CONTENT.completedWords === levelContent.CONTENT.length)
          {
@@ -37,7 +38,7 @@ function LevelDetailsPage(props) {
     },[userProgData.CONTENT.completedWords])
     React.useEffect(() => {
         if (loading) {
-            console.log(props.assementData)
+            // console.log(props.assementData)
             if (props.assementData.STS == '200') {
                 setLoading(false)
                 props.navigation.navigate('assesmentPage')
@@ -81,7 +82,7 @@ function LevelDetailsPage(props) {
                                     <CustomWordCard
                                         word={content.word}
                                         isCompleted={content.fk_levelId < userProgData.CONTENT.currLevelId ?
-                                            true:index+1 <= userProgData.CONTENT.completedWords}
+                                            true:index < userProgData.CONTENT.completedWords}
                                     />
                                 </TouchableOpacity>
                             )) 

@@ -55,7 +55,7 @@ function DisplayContents(props) {
     
     const handleVisible = () => {
         
-        if (index + 1 > userProgData.CONTENT.completedWords  && content.fk_levelId == userProgData.CONTENT.currLevelId) {
+        if (index === userProgData.CONTENT.completedWords  && content.fk_levelId == userProgData.CONTENT.currLevelId) {
             props.updateProgress({
                 ...userProgData.CONTENT,
                 completedWords: userProgData.CONTENT.completedWords + wordIncrement,
@@ -65,11 +65,12 @@ function DisplayContents(props) {
         }
         setVisible(!isVisible)
     }
-
+    // console.log(userProgData.CONTENT,content)
     const handleNext = (i) => {
         setIndex(i);
         setLoading(true);
-        if (index + 1 > userProgData.CONTENT.completedWords && content.fk_levelId == userProgData.CONTENT.currLevelId) {
+
+        if (index === userProgData.CONTENT.completedWords && content.fk_levelId == userProgData.CONTENT.currLevelId) {
             props.updateProgress({
                 ...userProgData.CONTENT,
                 completedWords: userProgData.CONTENT.completedWords + wordIncrement,
@@ -105,15 +106,14 @@ function DisplayContents(props) {
             setVideoUrl(levelContent[index].videoPath)
         } 
     },[index])
-
+    // console.log(props.route)
     const handleOnLoad = (plaback) => {
         // console.log(plaback)
         setShouldPlay(true)
     }
-   
     return(
         <React.Fragment>
-            <CustomHeader {...props} title="Introduction" />
+            <CustomHeader {...props} title={props.route.params.title} />
             <LinearGradient
                 colors={['#33898f', 'transparent']}
                 style={{
@@ -173,8 +173,10 @@ function DisplayContents(props) {
                                 </View>
                             </View>
                             <View style={styles.buttonView}>
-                                
-                                {index < levelContent.length - 1 ?
+                                {
+                                    console.log(index,levelContent.length)
+                                }
+                                { userProgData.CONTENT.completedWords !== levelContent.length? 
                                     
                                 (
                                     <TouchableOpacity style={styles.button}

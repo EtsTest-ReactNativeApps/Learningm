@@ -19,7 +19,7 @@ function OverLayModal(props) {
     }
 //navigate to assesment page
     React.useEffect(() => {
-        console.log(props.quizzState)
+        // console.log(props.quizzState)
         if (loading) {
             if (props.quizzState.STS === '200') {
                 setVisible(false)
