@@ -11,6 +11,7 @@ import {
 function AssesmentOverOverlay(props) {
     const { isGameOver, points, userProg, levelsData,setGameOver} = props
     const [cleared,setcleared] = React.useState(false)
+    const [allLevelCompleted,setAllLveleCompleted] =React.useState(false)
     let maxScore
     let currLevelIndex
 
@@ -25,7 +26,10 @@ function AssesmentOverOverlay(props) {
     React.useEffect(() => {
         if (maxScore * progressPercent <= userProg.CONTENT.userScore + points ) {
            setcleared(true)
-        } 
+        }
+        if(maxScore * progressPercent <= userProg.CONTENT.userScore + points && userProg.CONTENT.currLevelId == 7){
+            setAllLveleCompleted(true)
+        }
     },[])
     
     const [visible, setVisible] = React.useState(isGameOver);
@@ -33,14 +37,17 @@ function AssesmentOverOverlay(props) {
         // console.log(cleared)
         if (cleared) {
             // console.log("here")
-            props.updateUserProg({
-                ...userProg.CONTENT,
-                completedWords:0,
-                userScore:userProg.CONTENT.userScore + points,
-                currLevelId: levelsData.CONTENT[currLevelIndex + 1].levelId,
-                isCurLvlAsgnTkn: "Y",
-                isLvlAsntComplt:"Y"
-            })
+            if(userProg.CONTENT.currLevelId<7){
+                props.updateUserProg({
+                    ...userProg.CONTENT,
+                    completedWords:0,
+                    userScore:userProg.CONTENT.userScore + points,
+                    currLevelId: levelsData.CONTENT[currLevelIndex + 1].levelId,
+                    isCurLvlAsgnTkn: "Y",
+                    isLvlAsntComplt:"Y"
+                })
+            }
+            
         }
         else {
             props.updateUserProg({
@@ -62,21 +69,38 @@ function AssesmentOverOverlay(props) {
             >
                 <React.Fragment>
                 <View style={{flexGrow:0.5,justifyContent:"space-around"}}>
-                    {/* <Text style={{ ...styles.textStyle, fontSize: 50, color:"#f5ad31"}}>
-                        Game Over !!
-                    </Text> */}
-                    <Image
-                        style={styles.tinyLogo}
-                        source={require("../assets/gameover.jpg")}
-                        
-                    />
+                    {
+                        allLevelCompleted?
+                        (
+                            <Image
+                            style={styles.tinyLogo}
+                            source={require("../assets/congratsImg.png")}
+                            />
+                        ):(
+                            <Image
+                                style={styles.tinyLogo}
+                                source={require("../assets/gameover.jpg")}  
+                            />
+                        )
+                    }
                     
-                    <Text style={{...styles.textStyle,fontSize:35,}}>
-                         {points} points 
-                    </Text>
+                    {allLevelCompleted?(
+                        null
+                    ):(
+                        <Text style={{...styles.textStyle,fontSize:35,}}>
+                            {points} points 
+                        </Text>
+                    )
+                }
                     
                     {
-                        cleared ?
+                        allLevelCompleted?(
+                        <Text style={{...styles.textStyle,fontSize:20,color:"#67a35f"}}>
+                            You have completed all the levels ! {"\n"}
+                            Thank You for using our app!
+                        </Text> 
+                        ):(
+                            cleared ?
                             (
                                 <Text style={{...styles.textStyle,fontSize:20,color:"#67a35f"}}>
                                     You have unlocked the {"\n"}next level congrats  !!
@@ -87,6 +111,7 @@ function AssesmentOverOverlay(props) {
                                     Retake the assement to {"\n"}unlock next level !
                                 </Text>
                             )
+                        )
                     }
                 </View>
                 <View style={styles.buttonView}>
