@@ -33,39 +33,43 @@ function FeedBack(props) {
     } 
     const handleSubmit = () => {
         setLoading(true)
-        postFeedBack({
-            userId:userProg.CONTENT.userId,
-            languageId:userProg.CONTENT.languageId,
-            ratings:rating,
-            feedBack:feedBack
-        }).then(res => {
-            if (res.STS === '200') {
+        if (feedBack != '') {
+            postFeedBack({
+                userId:userProg.CONTENT.userId,
+                languageId:userProg.CONTENT.languageId,
+                ratings:rating,
+                feedBack:feedBack
+            }).then(res => {
+                if (res.STS === '200') {
+                    setFeedBack('');
+                    setRating(0);
+                    setLoading(false);
+                    Alert.alert(
+                        "Feedback Status",
+                        "Thank you for provoding feedback"
+                    )
+                } else {
+                    setFeedBack('');
+                    setRating(0);
+                    setLoading(false);
+                    Alert.alert(
+                        "Feedback Status",
+                        "failed to submit feedback try again"
+                    )
+                }
+            }).catch(err => {
+                console.log(err);
                 setFeedBack('');
-                setRating(0);
-                setLoading(false);
-                Alert.alert(
-                    "Feedback Status",
-                    "Thank you for provoding feedback"
-                )
-            } else {
-                setFeedBack('');
-                setRating(0);
-                setLoading(false);
-                Alert.alert(
-                    "Feedback Status",
-                    "failed to submit feedback try again"
-                )
-            }
-        }).catch(err => {
-            console.log(err);
-            setFeedBack('');
-                setRating(0);
-                setLoading(false);
-                Alert.alert(
-                    "Feedback Status",
-                    "failed to submit feedback try again"
-                )
-        })
+                    setRating(0);
+                    setLoading(false);
+                    Alert.alert(
+                        "Feedback Status",
+                        "failed to submit feedback try again"
+                    )
+            })
+        } {
+            alert("Feedback is empty please give us \n your valuable feedback")
+        }
     }
 
     return (

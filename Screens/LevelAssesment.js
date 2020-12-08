@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 // import {getQuizzData} from '../actions/index'
 function LevelAssesment(props) {
     // console.log("quizz state", props.quizzState.CONTENT)
-    const {quizzState} =props
+    const {quizzState,userProgress} =props
     const [index, setIndex] = React.useState(0);
     const [questionData,setQuestionData] = React.useState({...quizzState.CONTENT[index]})
     const [answered, setAnswered] = React.useState(null);
@@ -15,6 +15,7 @@ function LevelAssesment(props) {
     const [isGameOver, setGameOver] = React.useState(false);
     const totalQsn = quizzState.CONTENT.length
     const [currQsn, setCurrQsn] = React.useState(1);
+    // const [languageCompleted,setLanguageCompleted] = React.useState(false);
     
     const checkCorrect = (answerId,qsnId) => {
         setAnswered(answerId);
@@ -99,7 +100,8 @@ function LevelAssesment(props) {
 
 const mapStateToProps = (state) => {
     return {
-        quizzState:state.assesmentData
+        quizzState:state.assesmentData,
+        userProgress:state.userProgress
     }
 }
 

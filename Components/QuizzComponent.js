@@ -22,13 +22,15 @@ function QuizzComponent(props) {
     });
     const sound = new Audio.Sound();
     const status = {
-        shouldPlay:false
-    }
+        shouldPlay: false
+    };
     sound.loadAsync({ uri: qsn.quesContent.audioPath }, status, false)
     const playSound = () => {
-        sound.playAsync().then(() => {
-            sound.replayAsync();
-        })
+        if (sound._loaded) {
+            sound.playAsync().then(() => {
+                sound.replayAsync();
+            })
+        }
     }
 
     React.useEffect(() => {

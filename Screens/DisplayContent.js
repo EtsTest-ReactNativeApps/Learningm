@@ -14,17 +14,21 @@ import {
     widthPercentageToDP as wp
   } from '../utils/react-native-responsive-screen';
 function DisplayContents(props) {
+    const videoRef = React.useRef()
     const { userProgData ,navigation} = props
     const levelContent = props.levelContent.CONTENT;
     const [index,setIndex] = React.useState(props.route.params.index);
     const [content, setContent] = React.useState(levelContent[index]);
     const [loading, setLoading] = React.useState(true);
     const [isVisible, setVisible] = React.useState(false);
+    const [audioUrl, setAudioUrl] = React.useState(content.audioPath);
+    const [shouldPlay,setShouldPlay] = React.useState(false)
+    // const [videoUrl,setVideoUrl] = React.useState(content.videoPath)
     setTimeout(() => {
         setLoading(false);
     }, 1000);
     // let sound;
-    
+    // console.log(userProgData)
         Audio.setAudioModeAsync({
             allowsRecordingIOS: false,
             interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
@@ -38,12 +42,17 @@ function DisplayContents(props) {
         const status = {
             shouldPlay:false
         }
+
+        sound.loadAsync({ uri: audioUrl },status,false)
+        
+
         // sound.loadAsync({ uri: content.audioPath },status,false)
-        React.useEffect(() =>{
-            async()=>{
-                await sound.loadAsync({ uri: content.audioPath },status,false)
-            }
-        },[content.audioPath])
+       // React.useEffect(() =>{
+         //   async()=>{
+           //     await sound.loadAsync({ uri: content.audioPath },status,false)
+            //}
+        //},[content.audioPath])
+
     
     const handleVisible = () => {
         
@@ -61,11 +70,6 @@ function DisplayContents(props) {
     const handleNext = (i) => {
         setIndex(i);
         setLoading(true);
-        // if (index + 1 <= userProgData.CONTENT.completedWords) {
-        //     props.updateProgress({
-        //         ...userProgData
-        //     })
-        // } 
         if (index + 1 > userProgData.CONTENT.completedWords && content.fk_levelId == userProgData.CONTENT.currLevelId) {
             props.updateProgress({
                 ...userProgData.CONTENT,
@@ -80,6 +84,7 @@ function DisplayContents(props) {
         }, 1000);
     }
     
+
     const playSound = () => {
         if (sound._loaded) {
             sound.playAsync().then(() => {
@@ -89,15 +94,20 @@ function DisplayContents(props) {
     }
     React.useEffect(() => {
         setIndex(props.route.params.index)
+        sound.unloadAsync();
     },[props.route.params.index])
     
     React.useEffect(() => {
         if (index <levelContent.length) {
             setContent(levelContent[index])
+            setAudioUrl(levelContent[index].audioPath)
+            // setVideoUrl(levelContent[index].videoPath)
         } 
     },[index])
-    const handleOnLoad =(playbackstatus) =>{
-        console.log(playbackstatus)
+
+    const handleOnLoad = (plaback) => {
+        // console.log(plaback)
+        setShouldPlay(true)
     }
     return(
         <React.Fragment>
@@ -119,14 +129,16 @@ function DisplayContents(props) {
                         <View style={styles.videoView}>    
                             <VideoPlayer
                                 videoProps={{
-                                    shouldPlay: true,
+                                    shouldPlay: shouldPlay,
                                     resizeMode: "cover",
-                                    onLoad:handleOnLoad,
+
+                                    onLoad: handleOnLoad,
                                     source: {
                                         uri: content.videoPath,
                                     },
                                     
                                 }}
+                                videoRef={videoRef}
                                 width={Dimensions.get('window').width}
                                 height={Dimensions.get('window').height*0.4}
                             />
