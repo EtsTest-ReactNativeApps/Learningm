@@ -42,7 +42,8 @@ function AssesmentOverOverlay(props) {
             if(userProg.CONTENT.currLevelId<7){
                 props.updateUserProg({
                     ...userProg.CONTENT,
-                    completedWords:0,
+                    completedWords: 0,
+                    levelSerialNo:currlevlSlNo,
                     userScore:userProg.CONTENT.userScore + points,
                     currLevelId: levelsData.CONTENT[currLevelIndex + 1].levelId,
                     isCurLvlAsgnTkn: "Y",

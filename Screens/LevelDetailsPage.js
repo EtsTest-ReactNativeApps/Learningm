@@ -21,7 +21,7 @@ function LevelDetailsPage(props) {
     }
 
     React.useEffect(() => {
-        // console.log(props.route.params,userProgData.CONTENT.currLevelId)
+        console.log(props.route.params,userProgData.CONTENT.currLevelId)
         if (props.route.params.levlId === userProgData.CONTENT.currLevelId &&
             userProgData.CONTENT.completedWords === levelContent.CONTENT.length)
          {
@@ -79,7 +79,6 @@ function LevelDetailsPage(props) {
                                     onPress={handleAssesment}
                                 />
                             </View>):null
-                            
                         }
                         
                         

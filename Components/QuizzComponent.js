@@ -24,12 +24,6 @@ function QuizzComponent(props) {
     const status = {
         shouldPlay: false
     };
-    
-    // React.useEffect(() => {
-    //     async() => {
-    //         await sound.loadAsync({ uri: qsn.quesContent.audioPath }, status, false)    
-    //      }
-    // },[qsn.quesContent.audioPath])
     sound.loadAsync({ uri: qsn.quesContent.audioPath }, status, false)
     const playSound = () => {
         if (sound._loaded) {

@@ -68,7 +68,7 @@ function FeedBack(props) {
                     )
             })
         } {
-            alert("Feedback is empty please give valuable feedback")
+            alert("Feedback is empty please give us \n your valuable feedback")
         }
     }
 

@@ -28,7 +28,7 @@ export function* getLevelAssesmnt(action) {
         const quizzData = yield call(ApiUser.getLevelAssesment, action);
         // console.log("data in assesment saga", quizzData)
         if (quizzData.data.STS === '200') {
-            console.log("getlevel assesment saga")
+            // console.log("getlevel assesment saga")
             yield put({
                 type: 'GET_LEVEL_ASSMNT_SUCCESS',
                 payload:quizzData.data

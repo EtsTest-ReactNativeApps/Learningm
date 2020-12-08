@@ -19,6 +19,7 @@ function UserHome(props){
     setLoading(true)
     setLevelId(lvlId)
     setLevelName(lvlName)
+    // console.log(lvlId)
     props.getLevelContents({
       "fk_languageId":1,
       "fk_levelId":lvlId 
@@ -29,6 +30,7 @@ function UserHome(props){
   React.useEffect(() =>{
     if (props.levelContent.STS === "200") {
       setLoading(false)
+      console.log(levlId,levelName)
       props.navigation.navigate("levelDetail", {
         levlId: levlId,
         levlName:levelName
