@@ -35,14 +35,6 @@ function LevelDetailsPage(props) {
             setVisibleButton(false)
         }
     },[userProgData.CONTENT.completedWords])
-    const handleAssesment = () => {
-        setLoading(true);
-        // console.log(leveldata)
-        props.getLevelAssesment({
-            fk_languageId: levelContent.CONTENT[0].fk_languageId,
-            fk_levelId:levelContent.CONTENT[0].fk_levelId
-        })
-    }
     React.useEffect(() => {
         if (loading) {
             console.log(props.assementData)

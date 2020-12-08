@@ -20,17 +20,18 @@ function QuizzComponent(props) {
         staysActiveInBackground: false,
         playThroughEarpieceAndroid: true
     });
-    const sound = new Audio.Sound();
+    // const sound = new Audio.Sound();
     const status = {
         shouldPlay: false
     };
-    sound.loadAsync({ uri: qsn.quesContent.audioPath }, status, false)
-    const playSound = () => {
-        if (sound._loaded) {
-            sound.playAsync().then(() => {
-                sound.replayAsync();
-            })
-        }
+    // sound.loadAsync({ uri: qsn.quesContent.audioPath }, status, false)
+    const playSound = async() => {
+        const sound = new Audio.Sound();
+        await sound.loadAsync({ uri: qsn.quesContent.audioPath }, status, false);
+        const sts =await sound.playAsync();
+        setTimeout(() => {
+            sound.unloadAsync();
+        },sts.playableDurationMillis)
     }
 
     React.useEffect(() => {

@@ -14,7 +14,7 @@ import {
     widthPercentageToDP as wp
   } from '../utils/react-native-responsive-screen';
 function DisplayContents(props) {
-    const videoRef = React.useRef()
+    // const videoRef = React.useRef()
     const { userProgData ,navigation} = props
     const levelContent = props.levelContent.CONTENT;
     const [index,setIndex] = React.useState(props.route.params.index);
@@ -23,7 +23,7 @@ function DisplayContents(props) {
     const [isVisible, setVisible] = React.useState(false);
     const [audioUrl, setAudioUrl] = React.useState(content.audioPath);
     const [shouldPlay,setShouldPlay] = React.useState(false)
-    // const [videoUrl,setVideoUrl] = React.useState(content.videoPath)
+    const [videoUrl,setVideoUrl] = React.useState(content.videoPath)
     setTimeout(() => {
         setLoading(false);
     }, 1000);
@@ -38,13 +38,12 @@ function DisplayContents(props) {
             staysActiveInBackground: false,
             playThroughEarpieceAndroid: true
         });
-        const sound = new Audio.Sound();
+        // const sound = new Audio.Sound();
         const status = {
             shouldPlay:false
         }
 
-        sound.loadAsync({ uri: audioUrl },status,false)
-        
+        // sound.loadAsync({ uri: audioUrl },status,false)
 
         // sound.loadAsync({ uri: content.audioPath },status,false)
        // React.useEffect(() =>{
@@ -83,25 +82,27 @@ function DisplayContents(props) {
             setLoading(false);
         }, 1000);
     }
-    
-
-    const playSound = () => {
-        if (sound._loaded) {
-            sound.playAsync().then(() => {
-                sound.replayAsync();
-            })
-        }
+    // console.log(videoRef)
+    //audio..
+    const playSound = async () => {
+        const sound = new Audio.Sound();
+        await sound.loadAsync({ uri: content.audioPath }, status, false);
+        const sts =await sound.playAsync();
+        setTimeout(() => {
+            sound.unloadAsync();
+        },sts.playableDurationMillis)
     }
     React.useEffect(() => {
         setIndex(props.route.params.index)
-        sound.unloadAsync();
+        // sound.unloadAsync();
+
     },[props.route.params.index])
     
     React.useEffect(() => {
         if (index <levelContent.length) {
             setContent(levelContent[index])
             setAudioUrl(levelContent[index].audioPath)
-            // setVideoUrl(levelContent[index].videoPath)
+            setVideoUrl(levelContent[index].videoPath)
         } 
     },[index])
 
@@ -109,6 +110,7 @@ function DisplayContents(props) {
         // console.log(plaback)
         setShouldPlay(true)
     }
+   
     return(
         <React.Fragment>
             <CustomHeader {...props} title="Introduction" />
@@ -131,14 +133,15 @@ function DisplayContents(props) {
                                 videoProps={{
                                     shouldPlay: shouldPlay,
                                     resizeMode: "cover",
-
                                     onLoad: handleOnLoad,
                                     source: {
                                         uri: content.videoPath,
                                     },
                                     
                                 }}
-                                videoRef={videoRef}
+                                debug={true}
+                                // videoRef={videoRef}
+                                
                                 width={Dimensions.get('window').width}
                                 height={Dimensions.get('window').height*0.4}
                             />
