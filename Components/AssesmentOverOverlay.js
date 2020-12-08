@@ -13,12 +13,13 @@ function AssesmentOverOverlay(props) {
     const [cleared,setcleared] = React.useState(false)
     let maxScore
     let currLevelIndex
-
+    let currlevlSlNo;
     //to get level maxscore and current level index
     levelsData.CONTENT.forEach((level,i) => {
         if (level.levelId === userProg.CONTENT.currLevelId) {
             maxScore = level.levelMaxScore
             currLevelIndex = i
+            currlevlSlNo =level.levelSerialNo
         }
     })
 
@@ -36,6 +37,7 @@ function AssesmentOverOverlay(props) {
             props.updateUserProg({
                 ...userProg.CONTENT,
                 completedWords:0,
+                levelSerialNo:currlevlSlNo,
                 userScore:userProg.CONTENT.userScore + points,
                 currLevelId: levelsData.CONTENT[currLevelIndex + 1].levelId,
                 isCurLvlAsgnTkn: "Y",

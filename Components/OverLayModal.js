@@ -15,6 +15,7 @@ function OverLayModal(props) {
         setLoading(true)
     }
     const handleNo = () => {
+       
         props.navigation.navigate("levelDetail")
     }
 //navigate to assesment page

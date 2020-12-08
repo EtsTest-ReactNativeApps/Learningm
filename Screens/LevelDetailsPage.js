@@ -4,14 +4,16 @@ import {Button} from 'react-native-elements'
 import CustomHeader from '../Components/CustomHeader';
 import CustomWordCard from '../Components/CustomWordCard';
 import {connect} from 'react-redux';
-import { FAB } from 'react-native-paper';
+import { getlevelAssesment } from '../actions/index';
+// import { FAB } from 'react-native-paper';
 import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
   } from '../utils/react-native-responsive-screen';
 function LevelDetailsPage(props) {
     const [visibleButton, setVisibleButton] = React.useState(false);
-    const { levelContent, navigation,userProgData } = props
+    const { levelContent, navigation,userProgData ,leveldata} = props
+    const [loading,setLoading] =React.useState(false)
     const handleClick = (index) => {
         navigation.navigate("contentsPage",{
             index:index
@@ -29,6 +31,27 @@ function LevelDetailsPage(props) {
             setVisibleButton(false)
         }
     },[userProgData.CONTENT.completedWords])
+    const handleAssesment = () => {
+        setLoading(true);
+        // console.log(leveldata)
+        props.getLevelAssesment({
+            fk_languageId: levelContent.CONTENT[0].fk_languageId,
+            fk_levelId:levelContent.CONTENT[0].fk_levelId
+        })
+    }
+    React.useEffect(() => {
+        if (loading) {
+            console.log(props.assementData)
+            if (props.assementData.STS == '200') {
+                setLoading(false)
+                props.navigation.navigate('assesmentPage')
+            }
+            else {
+                setLoading(false)
+                alert("something went wrong try again later")
+            }
+        }
+    },[props.assementData])
     // console.log(levelContent)
     return(
         <React.Fragment>
@@ -55,7 +78,7 @@ function LevelDetailsPage(props) {
                                     title="Take Assement"
                                     titleStyle={{fontSize:hp("3%")}}
                                     containerStyle={{margin:wp("2%"),width:wp("95%"),borderRadius:10}}
-                                    onPress={() => props.navigation.navigate('assesmentPage')}
+                                    onPress={handleAssesment}
                                 />
                             </View>):null
                         }
@@ -77,12 +100,17 @@ function LevelDetailsPage(props) {
 const mapStateToProps =(state) =>{
     return{
         levelContent: state.levelContent,
-        userProgData:state.userProgress
+        userProgData: state.userProgress,
+        leveldata:state.levelsData,
+        assementData:state.assesmentData
     }
 }
+const mapDispatchToProps = (dispatch) => ({
+    getLevelAssesment:(data) => dispatch(getlevelAssesment(data)),
+})
 
+export default connect(mapStateToProps,mapDispatchToProps)(LevelDetailsPage); 
 
-export default connect(mapStateToProps)(LevelDetailsPage); 
 
 const styles = StyleSheet.create({
     detailView: {

@@ -91,7 +91,7 @@ React.useEffect(() =>{
               <TouchableOpacity 
                 onPress={() => navigation.navigate("LoginOptionPage")}
               >
-                <Text style={{fontSize:18,fontWeight:"700",color:"#399668"}}>Sig In</Text>
+                <Text style={{fontSize:18,fontWeight:"700",color:"#399668"}}>Sign In</Text>
               </TouchableOpacity>
       </View>
               {loading ? 
