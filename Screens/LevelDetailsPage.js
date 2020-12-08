@@ -3,7 +3,8 @@ import { Text, StyleSheet, ScrollView, View, TouchableOpacity } from 'react-nati
 import {Button} from 'react-native-elements'
 import CustomHeader from '../Components/CustomHeader';
 import CustomWordCard from '../Components/CustomWordCard';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
+import { getlevelAssesment } from '../actions/index';
 import { FAB } from 'react-native-paper';
 import {
     heightPercentageToDP as hp,
@@ -11,7 +12,8 @@ import {
   } from '../utils/react-native-responsive-screen';
 function LevelDetailsPage(props) {
     const [visibleButton, setVisibleButton] = React.useState(false);
-    const { levelContent, navigation,userProgData } = props
+    const { levelContent, navigation, userProgData,levelsData } = props;
+    const [loading,setLoading] =React.useState(false)
     const handleClick = (index) => {
         navigation.navigate("contentsPage",{
             index:index
@@ -30,6 +32,25 @@ function LevelDetailsPage(props) {
         }
     },[userProgData.CONTENT.completedWords])
     // console.log(levelContent)
+    const handleAssesment = () => {
+        setLoading(true);
+        props.getLevelAssesment({
+            fk_languageId: levelContent.CONTENT[0].fk_languageId,
+            fk_levelId:levelContent.CONTENT[0].fk_levelId
+        })
+    }
+
+    React.useEffect(() => {
+        if (loading) {
+            if (props.assementData.STS == '200') {
+                setLoading(false)
+                props.navigation.navigate('assesmentPage')
+            }
+            else {
+                alert("something went wrong try again later")
+            }
+        }
+    },[props.assementData])
     return(
         <React.Fragment>
             <CustomHeader {...props} title={props.route.params.levlName}/>
@@ -55,10 +76,13 @@ function LevelDetailsPage(props) {
                                     title="Take Assement"
                                     titleStyle={{fontSize:hp("3%")}}
                                     containerStyle={{margin:wp("2%"),width:wp("95%"),borderRadius:10}}
-                                    onPress={() => props.navigation.navigate('assesmentPage')}
+                                    onPress={handleAssesment}
                                 />
                             </View>):null
+                            
                         }
+                        
+                        
                 </ScrollView>
                 {/* {
                     visibleButton?(
@@ -77,12 +101,16 @@ function LevelDetailsPage(props) {
 const mapStateToProps =(state) =>{
     return{
         levelContent: state.levelContent,
-        userProgData:state.userProgress
+        userProgData: state.userProgress,
+        leveldata:state.levelsData,
+        assementData:state.assesmentData
     }
 }
+const mapDispatchToProps = (dispatch) => ({
+    getLevelAssesment:(data) => dispatch(getlevelAssesment(data)),
+})
 
-
-export default connect(mapStateToProps)(LevelDetailsPage); 
+export default connect(mapStateToProps,mapDispatchToProps)(LevelDetailsPage); 
 
 const styles = StyleSheet.create({
     detailView: {

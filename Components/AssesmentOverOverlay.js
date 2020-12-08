@@ -14,12 +14,14 @@ function AssesmentOverOverlay(props) {
     const [allLevelCompleted,setAllLveleCompleted] =React.useState(false)
     let maxScore
     let currLevelIndex
+    let currlevlSlNo;
 
     //to get level maxscore and current level index
     levelsData.CONTENT.forEach((level,i) => {
         if (level.levelId === userProg.CONTENT.currLevelId) {
             maxScore = level.levelMaxScore
             currLevelIndex = i
+            currlevlSlNo = level.levelSerialNo
         }
     })
 

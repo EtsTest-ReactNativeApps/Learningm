@@ -7,7 +7,7 @@ function OverLayModal(props) {
     const { isVisible, setVisible } = props;
     const [loading,setLoading] = React.useState(false)
     const handleYes = () => {
-        console.log(props.languageId,props.levelId)
+        // console.log(props.languageId,props.levelId)
         props.getLevelAssesment({
             fk_languageId: props.languageId,
             fk_levelId:props.levelId
@@ -15,6 +15,10 @@ function OverLayModal(props) {
         setLoading(true)
     }
     const handleNo = () => {
+        props.getLevelAssesment({
+            fk_languageId: props.languageId,
+            fk_levelId:props.levelId
+        })
         props.navigation.navigate("levelDetail")
     }
 //navigate to assesment page
