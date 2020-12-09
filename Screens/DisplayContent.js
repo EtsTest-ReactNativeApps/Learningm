@@ -133,6 +133,7 @@ function DisplayContents(props) {
                                 videoProps={{
                                     shouldPlay: shouldPlay,
                                     resizeMode: "cover",
+                                    
                                     onLoad: handleOnLoad,
                                     source: {
                                         uri: content.videoPath,
@@ -173,10 +174,8 @@ function DisplayContents(props) {
                                 </View>
                             </View>
                             <View style={styles.buttonView}>
-                                {
-                                    console.log(index,levelContent.length)
-                                }
-                                { userProgData.CONTENT.completedWords !== levelContent.length? 
+                                
+                                { userProgData.CONTENT.completedWords < levelContent.length-1? 
                                     
                                 (
                                     <TouchableOpacity style={styles.button}

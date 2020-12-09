@@ -24,9 +24,9 @@ function LevelDetailsPage(props) {
             title:props.route.params.levlName
         })
     }
-
+    // console.log(props.route.params,userProgData.CONTENT.currLevelId)
     React.useEffect(() => {
-        // console.log(props.route.params,userProgData.CONTENT.currLevelId)
+        // console.log(userProgData.CONTENT.completedWords)
         if (props.route.params.levlId === userProgData.CONTENT.currLevelId &&
             userProgData.CONTENT.completedWords === levelContent.CONTENT.length)
          {
