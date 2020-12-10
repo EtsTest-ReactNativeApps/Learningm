@@ -1,7 +1,7 @@
 import React from 'react';
 import {Alert,Text} from 'react-native';
 import QuizzComponent from '../Components/QuizzComponent';
-import {quizScore} from '../environment'
+import { quizScore } from '../environment';
 import AssesmentOverOverlay from '../Components/AssesmentOverOverlay'
 import { connect } from 'react-redux';
 // import {getQuizzData} from '../actions/index'
@@ -66,7 +66,8 @@ function LevelAssesment(props) {
     }
     const handleExit = () => {
         setIndex(0);
-        setCurrQsn(1)
+        setCurrQsn(1);
+        setPoints(0);
         // setGameOver(false)
         props.navigation.navigate('UserHome');
     }
@@ -78,6 +79,9 @@ function LevelAssesment(props) {
                     points={points}
                     isGameOver={isGameOver}
                     setGameOver={setGameOver}
+                    setPoints={setPoints}
+                    setCurrQsn={setCurrQsn}
+                
                     {...props}
                     /> : (
                         <QuizzComponent
@@ -89,7 +93,7 @@ function LevelAssesment(props) {
                         handleClose={handleClose}
                         totalQsn={totalQsn}
                         currQsn={currQsn}
-                    />
+                 />       
                 )
             }
             

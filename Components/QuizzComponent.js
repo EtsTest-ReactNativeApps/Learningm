@@ -34,13 +34,13 @@ function QuizzComponent(props) {
         },sts.playableDurationMillis)
     }
 
-    React.useEffect(() => {
-        if (qsn.questionType === "AUD_TO_TRANS" || qsn.questionType === "AUD_TO_WORD") {
-            if (sound._loaded) {
-                playSound()
-            }
-        }
-    },[sound._loaded])
+    // React.useEffect(() => {
+    //     if (qsn.questionType === "AUD_TO_TRANS" || qsn.questionType === "AUD_TO_WORD") {
+    //         if (sound._loaded) {
+    //             playSound()
+    //         }
+    //     }
+    // },[])
     return (
         <React.Fragment>
             <QuizzHeader   {...props} title={title} handleClose={handleClose}/>

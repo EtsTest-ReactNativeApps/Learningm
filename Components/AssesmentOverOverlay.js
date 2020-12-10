@@ -9,29 +9,32 @@ import {
     widthPercentageToDP as wp
   } from '../utils/react-native-responsive-screen';
 function AssesmentOverOverlay(props) {
-    const { isGameOver, points, userProg, levelsData,setGameOver} = props
+    const { isGameOver, points, userProg, levelsData,setGameOver,setPoints,setCurrQsn} = props
     const [cleared,setcleared] = React.useState(false)
     const [allLevelCompleted,setAllLveleCompleted] =React.useState(false)
     let maxScore
     let currLevelIndex
     let currlevlSlNo;
-
+    let maxLevlId;
     //to get level maxscore and current level index
     levelsData.CONTENT.forEach((level,i) => {
         if (level.levelId === userProg.CONTENT.currLevelId) {
             maxScore = level.levelMaxScore
             currLevelIndex = i
             currlevlSlNo =level.levelSerialNo
-
+        }
+        //get the last level
+        if (!level.levelId + 1) {
+            maxLevlId = level.levelId
         }
     })
 
     React.useEffect(() => {
         if (maxScore * progressPercent <= userProg.CONTENT.userScore + points ) {
-           setcleared(true)
-        }
-        if(maxScore * progressPercent <= userProg.CONTENT.userScore + points && userProg.CONTENT.currLevelId == 7){
-            setAllLveleCompleted(true)
+            setcleared(true)
+            if (userProg.CONTENT.currLevelId === maxLevlId) {
+                setAllLveleCompleted(true);
+            }
         }
     },[])
     
@@ -61,6 +64,8 @@ function AssesmentOverOverlay(props) {
         }
         setVisible(false)
         setGameOver(false)
+        setPoints(0);
+        setCurrQsn(1)
        props.navigation.navigate('UserHome')
     }
 
@@ -80,40 +85,28 @@ function AssesmentOverOverlay(props) {
                             source={require("../assets/congratsImg.png")}
                             />
                         ):(
-                            <Image
+                            <>
+                               <Image
                                 style={styles.tinyLogo}
                                 source={require("../assets/gameover.jpg")}  
-                            />
-                        )
-                    }
-                    
-                    {allLevelCompleted?(
-                        null
-                    ):(
-                        <Text style={{...styles.textStyle,fontSize:35,}}>
-                            {points} points 
-                        </Text>
-                    )
-                }
-                    
-                    {
-                        allLevelCompleted?(
-                        <Text style={{...styles.textStyle,fontSize:20,color:"#67a35f"}}>
-                            You have completed all the levels ! {"\n"}
-                            Thank You for using our app!
-                        </Text> 
-                        ):(
-                            cleared ?
-                            (
-                                <Text style={{...styles.textStyle,fontSize:20,color:"#67a35f"}}>
-                                    You have unlocked the {"\n"}next level congrats  !!
+                                />
+                                <Text style={{...styles.textStyle,fontSize:35,}}>
+                                    {points} points 
                                 </Text>
-                            ) :
-                            (
-                                <Text style={{...styles.textStyle,fontSize:20,color:"#f25633",}}>
-                                    Retake the assement to {"\n"}unlock next level !
-                                </Text>
-                            )
+                                    { 
+                                        cleared ?
+                                        (
+                                            <Text style={{...styles.textStyle,fontSize:20,color:"#67a35f"}}>
+                                                You have unlocked the {"\n"}next level congrats  !!
+                                            </Text>
+                                        ) :
+                                        (
+                                            <Text style={{...styles.textStyle,fontSize:20,color:"#f25633",}}>
+                                                Retake the assement to {"\n"}unlock next level !
+                                            </Text>
+                                        )         
+                                 }
+                            </>
                         )
                     }
                 </View>
