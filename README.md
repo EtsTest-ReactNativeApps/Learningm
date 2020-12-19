@@ -31,5 +31,8 @@ add the ngrok url to ROOT_URL in the environment.js
 you can use your mobile or android studio also .
 
 ### DEMO
+<figure class="video_container">
+  <iframe src="./ScreenRecording/learningmDemo.mp4" frameborder="0" allowfullscreen="true"> </iframe>
+</figure>
 
-![Demo](ScreenRecording/learningmDemo.mp4)
+<!-- ![Demo](ScreenRecording/learningmDemo.mp4) -->
