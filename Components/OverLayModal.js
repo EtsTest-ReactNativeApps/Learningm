@@ -8,12 +8,14 @@ function OverLayModal(props) {
     const [loading,setLoading] = React.useState(false)
     const handleYes = () => {
         // console.log(props.languageId,props.levelId)
-        setVisible(false)
+        
         props.getLevelAssesment({
             fk_languageId: props.languageId,
             fk_levelId:props.levelId
         })
+       
         setLoading(true)
+        // setVisible(false)
     }
     const handleNo = () => {
         setVisible(false)
@@ -23,10 +25,10 @@ function OverLayModal(props) {
     React.useEffect(() => {
         // console.log(props.quizzState)
         if (loading) {
-            if (props.quizzState.STS === '200') {
+            if (props.quizzState.STS == '200') {
                 setVisible(false)
                 setLoading(false)
-                props.navigation.navigate("assesmentPage")
+                props.navigation.navigate('assesmentPage')
             }
         }
         
