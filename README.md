@@ -32,5 +32,15 @@ you can use your mobile or android studio also .
 
 ### SCREENSHOTS
 
-![startpage1](ScreenRecording/ScreenShots/satrt1.jpg=100*) 
+<img src="ScreenRecording/ScreenShots/satrt1.jpg" width="250"/> <img src="ScreenRecording/ScreenShots/start2.jpg" width="250"/> <img src="ScreenRecording/ScreenShots/landingpage.jpg" width="250"/> <img src="ScreenRecording/ScreenShots/home.png" width="250"/> <img src="ScreenRecording/ScreenShots/contentlist.png" width="250"/> <img src="ScreenRecording/ScreenShots/progress.png" width="250"/> <img src="ScreenRecording/ScreenShots/wordplay.png" width="250"/><img src="ScreenRecording/ScreenShots/quizzoverlay.png" width="250"/> <img src="ScreenRecording/ScreenShots/assessment.png" width="250"/> <img src="ScreenRecording/ScreenShots/assesmentover.png" width="250"/><img src="ScreenRecording/ScreenShots/final.png" width="250"/> <img src="ScreenRecording/ScreenShots/profile.jpg" width="250"/> 
+ 
+ 
+ 
+
+ 
+ 
+
+
+ 
+
 
