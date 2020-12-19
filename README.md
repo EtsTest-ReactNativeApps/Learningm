@@ -30,9 +30,18 @@ go to terminal
 add the ngrok url to ROOT_URL in the environment.js
 you can use your mobile or android studio also .
 
-### DEMO
-<!-- <figure class="video_container">
-  <iframe src="./ScreenRecording/learningmDemo.mp4" frameborder="0" allowfullscreen="true"> </iframe>
-</figure> -->
-<video><source src="./ScreenRecording/learningmDemo.mp4" type="video/mp4"></video>
-<!-- ![Demo](ScreenRecording/learningmDemo.mp4) -->
+### SCREENSHOTS
+
+![startpage1](ScreenRecording/ScreenShots/satrt1.jpg) 
+![startpage2](ScreenRecording/ScreenShots/start2.jpg)
+![landingpage](ScreenRecording/ScreenShots/landingpage.jpg)
+![signuppage](ScreenRecording/ScreenShots/sighup.jpg)
+![homepage](ScreenRecording/ScreenShots/home.png)
+![contentListPage](ScreenRecording/ScreenShots/contentlist.png)
+![contentDisplay](ScreenRecording/ScreenShots/progress.png)
+![wordDisplay](ScreenRecording/ScreenShots/wordplay.png)
+![assementRedirectpage](ScreenRecording/ScreenShots/quizzoverlay.png)
+![assesmentpage](ScreenRecording/ScreenShots/assessment.png)
+![resultpage](ScreenRecording/ScreenShots/assesmentover.png)
+![finalPage](ScreenRecording/ScreenShots/final.png)
+![profilePage](ScreenRecording/ScreenShots/profile.jpg)
